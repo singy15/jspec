@@ -14,18 +14,16 @@ function nodep(value) {
 
 function traverse(root, node, path, op) {
   // op : (node,parent,path,root) => boolean : continue traverse?
-  if(nodep(node)) {
-    for(var key in node) {
-      if(key === "parent" || key === "path") {
-        continue;
-      }
-      var child = node[key];
-      if(nodep(child)) {
-        let childPath = ((path === "")? key : path + "." + key);
-        let nextop = op(child, node, childPath, root);
-        if(nextop) {
-          traverse(root, child, childPath, nextop);
-        }
+  for(var key in node) {
+    if(key === "parent" || key === "path") {
+      continue;
+    }
+    var child = node[key];
+    if(nodep(child)) {
+      let childPath = ((path === "")? key : path + "." + key);
+      let nextop = op(child, node, childPath, root);
+      if(nextop) {
+        traverse(root, child, childPath, nextop);
       }
     }
   }
@@ -62,10 +60,5 @@ function mv(node, newKey, root) {
       return node.parent;
     }
   }
-}
-
-function init(root) {
-  tag(root);
-  return root;
 }
 
