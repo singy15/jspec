@@ -41,39 +41,39 @@ function traverse(root, node, path, op) {
 }
 
 function optag(node, parent, absPath, relPath, parentPath, root) {
-  node.key = relPath;
-  node.path = absPath;
-  node.parentPath = parentPath;
+  node.key$ = relPath;
+  node.path$ = absPath;
+  node.parentPath$ = parentPath;
   return optag;
 }
 
 function opuntag(node, parent, absPath, relPath, parentPath, root) {
-  delete node.key;
-  delete node.path;
-  delete node.parentPath;
+  delete node.key$;
+  delete node.path$;
+  delete node.parentPath$;
   return opuntag;
 }
 
 function tag(root) {
-  root.key = null;
-  root.path = "";
-  root.parentPath = null;
+  root.key$ = null;
+  root.path$ = "";
+  root.parentPath$ = null;
   traverse(root, root, "", optag);
   return root;
 }
 
 function untag(root) {
-  delete root.key;
-  delete root.path;
-  delete root.parentPath;
+  delete root.key$;
+  delete root.path$;
+  delete root.parentPath$;
   traverse(root, root, "", opuntag);
   return root;
 }
 
 function mv(node, newKey, root) {
-  let parent = resolve(node.parentPath, root);
+  let parent = resolve(node.parentPath$, root);
   parent[newKey] = node;
-  delete parent[node.key];
-  traverse(parent, parent, parent.path, optag);
+  delete parent[node.key$];
+  traverse(parent, parent, parent.path$, optag);
 }
 

@@ -19,11 +19,11 @@ var example1 = {
     "RECTANGLE":"LAYOUT_TYPE.RECTANGLE",
     "LINE":"LAYOUT_TYPE.LINE"
   },
-  "$packages":{
+  "packages$":{
     "SALE":{
-      "$views":{
+      "views$":{
         "REGISTER_SALE":{
-          "$viewItems":{
+          "viewItems$":{
             "SALE_NO":{
               "type":"#VIEW_COMPONENT_TYPE.NUMBERBOX",
               "label":"î≠çsì˙",
@@ -71,35 +71,35 @@ var example1 = {
           }
         }
       },
-      "$processes":{
+      "processes$":{
         "REGISTER":{
-          "$params":{
-            "VIEW":"#SALE.$views.REGISTER_SALE"
+          "params$":{
+            "VIEW":"#SALE.views$.REGISTER_SALE"
           },
-          "$steps":{
-            "$list":[
+          "steps$":{
+            "list$":[
               "(use-package #DOMAIN_SALE)",
-              "(define model (new #.$models.SALE))",
+              "(define model (new #.models$.SALE))",
               "(copy-to @VIEW model)",
-              "(#.$ios.INSERT_SALE model)"
+              "(#.ios$.INSERT_SALE model)"
             ]
           }
         }
       }
     },
     "DOMAIN_SALE":{
-      "$ios":{
+      "ios$":{
         "INSERT_SALE":{
           "type":"#IO_TYPE.DB",
-          "$params":{
+          "params$":{
             "MODEL":{
-              "type":"#DOMAIN_SALE.$models.SALE"
+              "type":"#DOMAIN_SALE.models$.SALE"
             }
           },
           "sql":"INSERT INTO SALE (SALE_NO,ISSUE_DATE,DESCRIPTION,AMOUNT) VALUES (@MODEL.SALE_NO,@MODEL.ISSUE_DATE,@MODEL.DESCRIPTION,@MODEL.AMOUNT)"
         }
       },
-      "$models":{
+      "models$":{
         "SALE":{
           "SALE_NO":{
             "type":"#DATA_TYPE.NUMBER"
