@@ -1,9 +1,13 @@
 
 function val(expr, root) {
+  return resolve(expr.substr(1));
+}
+
+function resolve(path, root) {
   let cur = root;
-  let paths = expr.substr(1).split(".");
+  let paths = path.split(".");
   for(var i = 0; i < paths.length; i++) {
-    cur = root[paths[i]];
+    cur = cur[paths[i]];
   }
   return cur;
 }
@@ -13,52 +17,55 @@ function nodep(value) {
 }
 
 function traverse(root, node, path, op) {
-  // op : (node,parent,path,root) => boolean : continue traverse?
+  // op : (node,parent,absPath,relPath,root) => { (node,parent,absPath,relPath,root) => ... | falsy }
   for(var key in node) {
-    if(key === "parent" || key === "path") {
-      continue;
-    }
     var child = node[key];
     if(nodep(child)) {
-      let childPath = ((path === "")? key : path + "." + key);
-      let nextop = op(child, node, childPath, root);
+      let parentPath = path;
+      let absPath = ((path === "")? key : path + "." + key);
+      let relPath = key;
+      let nextop = op(child, node, absPath, relPath, parentPath, root);
       if(nextop) {
-        traverse(root, child, childPath, nextop);
+        traverse(root, child, absPath, nextop);
       }
     }
   }
 }
 
-function optag(node, parent, path, root) {
-  node.parent = parent;
-  node.path = path;
+function optag(node, parent, absPath, relPath, parentPath, root) {
+  node.key = relPath;
+  node.path = absPath;
+  node.parentPath = parentPath;
   return optag;
 }
 
-function opuntag(node, parent, path, root) {
-  delete node.parent;
+function opuntag(node, parent, absPath, relPath, parentPath, root) {
+  delete node.key;
   delete node.path;
+  delete node.parentPath;
   return opuntag;
 }
 
 function tag(root) {
+  root.key = null;
+  root.path = "";
+  root.parentPath = null;
   traverse(root, root, "", optag);
   return root;
 }
 
 function untag(root) {
+  delete root.key;
+  delete root.path;
+  delete root.parentPath;
   traverse(root, root, "", opuntag);
   return root;
 }
 
 function mv(node, newKey, root) {
-  for(var k in node.parent) {
-    if(node == node.parent[k]) {
-      node.parent[newKey] = node;
-      delete node.parent[k];
-      traverse(node.parent, node.parent, node.parent.path, optag);
-      return node.parent;
-    }
-  }
+  let parent = resolve(node.parentPath, root);
+  parent[newKey] = node;
+  delete parent[node.key];
+  traverse(parent, parent, parent.path, optag);
 }
 
