@@ -1,6 +1,14 @@
 
+function exprp(value) {
+  return value !== null && typeof value === 'string' && value.substr(0,1) === "#";
+}
+
 function val(expr, root) {
-  return resolve(expr.substr(1));
+  if(exprp(expr)) {
+    return resolve(expr.substr(1), root);
+  } else {
+    return expr;
+  }
 }
 
 function resolve(path, root) {
@@ -17,7 +25,7 @@ function nodep(value) {
 }
 
 function traverse(root, node, path, op) {
-  // op : (node,parent,absPath,relPath,root) => { (node,parent,absPath,relPath,root) => ... | falsy }
+  // op : (node,parent,absPath,relPath,parentPath,root) => { (node,parent,absPath,relPath,parentPath,root) => ... | falsy }
   for(var key in node) {
     var child = node[key];
     if(nodep(child)) {
