@@ -30,7 +30,7 @@ var model = {
           "$viewItems":{
             "SALE_NO":{
               "type":"#VIEW_COMPONENT_TYPE.NUMBERBOX",
-              "label":"î≠çsì˙",
+              "label":"Áô∫Ë°åÊó•",
               "layout":{
                 "type":"#LAYOUT_TYPE.RECTANGLE",
                 "x":100,
@@ -41,7 +41,7 @@ var model = {
             },
             "ISSUE_DATE":{
               "type":"#VIEW_COMPONENT_TYPE.DATETIMEPICKER",
-              "label":"î≠çsì˙",
+              "label":"Áô∫Ë°åÊó•",
               "layout":{
                 "type":"#LAYOUT_TYPE.RECTANGLE",
                 "x":100,
@@ -52,7 +52,7 @@ var model = {
             },
             "DESCRIPTION":{
               "type":"#VIEW_COMPONENT_TYPE.TEXTBOX",
-              "label":"ìEóv",
+              "label":"ÊëòË¶Å",
               "layout":{
                 "type":"#LAYOUT_TYPE.RECTANGLE",
                 "x":100,
@@ -63,7 +63,7 @@ var model = {
             },
             "AMOUNT":{
               "type":"#VIEW_COMPONENT_TYPE.NUMBERBOX",
-              "label":"ã‡äz",
+              "label":"ÈáëÈ°ç",
               "layout":{
                 "type":"#LAYOUT_TYPE.RECTANGLE",
                 "x":100,
@@ -143,15 +143,15 @@ var test = {
 
 var test = {
   a1: {
-    a10: "a10",
+    a10: "v10",
     a11: {
-      a111: "text"
+      a111: "v111"
     },
     a12: {
-      a121: "text"
+      a121: "v121"
     },
-    a13: "a12",
-    a14: "a13",
+    a13: "v13",
+    a14: "v14",
   }
 };
 

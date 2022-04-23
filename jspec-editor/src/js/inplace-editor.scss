@@ -1,23 +1,23 @@
-.input-text__item {
+/*
+.inplace-editor--input-text__item {
   position: relative;
-  /*display: inline-block;*/
   display: inline;
 }
 
-.input-text__dummy {
+.inplace-editor--input-text__dummy {
   display: inline-block;
   overflow: hidden;
-  min-width: 1em;
+  min-width: 2em;
   white-space: nowrap;
   opacity: 0;
   line-height:1px;
 }
 
-.input-text__dummy::before {
+.inplace-editor--input-text__dummy::before {
   content: '';
 }
 
-.input-text__dummy:empty::before {
+.inplace-editor--input-text__dummy:empty::before {
   content: attr(data-placeholder);
   color: blue;
   box-sizing: border-box;
@@ -25,7 +25,7 @@
   outline:none;
 }
 
-.input-text {
+.inplace-editor--input-text {
   position: absolute;
   top: 0;
   left: 0;
@@ -35,7 +35,7 @@
   outline:none;
 }
 
-.input-text:focus {
+.inplace-editor--input-text:focus {
   outline:solid 1px #CCC;
 }
-
+*/

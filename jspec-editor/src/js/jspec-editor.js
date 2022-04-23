@@ -1,14 +1,17 @@
-inplaceEditor = require('./inplace-editor.js');
+const Vue = require('vue');
+var inplaceEditor = require('./inplace-editor.js');
+var autoresizeEditor = require('./autoresize-editor.js');
 
 var jspecEditor = {
   name: "jspec-editor",
   components: {
-    "inplace-editor": inplaceEditor.inplaceEditor
+    "inplace-editor": inplaceEditor.inplaceEditor,
+    "autoresize-editor": autoresizeEditor.autoresizeEditor,
   },
   props: {
     node: null,
     entryParent: Object,
-    entryKey: String,
+    entryKey: null,
     level: Number
   },
   data() {
@@ -22,9 +25,15 @@ var jspecEditor = {
     },
     addItem() {
       this.node["newitem"] = "value";
-    }
+    },
+    updated(newKey, oldKey) {
+      console.log(this, newKey,oldKey);
+      if(newKey !== "") {
+        this.node[newKey] = this.node[oldKey];
+      }
+      delete this.node[oldKey];
+    },
   },
-//display:inline-flex; flex-flow:column; justify-content:start;
   template: `
     <span style="">
       <!-- Object -->
@@ -33,8 +42,8 @@ var jspecEditor = {
           <span @click.stop="addItem()" style="cursor:pointer">+</span>
         </span>
         <br>
-        <span v-for="(v,k) in node" :style="{'margin-left':((level+1)*10).toString()+'px'}">
-          {{k}}: <jspec-editor :node="v" :entryParent="node" :entryKey="k" :level="level+1"></jspec-editor>
+        <span v-for="(v,k,i) in node" :style="{'margin-left':((level+1)*10).toString()+'px'}">
+          <autoresize-editor :key="k" :value="k" v-on:updated="updated"></autoresize-editor>: <jspec-editor key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1"></jspec-editor>
           <br>
         </span>
         <span :style="{'margin-left':((level)*10).toString()+'px', 'cursor':'pointer'}" @click="toggleOpen()">}</span>

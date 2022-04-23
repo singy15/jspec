@@ -1,20 +1,23 @@
-require('./inplace-editor.scss');
-
 var inplaceEditor = {
   name: "inplace-editor",
   props: {
     obj: Object,
-    placeKey: String,
+    placeKey: null,
   },
   data() {
     return {
-      editValue: null,
+      editValue: JSON.stringify(this.obj[this.placeKey]),
+      width: 10,
+      focused: false
     };
   },
   methods: {
     updateValue() {
       this.val = this.$refs.input.value;
       this.editValue = this.val;
+    },
+    resize() {
+      this.width = this.$refs.text.getBoundingClientRect().width;
     },
   },
   computed: {
@@ -47,15 +50,30 @@ var inplaceEditor = {
   },
   mounted() {
     this.editValue = this.val;
+    this.resize();
   },
   template: `
-    <span>
-      <div class="input-text__item">
-        <div class="input-text__dummy js-dummy-input-text" :data-placeholder="editValue"></div>
-        <input type="text" class="input-text js-input-text" 
-            v-model="editValue" ref="input" @change="updateValue()"
-            spellcheck="false"/>
-      </div>
+    <span style="display:inline-block;">
+      <span ref="text" style="visibility:hidden;">{{editValue}}</span>
+      <input type="text" 
+          :style="{
+              width:(width).toString()+'px',
+              fontSize:'1.0rem',
+              fontFamily:'unset',
+              boxSizing:'border-box',
+              margin:'0px',
+              padding:'0px',
+              border:'none',
+              outline:(focused)? 'solid 1px #CCC' : 'none',
+              marginLeft:(-width).toString()+'px'
+            }"
+          v-model="editValue" ref="input" 
+              @change="updateValue()" 
+              @input="resize()" 
+              @compositionend="resize()"
+              @focus="focused = true"
+              @blur="focused = false"
+          spellcheck="false"/>
     </span>
   `
 };

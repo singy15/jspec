@@ -1,61 +1,54 @@
-require('./autoresize-editor.scss');
-
 var autoresizeEditor = {
   name: "autoresize-editor",
   props: {
-    obj: Object,
-    placeKey: String,
+    value: null,
+    updated: Function,
   },
   data() {
+    let tmp = this.value;
     return {
-      editValue: null,
+      val: tmp,
+      width: 10,
+      focused: false,
+      before: tmp,
     };
   },
   methods: {
-    updateValue() {
-      this.val = this.$refs.input.value;
-      this.editValue = this.val;
+    resize() {
+      this.width = this.$refs.text.getBoundingClientRect().width;
     },
-  },
-  computed: {
-    val: {
-      get: function() {
-        return JSON.stringify(this.obj[this.placeKey]);
-      },
-      set: function(newval) {
-        if(newval === "") {
-          delete this.obj[this.placeKey];
-          return;
-        }
-
-        var parsed = null;
-        try {
-          parsed = eval(newval);
-          if(parsed === undefined) {
-            throw new Error();
-          }
-        } catch(e) {
-          try {
-            parsed = JSON.parse(newval);
-          } catch(e2) {
-            parsed = newval;
-          }
-        } 
-        this.obj[this.placeKey] = parsed;
-      }
+    update() {
+      this.$emit('updated', this.val, this.before);
+      this.before = this.val;
     }
   },
+  computed: {
+  },
   mounted() {
-    this.editValue = this.val;
+    this.resize();
   },
   template: `
-    <span>
-      <div class="input-text__item">
-        <div class="input-text__dummy js-dummy-input-text" :data-placeholder="editValue"></div>
-        <input type="text" class="input-text js-input-text" 
-            v-model="editValue" ref="input" @change="updateValue()"
-            spellcheck="false"/>
-      </div>
+    <span style="display:inline-block;">
+      <span ref="text" style="visibility:hidden;">{{val}}</span>
+      <input type="text"
+          :style="{
+              width:(width).toString()+'px',
+              fontSize:'1.0rem',
+              fontFamily:'unset',
+              boxSizing:'border-box',
+              margin:'0px',
+              padding:'0px',
+              border:'none',
+              outline:(focused)? 'solid 1px #CCC' : 'none',
+              marginLeft:(-width).toString()+'px'
+            }"
+          v-model="val" ref="input" 
+          @change="update()" 
+          @input="resize()" 
+          @compositionend="resize()"
+          @focus="focused = true"
+          @blur="focused = false"
+          spellcheck="false"/>
     </span>
   `
 };
