@@ -3,6 +3,7 @@ var inplaceEditor = {
   props: {
     obj: Object,
     placeKey: null,
+    style: Object
   },
   data() {
     return {
@@ -54,9 +55,9 @@ var inplaceEditor = {
   },
   template: `
     <span style="display:inline-block;">
-      <span ref="text" style="visibility:hidden;">{{editValue}}</span>
+      <span ref="text" :style="Object.assign({visibility:'hidden'}, style)">{{editValue}}</span>
       <input type="text" 
-          :style="{
+          :style="Object.assign({
               width:(width).toString()+'px',
               fontSize:'1.0rem',
               fontFamily:'unset',
@@ -66,7 +67,7 @@ var inplaceEditor = {
               border:'none',
               outline:(focused)? 'solid 1px #CCC' : 'none',
               marginLeft:(-width).toString()+'px'
-            }"
+            }, style)"
           v-model="editValue" ref="input" 
               @change="updateValue()" 
               @input="resize()" 

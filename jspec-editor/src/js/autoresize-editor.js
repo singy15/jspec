@@ -3,6 +3,7 @@ var autoresizeEditor = {
   props: {
     value: null,
     updated: Function,
+    style: Object
   },
   data() {
     let tmp = this.value;
@@ -29,9 +30,9 @@ var autoresizeEditor = {
   },
   template: `
     <span style="display:inline-block;">
-      <span ref="text" style="visibility:hidden;">{{val}}</span>
+      <span ref="text" :style="Object.assign({visibility:'hidden'}, style)" >{{val}}</span>
       <input type="text"
-          :style="{
+          :style="Object.assign({
               width:(width).toString()+'px',
               fontSize:'1.0rem',
               fontFamily:'unset',
@@ -41,7 +42,7 @@ var autoresizeEditor = {
               border:'none',
               outline:(focused)? 'solid 1px #CCC' : 'none',
               marginLeft:(-width).toString()+'px'
-            }"
+            }, style)"
           v-model="val" ref="input" 
           @change="update()" 
           @input="resize()" 
