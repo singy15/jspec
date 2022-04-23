@@ -7,16 +7,38 @@
   font-family:unset;
 }
 
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+.container {
+  position:sticky; 
+  top:0px;
+  left:0px;
+  right:0px;
+  padding:5px;
+  z-index:9999;
+  background-color:#EFEFEF;
+  border-bottom: solid 1px #ccc;
+  margin-bottom:10px;
+}
+
 .container * {
   margin-left: 5px;
 }
 
+.title {
+  font-size: 1.3rem;
+  font-family: serif;
+}
+
 .button {
-  color: #FFF;
-  background-color: #555;
+  background-color: none;
   text-align: center;
   display: inline-block;
-  border:none;
+  color:#555;
+  border:solid 1px #555;
   outline:none;
   min-width:100px;
   cursor:pointer;
@@ -26,6 +48,7 @@
   <body>
     <div id="app">
       <div class="container">
+        <div class="title">JSPEC EDITOR</div>
         <button class="button" @click="openJspec()">OPEN</button>
         <button class="button" @click="saveJspec()">SAVE</button>
       </div>
