@@ -75,6 +75,18 @@ var jspecEditor = {
     styleVal(key, val) {
       let style = {};
 
+      if((null == val)) {
+        style.color = "#A00";
+      }
+
+      if((null != val) && (typeof(val) === 'number')) {
+        style.color = "#0A0";
+      }
+
+      if((null != val) && (typeof(val) === 'boolean')) {
+        style.color = "#A0A";
+      }
+
       if((null != val) && (typeof(val) === 'string') && (val.substring(0,1) === "#")) {
         style.color = "#55C";
         style.fontStyle = 'italic';
