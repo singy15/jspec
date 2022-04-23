@@ -47,14 +47,15 @@ var jspecEditor = {
       return style;
     },
     styleVal(key, val) {
-      // let style = {};
+      let style = {};
 
-      // if(val.substring(0,1) === "#") {
-      //   style.color = "#22C";
-      // }
-      // 
-      // return style;
-      return {};
+      if((null != val) && (typeof(val) === 'string') && (val.substring(0,1) === "#")) {
+        style.color = "#55C";
+        style.fontStyle = 'italic';
+        style.textDecoration = 'underline';
+      }
+      
+      return style;
     }
   },
   template: `
