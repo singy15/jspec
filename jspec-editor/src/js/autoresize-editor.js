@@ -29,7 +29,7 @@ var autoresizeEditor = {
     this.resize();
   },
   template: `
-    <span style="display:inline-block;">
+    <span style="display:inline-block; vertical-align:top;">
       <span ref="text" :style="Object.assign({visibility:'hidden'}, style)" >{{val}}</span>
       <input type="text"
           :style="Object.assign({

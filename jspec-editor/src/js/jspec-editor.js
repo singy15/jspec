@@ -31,7 +31,6 @@ var jspecEditor = {
       }
     },
     updated(newKey, oldKey) {
-      console.log(newKey, oldKey);
       if(Array.isArray(this.node)) {
         let tmp = this.node.splice(oldKey, 1)[0];
         let newary = this.node;
@@ -69,6 +68,8 @@ var jspecEditor = {
       if((null != key) && (typeof(key) === 'string') && (key.toUpperCase() === key) && ((null !== val) && (typeof(val) === "object"))) {
         style.color = "#22C";
       }
+
+      style.verticalAlign = 'top';
       
       return style;
     },
@@ -110,10 +111,8 @@ var jspecEditor = {
         <br>
         <span v-for="(v,k) in node" style="white-space:nowrap;">
           <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
-          <autoresize-editor v-if="!(Array.isArray(node))" :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated"></autoresize-editor>
-          <autoresize-editor v-if="(Array.isArray(node))" :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated"></autoresize-editor>
-          <!--<span v-if="(Array.isArray(node))" :key="k">{{k}}</span>-->
-          <span>: </span>
+          <autoresize-editor :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated"></autoresize-editor>
+          <span style="vertical-align:top">: </span>
           <jspec-editor :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1"></jspec-editor>
           <br>
         </span>
