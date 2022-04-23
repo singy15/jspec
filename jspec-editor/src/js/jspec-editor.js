@@ -24,23 +24,31 @@ var jspecEditor = {
       this.open = !(this.open);
     },
     addItem() {
-      this.node["newitem"] = "value";
+      if(Array.isArray(this.node)) {
+        this.node.push("value");
+      } else {
+        this.node["newitem"] = "value";
+      }
     },
     updated(newKey, oldKey) {
-      if(newKey !== "") {
-        this.node[newKey] = this.node[oldKey];
+      console.log(newKey, oldKey);
+      if(Array.isArray(this.node)) {
+        
+      } else {
+        if(newKey !== "") {
+          this.node[newKey] = this.node[oldKey];
+        }
+        delete this.node[oldKey];
       }
-      delete this.node[oldKey];
     },
     styleKey(key, val) {
       let style = {};
 
-      if(key.indexOf("$") > 0) {
-        // style.color = "#55F";
+      if((null != key) && (typeof(key) === 'string') && (key.indexOf("$") > 0)) {
         style.fontWeight = "bold";
       }
 
-      if((key.toUpperCase() === key) && ((null !== val) && (typeof(val) === "object"))) {
+      if((null != key) && (typeof(key) === 'string') && (key.toUpperCase() === key) && ((null !== val) && (typeof(val) === "object"))) {
         style.color = "#22C";
       }
       
@@ -63,20 +71,35 @@ var jspecEditor = {
 
       <!-- Object -->
       <span v-if="(node != null) && typeof(node) === 'object' && open">
-        <span @click.stop="toggleOpen()" style="cursor:pointer">{</span>
+        <span @click.stop="toggleOpen()" style="cursor:pointer">
+          <span v-if="!Array.isArray(node)">{</span>
+          <span v-if="Array.isArray(node)">[</span>
+        </span>
         <span style="margin-left:10px"></span>
         <span @click.stop="addItem()" style="cursor:pointer;">+</span>
         <br>
-        <span v-for="(v,k,i) in node">
+        <span v-for="(v,k,i) in node" style="white-space:nowrap;">
           <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
-          <autoresize-editor :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated"></autoresize-editor>: <jspec-editor key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1"></jspec-editor>
+          <autoresize-editor v-if="!(Array.isArray(node))" :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated"></autoresize-editor>
+          <span v-if="(Array.isArray(node))" :key="k">{{k}}</span>
+          <span>: </span>
+          <jspec-editor key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1"></jspec-editor>
           <br>
         </span>
         <span v-for="n in (level)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
-        <span :style="{'cursor':'pointer'}" @click="toggleOpen()">}</span>
+        <span :style="{'cursor':'pointer'}" @click="toggleOpen()">
+          <span v-if="!Array.isArray(node)">}</span>
+          <span v-if="Array.isArray(node)">]</span>
+        </span>
       </span>
       <span v-if="(node != null) && typeof(node) === 'object' && !open">
-        <span @click="toggleOpen()" style="cursor:pointer">{<span style="font-size:0.5rem">...</span>}</span>
+        <span @click="toggleOpen()" style="cursor:pointer">
+          <span v-if="!Array.isArray(node)">{</span>
+          <span v-if="Array.isArray(node)">[</span>
+          <span style="font-size:0.5rem">...</span>
+          <span v-if="!Array.isArray(node)">}</span>
+          <span v-if="Array.isArray(node)">]</span>
+        </span>
       </span>
 
       <!-- Value -->

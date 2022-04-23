@@ -81,12 +81,12 @@ var model = {
             "VIEW":"#SALE.views$.REGISTER_SALE"
           },
           "steps$":{
-            // "list$":[
-            //   "(use-package #DOMAIN_SALE)",
-            //   "(define model (new #.models$.SALE))",
-            //   "(copy-to @VIEW model)",
-            //   "(#.ios$.INSERT_SALE model)"
-            // ]
+            "list$":[
+              "(use-package #DOMAIN_SALE)",
+              "(define model (new #.models$.SALE))",
+              "(copy-to @VIEW model)",
+              "(#.ios$.INSERT_SALE model)"
+            ]
           }
         }
       }
