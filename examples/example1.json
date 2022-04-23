@@ -19,6 +19,14 @@
     "RECTANGLE": {},
     "LINE": {}
   },
+  "DOMAIN_TYPE": {
+    "SALE_NO": {
+      "type": "#DATA_TYPE.TEXT",
+      "maxLength": 12,
+      "minLength": 12,
+      "validator": "value"
+    }
+  },
   "packages$": {
     "SALE": {
       "views$": {
@@ -107,6 +115,24 @@
             }
           },
           "sql": "INSERT INTO SALE \n(SALE_NO,ISSUE_DATE,DESCRIPTION,AMOUNT) \nVALUES (@MODEL.SALE_NO,@MODEL.ISSUE_DATE,@MODEL.DESCRIPTION,@MODEL.AMOUNT)"
+        },
+        "DELETE_SALE": {
+          "type": "#IO_TYPE.DB",
+          "params$": {
+            "MODEL": {
+              "type": "#DOMAIN_SALE.models$.SALE"
+            }
+          },
+          "sql": "DELETE FROM SALE WHERE SALE_NO = @MODEL.SALE_NO"
+        },
+        "SELECT_SALE": {
+          "type": "#IO_TYPE.DB",
+          "params$": {
+            "MODEL": {
+              "type": "#DOMAIN_SALE.models$.SALE"
+            }
+          },
+          "sql": "SELECT * FROM SALE WHERE SALE_NO = @MODEL.SALE_NO"
         }
       },
       "models$": {

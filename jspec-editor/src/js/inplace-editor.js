@@ -16,11 +16,17 @@ var inplaceEditor = {
   },
   methods: {
     updateValue() {
+      let origValue = this.$refs.input.value;
       this.val = this.$refs.input.value;
       this.editValue = this.val;
-      this.$nextTick(() => {
-        this.resize();
-      });
+
+      // prevent null error. when value changed to object, inplace-editor automatically closed.
+      // so, this.$refs.input gone to null.
+      if(this.editValue !== "{}" && origValue !== "") {
+        this.$nextTick(() => {
+          this.resize();
+        });
+      }
     },
     updateValueMultiline() {
       this.val = JSON.stringify(this.$refs.input.value);
