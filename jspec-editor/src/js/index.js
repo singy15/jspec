@@ -1,172 +1,165 @@
 const Vue = require('vue');
-// import {inplaceEditor} from './inplace-editor.js';
 import {jspecEditor} from './jspec-editor.js';
 
-var model = {
-  "VIEW_COMPONENT_TYPE":{
-    "DATETIMEPICKER":"VIEW_COMPONENT_TYPE.DATETIMEPICKER",
-    "TEXTBOX":"VIEW_COMPONENT_TYPE.TEXTBOX",
-    "NUMBERBOX":"VIEW_COMPONENT_TYPE.NUMBERBOX",
-    "BUTTON":"VIEW_COMPONENT_TYPE.BUTTON"
-  },
-  "DATA_TYPE":{
-    "DATETIME":"DATA_TYPE.DATETIME",
-    "TEXT":"DATA_TYPE.TEXT",
-    "NUMBER":"DATA_TYPE.NUMBER"
-  },
-  "IO_TYPE":{
-    "DB":"IO_TYPE.DB",
-    "FILE":"IO_TYPE.FILE",
-    "MODEL":"IO_TYPE.MODEL"
-  },
-  "LAYOUT_TYPE":{
-    "RECTANGLE":"LAYOUT_TYPE.RECTANGLE",
-    "LINE":"LAYOUT_TYPE.LINE"
-  },
-  "packages$":{
-    "SALE":{
-      "views$":{
-        "REGISTER_SALE":{
-          "viewComponents$":{
-            "SALE_NO":{
-              "type":"#VIEW_COMPONENT_TYPE.NUMBERBOX",
-              "label":"発行日",
-              "layout":{
-                "type":"#LAYOUT_TYPE.RECTANGLE",
-                "x":100,
-                "y":100,
-                "width":200,
-                "height":24
-              }
-            },
-            "ISSUE_DATE":{
-              "type":"#VIEW_COMPONENT_TYPE.DATETIMEPICKER",
-              "label":"発行日",
-              "layout":{
-                "type":"#LAYOUT_TYPE.RECTANGLE",
-                "x":100,
-                "y":100,
-                "width":200,
-                "height":24
-              }
-            },
-            "DESCRIPTION":{
-              "type":"#VIEW_COMPONENT_TYPE.TEXTBOX",
-              "label":"摘要",
-              "layout":{
-                "type":"#LAYOUT_TYPE.RECTANGLE",
-                "x":100,
-                "y":100,
-                "width":200,
-                "height":24
-              }
-            },
-            "AMOUNT":{
-              "type":"#VIEW_COMPONENT_TYPE.NUMBERBOX",
-              "label":"金額",
-              "layout":{
-                "type":"#LAYOUT_TYPE.RECTANGLE",
-                "x":100,
-                "y":100,
-                "width":200,
-                "height":24
-              }
-            }
-          }
-        }
-      },
-      "processes$":{
-        "REGISTER":{
-          "params$":{
-            "VIEW":"#SALE.views$.REGISTER_SALE"
-          },
-          "steps$":{
-            "list$":[
-              "(use-package #DOMAIN_SALE)",
-              "(define model (new #.models$.SALE))",
-              "(copy-to @VIEW model)",
-              "(#.ios$.INSERT_SALE model)"
-            ]
-          }
-        }
-      }
-    },
-    "DOMAIN_SALE":{
-      "ios$":{
-        "INSERT_SALE":{
-          "type":"#IO_TYPE.DB",
-          "params$":{
-            "MODEL":{
-              "type":"#DOMAIN_SALE.models$.SALE"
-            }
-          },
-          "sql":"INSERT INTO SALE (SALE_NO,ISSUE_DATE,DESCRIPTION,AMOUNT) VALUES (@MODEL.SALE_NO,@MODEL.ISSUE_DATE,@MODEL.DESCRIPTION,@MODEL.AMOUNT)"
-        }
-      },
-      "models$":{
-        "SALE":{
-          "SALE_NO":{
-            "type":"#DATA_TYPE.NUMBER"
-          },
-          "ISSUE_DATE":{
-            "type":"#DATA_TYPE.DATETIME"
-          },
-          "DESCRIPTION":{
-            "type":"#DATA_TYPE.TEXT"
-          },
-          "AMOUNT":{
-            "type":"#DATA_TYPE.NUMBER"
-          }
-        }
-      }
-    }
-  }
-};
+let globalFSHandle;
 
-var test = {
-  packages$: {
-    SALE: {
-      viewComponents$: {
-        SALE_NO: {
-          type: "text",
-          name: "SALE NO"
+function writeLog() {}
+
+async function writeFile(fileHandle, contents) {
+  const writable = await fileHandle.createWritable();
+  // await writable.truncate(0);
+  await writable.write(contents);
+  await writable.close();
+}
+
+async function saveFile(contents, handle = null) {
+  try {
+    if (!handle) {
+      handle = await window.showSaveFilePicker({
+        types: [
+          {
+            description: "Jspec file",
+            accept: {
+              "text/plain": [".json"],
+            },
+          },
+        ],
+      });
+    }
+    await writeFile(handle, contents);
+    return handle;
+  } catch (ex) {
+    const msg = "failed to save";
+    console.error(msg, ex);
+    return false;
+  }
+}
+
+
+async function openFile() {
+  const result = {
+    handle: null,
+    text: ""
+  };
+
+  /** @type FileSystemHandle */
+  let fileHandle;
+  try {
+    [fileHandle] = await window.showOpenFilePicker({
+      types: [
+        {
+          description: "Jspec file",
+          accept: {
+            "text/plain": [".json"],
+          },
         },
-        ISSUE_DATE: {
-          type: "date",
-          name: "ISSUE_DATE"
-        }
-      }
-    }
-  },
-  ITEM1: "item1"
-};
-
-var test = {
-  a1: {
-    a10: "v10",
-    a11: {
-      a111: "v111"
-    },
-    a12: {
-      a121: "v121"
-    },
-    a13: "v13",
-    a14: "v14",
+      ],
+    });
+    result.handle = fileHandle;
+  } catch (ex) {
+    console.error("failed to fetch file", ex);
+    return false;
   }
-};
+
+  const file = await fileHandle.getFile();
+  try {
+    const text = await file.text();
+    result.text = text;
+    return result;
+  } catch (ex) {
+    console.error("failed to get content", ex);
+    return false;
+  }
+}
+
+function isNativeFileSystemSupported() {
+  // eslint-disable-next-line no-undef
+  return "showOpenFilePicker" in window;
+}
+
+async function overwrite() {
+  if (!nativeFSSupported) {
+    return;
+  }
+
+  if(!globalFSHandle) {
+    return;
+  }
+
+  clearTimeout(globalOverwriteTimeout);
+  globalOverwriteTimeout = setTimeout(async function() {
+      const fsHandle = await saveFile(
+        serializeSource(),
+        globalFSHandle
+      );
+      if (fsHandle) {
+        globalFSHandle = fsHandle;
+        writeLog("saved");
+      } else {
+        writeLog("failed to save");
+      }
+    },
+    3000);
+}
+
+async function saveNew() {
+  if (!nativeFSSupported) {
+    alert("nfs not supported");
+    return;
+  }
+
+  const fsHandle = await saveFile(
+    serializeSource(),
+    null
+  );
+  if (fsHandle) {
+    globalFSHandle = fsHandle;
+    writeLog("saved");
+  } else {
+    writeLog("failed to save");
+  }
+}
+
+async function saveOverwrite(content) {
+  if (!nativeFSSupported) {
+    alert("nfs not supported");
+    return;
+  }
+
+  const fsHandle = await saveFile(
+    content,
+    globalFSHandle
+  );
+  if (fsHandle) {
+    globalFSHandle = fsHandle;
+    writeLog("saved");
+  } else {
+    writeLog("failed to save");
+  }
+}
+
+const nativeFSSupported = isNativeFileSystemSupported();
+writeLog(`support for nfs: ${(nativeFSSupported) ? "yes" : "no"}`);
 
 window.app = Vue.createApp({
   components: {
-    // "inplace-editor": inplaceEditor,
     "jspec-editor": jspecEditor
   },
   data() {
     return {
-      root: model,
+      root: {},
       text:""
     };
   },
   methods: {
+    openJspec() {
+      openFile().then((result) => {
+        this.root = JSON.parse(result.text);
+      });
+    },
+    saveJspec() {
+      saveOverwrite(JSON.stringify(this.root, null, 2));
+    }
   },
   mounted() {
   }

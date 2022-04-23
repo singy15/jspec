@@ -16,7 +16,7 @@ var jspecEditor = {
   },
   data() {
     return {
-      open: true
+      open: false
     };
   },
   methods: {

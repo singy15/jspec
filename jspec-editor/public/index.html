@@ -6,12 +6,32 @@
   font-size:12px;
   font-family:unset;
 }
+
+.container * {
+  margin-left: 5px;
+}
+
+.button {
+  color: #FFF;
+  background-color: #555;
+  text-align: center;
+  display: inline-block;
+  border:none;
+  outline:none;
+  min-width:100px;
+  cursor:pointer;
+}
 </style>
   </head>
   <body>
     <div id="app">
-      <!-- <inplace-editor :obj="root.a1" :place-key="'a11'"></inplace-editor> -->
-      <jspec-editor :node="root" :entryParent="root" :entryKey="null" :level="0"></jspec-editor>
+      <div class="container">
+        <button class="button" @click="openJspec()">OPEN</button>
+        <button class="button" @click="saveJspec()">SAVE</button>
+      </div>
+      <div>
+        <jspec-editor :node="root" :entryParent="root" :entryKey="null" :level="0"></jspec-editor>
+      </div>
     </div>
 
   </body>
