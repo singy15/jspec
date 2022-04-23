@@ -41,16 +41,20 @@ function traverse(root, node, path, op) {
 }
 
 function optag(node, parent, absPath, relPath, parentPath, root) {
-  node.key$ = relPath;
-  node.path$ = absPath;
-  node.parentPath$ = parentPath;
+  if(relPath.indexOf("$") < 0) {
+    node.key$ = relPath;
+    node.path$ = absPath;
+    node.parentPath$ = parentPath;
+  }
   return optag;
 }
 
 function opuntag(node, parent, absPath, relPath, parentPath, root) {
-  delete node.key$;
-  delete node.path$;
-  delete node.parentPath$;
+  if(relPath.indexOf("$") < 0) {
+    delete node.key$;
+    delete node.path$;
+    delete node.parentPath$;
+  }
   return opuntag;
 }
 
