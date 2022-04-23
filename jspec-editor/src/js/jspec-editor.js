@@ -33,7 +33,25 @@ var jspecEditor = {
     updated(newKey, oldKey) {
       console.log(newKey, oldKey);
       if(Array.isArray(this.node)) {
-        
+        let tmp = this.node.splice(oldKey, 1)[0];
+        let newary = this.node;
+        if(newKey !== "") {
+          let index = parseInt(newKey,10);
+          if(newary[index] !== undefined) {
+            newary.splice(index,0,tmp);
+          } else {
+            newary[index] = tmp;
+          }
+          for(var i = 0; i < newary.length; i++) {
+            if(newary[i] === undefined) {
+              newary[i] = "";
+            }
+          }
+        }
+        this.entryParent[this.entryKey] = [];
+        this.$nextTick(() => {
+          this.entryParent[this.entryKey] = newary;
+        });
       } else {
         if(newKey !== "") {
           this.node[newKey] = this.node[oldKey];
@@ -78,12 +96,13 @@ var jspecEditor = {
         <span style="margin-left:10px"></span>
         <span @click.stop="addItem()" style="cursor:pointer;">+</span>
         <br>
-        <span v-for="(v,k,i) in node" style="white-space:nowrap;">
+        <span v-for="(v,k) in node" style="white-space:nowrap;">
           <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
           <autoresize-editor v-if="!(Array.isArray(node))" :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated"></autoresize-editor>
-          <span v-if="(Array.isArray(node))" :key="k">{{k}}</span>
+          <autoresize-editor v-if="(Array.isArray(node))" :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated"></autoresize-editor>
+          <!--<span v-if="(Array.isArray(node))" :key="k">{{k}}</span>-->
           <span>: </span>
-          <jspec-editor key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1"></jspec-editor>
+          <jspec-editor :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1"></jspec-editor>
           <br>
         </span>
         <span v-for="n in (level)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
