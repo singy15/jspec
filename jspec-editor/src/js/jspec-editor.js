@@ -67,11 +67,13 @@ var jspecEditor = {
         <span style="margin-left:10px"></span>
         <span @click.stop="addItem()" style="cursor:pointer;">+</span>
         <br>
-        <span v-for="(v,k,i) in node" :style="{'margin-left':((level+1)*10).toString()+'px'}">
+        <span v-for="(v,k,i) in node">
+          <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
           <autoresize-editor :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated"></autoresize-editor>: <jspec-editor key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1"></jspec-editor>
           <br>
         </span>
-        <span :style="{'margin-left':((level)*10).toString()+'px', 'cursor':'pointer'}" @click="toggleOpen()">}</span>
+        <span v-for="n in (level)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
+        <span :style="{'cursor':'pointer'}" @click="toggleOpen()">}</span>
       </span>
       <span v-if="(node != null) && typeof(node) === 'object' && !open">
         <span @click="toggleOpen()" style="cursor:pointer">{<span style="font-size:0.5rem">...</span>}</span>
