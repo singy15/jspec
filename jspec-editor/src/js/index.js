@@ -55,6 +55,34 @@ async function openFile() {
         },
       ],
     });
+    globalFSHandle = fileHandle;
+    result.handle = fileHandle;
+  } catch (ex) {
+    console.error("failed to fetch file", ex);
+    return false;
+  }
+
+  const file = await fileHandle.getFile();
+  try {
+    const text = await file.text();
+    result.text = text;
+    return result;
+  } catch (ex) {
+    console.error("failed to get content", ex);
+    return false;
+  }
+}
+
+async function reloadFile() {
+  const result = {
+    handle: null,
+    text: ""
+  };
+
+  /** @type FileSystemHandle */
+  let fileHandle;
+  try {
+    fileHandle = globalFSHandle;
     result.handle = fileHandle;
   } catch (ex) {
     console.error("failed to fetch file", ex);
@@ -154,6 +182,11 @@ window.app = Vue.createApp({
   methods: {
     openJspec() {
       openFile().then((result) => {
+        this.root = JSON.parse(result.text);
+      });
+    },
+    reloadJspec() {
+      reloadFile().then((result) => {
         this.root = JSON.parse(result.text);
       });
     },

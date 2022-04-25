@@ -3,7 +3,8 @@ var inplaceEditor = {
   props: {
     obj: Object,
     placeKey: null,
-    style: Object
+    style: Object,
+    watchVal: null
   },
   data() {
     return {
@@ -93,6 +94,14 @@ var inplaceEditor = {
   mounted() {
     this.editValue = this.val;
     this.resize();
+  },
+  watch: {
+    watchVal: function(newval, oldval) {
+      this.editValue = this.val;
+      this.$nextTick(function() {
+        this.resize();
+      });
+    }
   },
   template: `
     <span style="display:inline-block;">

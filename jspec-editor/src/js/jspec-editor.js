@@ -12,11 +12,12 @@ var jspecEditor = {
     node: null,
     entryParent: Object,
     entryKey: null,
-    level: Number
+    level: Number,
+    openState: Boolean
   },
   data() {
     return {
-      open: false
+      open: (this.openState)? this.openState : false
     };
   },
   methods: {
@@ -134,7 +135,7 @@ var jspecEditor = {
 
       <!-- Value -->
       <span v-if="!((node != null) && typeof(node) === 'object')">
-        <inplace-editor :obj="entryParent" :placeKey="entryKey" :style="styleVal(entryKey, node)"></inplace-editor>
+        <inplace-editor :obj="entryParent" :placeKey="entryKey" :watch-val="entryParent[entryKey]" :style="styleVal(entryKey, node)"></inplace-editor>
       </span>
 
     </span>

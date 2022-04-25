@@ -52,9 +52,10 @@ body {
         <div class="title">JSPEC EDITOR</div>
         <button class="button" @click="openJspec()">OPEN</button>
         <button class="button" @click="saveJspec()">SAVE</button>
+        <button class="button" @click="reloadJspec()">RELOAD</button>
       </div>
       <div>
-        <jspec-editor :node="root" :entryParent="root" :entryKey="null" :level="0"></jspec-editor>
+        <jspec-editor :node="root" :entryParent="root" :entryKey="null" :level="0" :open-state="true"></jspec-editor>
       </div>
     </div>
 
