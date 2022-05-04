@@ -59,19 +59,26 @@ var jspecEditor = {
         delete this.node[oldKey];
       }
     },
+    isStructureKey(key) {
+      return (null != key) && (typeof(key) === 'string') && (key.indexOf("$") > 0);
+    },
+    isIdentifierKey(key, val) {
+      return (null != key) && (typeof(key) === 'string') && 
+        (key.toUpperCase() === key) && ((null !== val) && (typeof(val) === "object"));
+    },
     styleKey(key, val) {
-      let style = {};
+      let style = {
+        verticalAlign: 'top'
+      };
 
-      if((null != key) && (typeof(key) === 'string') && (key.indexOf("$") > 0)) {
+      if(this.isStructureKey(key)) {
         style.fontWeight = "bold";
       }
 
-      if((null != key) && (typeof(key) === 'string') && (key.toUpperCase() === key) && ((null !== val) && (typeof(val) === "object"))) {
+      if(this.isIdentifierKey(key, val)) {
         style.color = "#22C";
       }
 
-      style.verticalAlign = 'top';
-      
       return style;
     },
     styleVal(key, val) {
