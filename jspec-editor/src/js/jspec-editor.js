@@ -62,9 +62,67 @@ var jspecEditor = {
     isStructureKey(key) {
       return (null != key) && (typeof(key) === 'string') && (key.indexOf("$") > 0);
     },
-    isIdentifierKey(key, val) {
-      return (null != key) && (typeof(key) === 'string') && 
-        (key.toUpperCase() === key) && ((null !== val) && (typeof(val) === "object"));
+    isIdentifierKey(key) {
+      return (null != key) && (typeof(key) === 'string') && (key.toUpperCase() === key) && (key.indexOf("$") < 0);
+    },
+    isPropertyKey(key) {
+      return (null != key) && (typeof(key) === 'string') && (key.toUpperCase() !== key) && (key.indexOf("$") < 0);
+    },
+    keyType(key) {
+      if(this.isStructureKey(key)) {
+        return "structure";
+      }
+
+      if(this.isIdentifierKey(key)) {
+        return "identifier";
+      }
+
+      if(this.isPropertyKey(key)) {
+        return "property";
+      }
+    },
+    isNull(val) {
+      return (null == val);
+    },
+    isNumber(val) {
+      return (null != val) && (typeof(val) === 'number');
+    },
+    isBoolean(val) {
+      return (null != val) && (typeof(val) === 'boolean');
+    },
+    isString(val) {
+      return (null != val) && (typeof(val) === 'string') && (val.substring(0,1) !== "#");
+    },
+    isReference(val) {
+      return (null != val) && (typeof(val) === 'string') && (val.substring(0,1) === "#");
+    },
+    isObject(val) {
+      return (null != val) && (typeof(val) === 'object');
+    },
+    valueType(val) {
+      if(this.isNull(val)) {
+        return "null";
+      }
+
+      if(this.isNumber(val)) {
+        return "number";
+      }
+
+      if(this.isBoolean(val)) {
+        return "boolean";
+      }
+
+      if(this.isString(val)) {
+        return "string";
+      }
+
+      if(this.isReference(val)) {
+        return "reference";
+      }
+
+      if(this.isObject(val)) {
+        return "object";
+      }
     },
     styleKey(key, val) {
       let style = {
@@ -84,19 +142,19 @@ var jspecEditor = {
     styleVal(key, val) {
       let style = {};
 
-      if((null == val)) {
+      if(this.isNull(val)) {
         style.color = "#A00";
       }
 
-      if((null != val) && (typeof(val) === 'number')) {
+      if(this.isNumber(val)) {
         style.color = "#0A0";
       }
 
-      if((null != val) && (typeof(val) === 'boolean')) {
+      if(this.isBoolean(val)) {
         style.color = "#A0A";
       }
 
-      if((null != val) && (typeof(val) === 'string') && (val.substring(0,1) === "#")) {
+      if(this.isReference(val)) {
         style.color = "#55C";
         style.fontStyle = 'italic';
         style.textDecoration = 'underline';
