@@ -127,10 +127,10 @@ var jspecEditor = {
       return (null != val) && (typeof(val) === 'boolean');
     },
     isString(val) {
-      return (null != val) && (typeof(val) === 'string') && !(/#\w+/.test(val));
+      return (null != val) && (typeof(val) === 'string') && !(/^#\w+/.test(val));
     },
     isReference(val) {
-      return (null != val) && (typeof(val) === 'string') && (/#\w+/.test(val));
+      return (null != val) && (typeof(val) === 'string') && (/^#\w+/.test(val));
     },
     isObject(val) {
       return (null != val) && (typeof(val) === 'object');

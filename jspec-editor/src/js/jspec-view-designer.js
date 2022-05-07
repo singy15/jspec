@@ -250,11 +250,55 @@ var jspecViewDesigner = {
           </div>
           <div :style="{
               position: 'absolute',
-              width: '10px',
-              height: '10px',
-              // outline: 'solid 1px #000',
-              left: (v.layout.x - 5).toString() + 'px',
-              top: (v.layout.y - 5).toString() + 'px',
+              width: (3).toString() + 'px',
+              height: (v.layout.height).toString() + 'px',
+              left: (v.layout.x).toString() + 'px',
+              top: (v.layout.y).toString() + 'px',
+              backgroundColor: 'transparent',
+              cursor: 'move',
+              zIndex: 100000000
+              }"
+              draggable="true"
+              @dragstart.stop="moveStart($event, v, k)"
+              @dragend.stop="moveEnd($event, v, k)"
+              @drag.stop="moveDrag($event, v, k)">
+          </div>
+          <div :style="{
+              position: 'absolute',
+              width: (3).toString() + 'px',
+              height: (v.layout.height).toString() + 'px',
+              left: (v.layout.x + v.layout.width).toString() + 'px',
+              top: (v.layout.y).toString() + 'px',
+              backgroundColor: 'transparent',
+              cursor: 'move',
+              zIndex: 100000000
+              }"
+              draggable="true"
+              @dragstart.stop="moveStart($event, v, k)"
+              @dragend.stop="moveEnd($event, v, k)"
+              @drag.stop="moveDrag($event, v, k)">
+          </div>
+          <div :style="{
+              position: 'absolute',
+              width: (v.layout.width).toString() + 'px',
+              height: (3).toString() + 'px',
+              left: (v.layout.x).toString() + 'px',
+              top: (v.layout.y).toString() + 'px',
+              backgroundColor: 'transparent',
+              cursor: 'move',
+              zIndex: 100000000
+              }"
+              draggable="true"
+              @dragstart.stop="moveStart($event, v, k)"
+              @dragend.stop="moveEnd($event, v, k)"
+              @drag.stop="moveDrag($event, v, k)">
+          </div>
+          <div :style="{
+              position: 'absolute',
+              width: (v.layout.width).toString() + 'px',
+              height: (3).toString() + 'px',
+              left: (v.layout.x).toString() + 'px',
+              top: (v.layout.y + v.layout.height).toString() + 'px',
               backgroundColor: 'transparent',
               cursor: 'move',
               zIndex: 100000000
@@ -276,6 +320,7 @@ var jspecViewDesigner = {
               opacity: 0.5,
               pointerEvents: 'none',
               cursor: 'default',
+              outline: 'solid 1px #F00',
               zIndex: zindex(resizing.target.layout.x, resizing.target.layout.y)
               }"
               class="jspec-view-designer--component-base"
@@ -293,6 +338,7 @@ var jspecViewDesigner = {
               opacity: 0.5,
               pointerEvents: 'none',
               cursor: 'default',
+              outline: 'solid 1px #F00',
               zIndex: zindex(moving.target.layout.x, moving.target.layout.y)
               }"
               class="jspec-view-designer--component-base"

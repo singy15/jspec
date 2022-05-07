@@ -73,13 +73,16 @@
   "viewComponentType": {
     "form": {
       "template": "`<div style=\"background-color:#EFEFEF; border:solid 1px ${type.borderColor}; width:100%; height:100%;\"><div style=\"top:0px; height:30px; background-color:${type.borderColor}; display:flex; justify-content:start; align-items:center; padding-left:5px; \">${(this.label)? this.label : ''}</div></div>`",
-      "borderColor": "#99F"
+      "borderColor": " #99F"
     },
     "textbox": {
       "template": "`<input type=\"text\" style=\"width:100%; height:100%;\" value=\"${(this.label)? this.label : ''}\" />`"
     },
     "button": {
       "template": "`<button style=\"width:100%; height:100%;\">${label}</button>`"
+    },
+    "label": {
+      "template": "`<span style=\"display:flex; justify-content:${(this.textAlign)? this.textAlign : ''}; align-items:center; width:100%; height:100%;\">${(this.label)? this.label : ''}</span>`"
     }
   },
   "stock": {
@@ -96,24 +99,13 @@
             },
             "label": "在庫入庫"
           },
-          "saleNo": {
-            "type": "#viewComponentType.textbox",
-            "label": "売上No",
-            "layout": {
-              "type": "#layoutType.RECTANGLE",
-              "x": 130,
-              "y": 75,
-              "width": 200,
-              "height": 24
-            }
-          },
           "issueDate": {
             "type": "#viewComponentType.textbox",
             "label": "発行日",
             "layout": {
               "type": "#layoutType.RECTANGLE",
-              "x": 120,
-              "y": 110,
+              "x": 335,
+              "y": 95,
               "width": 200,
               "height": 24
             }
@@ -123,22 +115,76 @@
             "label": "備考",
             "layout": {
               "type": "#layoutType.RECTANGLE",
-              "x": 35,
+              "x": 315,
               "y": 145,
               "width": 200,
               "height": 24
             }
           },
-          "amount": {
+          "stockCd": {
             "type": "#viewComponentType.textbox",
-            "label": "金額",
+            "label": "XXXXXXXXXXXX",
             "layout": {
               "type": "#layoutType.RECTANGLE",
-              "x": 145,
-              "y": 170,
-              "width": 200,
-              "height": 24
+              "x": 70,
+              "y": 75,
+              "width": 100,
+              "height": 20
             }
+          },
+          "labelStockCd": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 10,
+              "y": 75,
+              "width": 50,
+              "height": 20
+            },
+            "label": "在庫CD",
+            "textAlign": "end"
+          },
+          "qty": {
+            "type": "#viewComponentType.textbox",
+            "label": "999999999",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 70,
+              "y": 125,
+              "width": 70,
+              "height": 20
+            }
+          },
+          "labelQty": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 10,
+              "y": 125,
+              "width": 50,
+              "height": 20
+            },
+            "label": "入庫数量",
+            "textAlign": "end"
+          },
+          "itemCd": {
+            "type": "#viewComponentType.textbox",
+            "layout": {
+              "x": 70,
+              "y": 100,
+              "width": 100,
+              "height": 20
+            },
+            "label": "XXXXXXXX"
+          },
+          "unnamed2": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 10,
+              "y": 100,
+              "width": 50,
+              "height": 20
+            },
+            "label": "品目CD",
+            "textAlign": "end"
           }
         }
       },
