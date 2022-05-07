@@ -77,12 +77,14 @@ var jspecEditor = {
           this.traverse(this.root, this.root, "", getAbsPath);
           let keyTo = key;
 
+          let replacee = "#" + keyFrom;
+          let replacer = "#" + keyTo;
+
           let updateRef = (node,parent,absPath,relPath,parentPath,root) => {
             for(var k in node) {
               let v = node[k];
-              if(this.isReference(v) && (v === ("#" + keyFrom))) {
-                console.log("detected", absPath);
-                node[k] = "#" + keyTo;
+              if(this.isReference(v) && (v.indexOf(replacee) >= 0)) {
+                node[k] = node[k].replace(replacee, replacer);
               }
             }
             return updateRef;
@@ -92,8 +94,8 @@ var jspecEditor = {
 
           for(var k in this.root) {
             let v = this.root[k];
-            if(this.isReference(v) && (v === ("#" + keyFrom))) {
-              this.root[k] = "#" + keyTo;
+            if(this.isReference(v) && (v.indexOf(replacee) >= 0)) {
+              this.root[k] = this.root[k].replace(replacee, replacer);
             }
           }
         }
