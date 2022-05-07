@@ -70,7 +70,7 @@
       "dbType": "varchar(6)"
     }
   },
-  "componentType": {
+  "viewComponentType": {
     "DATETIMEPICKER": {},
     "TEXTBOX": {},
     "NUMBERBOX": {},
@@ -81,7 +81,7 @@
       "storeStock": {
         "$component": {
           "saleNo": {
-            "type": "#componentType.NUMBERBOX",
+            "type": "#viewComponentType.NUMBERBOX",
             "label": "売上No",
             "layout": {
               "type": "#layoutType.RECTANGLE",
@@ -92,7 +92,7 @@
             }
           },
           "issueDate": {
-            "type": "#componentType.DATETIMEPICKER",
+            "type": "#viewComponentType.DATETIMEPICKER",
             "label": "発行日",
             "layout": {
               "type": "#layoutType.RECTANGLE",
@@ -103,7 +103,7 @@
             }
           },
           "description": {
-            "type": "#componentType.TEXTBOX",
+            "type": "#viewComponentType.TEXTBOX",
             "label": "備考",
             "layout": {
               "type": "#layoutType.RECTANGLE",
@@ -114,7 +114,7 @@
             }
           },
           "amount": {
-            "type": "#componentType.NUMBERBOX",
+            "type": "#viewComponentType.NUMBERBOX",
             "label": "金額",
             "layout": {
               "type": "#layoutType.RECTANGLE",
