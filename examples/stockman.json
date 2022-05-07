@@ -1,0 +1,315 @@
+{
+  "systemName": "stockman",
+  "dataType": {
+    "number": {},
+    "text": {},
+    "datetime": {}
+  },
+  "ioType": {
+    "DB": {},
+    "FILE": {},
+    "MODEL": {}
+  },
+  "layoutType": {
+    "RECTANGLE": {},
+    "LINE": {}
+  },
+  "domainType": {
+    "id": {
+      "type": "long",
+      "ddlOption": "autoincrement",
+      "desc": "標準のID型",
+      "dbType": "bigint"
+    },
+    "stockCd": {
+      "name": "在庫CD",
+      "type": "string",
+      "maxLength": 12,
+      "minLength": 12,
+      "desc": "YYYYMMDDNNNN\nNNNNは連番",
+      "dbType": "varchar(12)"
+    },
+    "itemCd": {
+      "name": "品目CD",
+      "type": "string",
+      "maxLength": 8,
+      "minLength": 8,
+      "desc": "NNNNNNNN",
+      "dbType": "varchar(8)"
+    },
+    "longName": {
+      "name": "名称",
+      "type": "string",
+      "dbType": "varchar(max)"
+    },
+    "stockQty": {
+      "name": "在庫数量",
+      "type": "long",
+      "min": 0,
+      "max": 999999999,
+      "dbType": "numeric(9)"
+    },
+    "qty": {
+      "name": "数量",
+      "type": "long",
+      "min": -999999999,
+      "max": 999999999,
+      "dbType": "numeric(9)"
+    },
+    "placeCd": {
+      "name": "場所CD",
+      "type": "long",
+      "maxLength": 6,
+      "minLength": 6,
+      "desc": "XXYYYY\n拠点(XX)+場所(YYYY)",
+      "dbType": "varchar(6)"
+    }
+  },
+  "componentType": {
+    "DATETIMEPICKER": {},
+    "TEXTBOX": {},
+    "NUMBERBOX": {},
+    "BUTTON": {}
+  },
+  "stock": {
+    "$view": {
+      "storeStock": {
+        "$component": {
+          "saleNo": {
+            "type": "#componentType.NUMBERBOX",
+            "label": "売上No",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 100,
+              "y": 100,
+              "width": 200,
+              "height": 24
+            }
+          },
+          "issueDate": {
+            "type": "#componentType.DATETIMEPICKER",
+            "label": "発行日",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 100,
+              "y": 100,
+              "width": 200,
+              "height": 24
+            }
+          },
+          "description": {
+            "type": "#componentType.TEXTBOX",
+            "label": "備考",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 100,
+              "y": 100,
+              "width": 200,
+              "height": 24
+            }
+          },
+          "amount": {
+            "type": "#componentType.NUMBERBOX",
+            "label": "金額",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 100,
+              "y": 100,
+              "width": 200,
+              "height": 24
+            }
+          }
+        }
+      },
+      "retrieveStock": {
+        "$component": {}
+      },
+      "transferStock": {
+        "$component": {}
+      }
+    },
+    "$process": {
+      "registerStock": {
+        "$input": {
+          "stockTransfer": "#stock.$model.stockTransfer"
+        },
+        "code": "# 在庫取得\n  在庫CDで在庫レコードを取得する。\n\n  ? 1件取得\n    \n    # 在庫更新\n      //TODO\n\n  ? 0件取得\n\n    # 在庫登録\n      //TODO\n\n# 在庫受払登録\n  在庫受払を登録する。\n  {{stock.$io.stockTransfer.insert}}を入力.stockTransferを引数に実行する。\n\n# メッセージ表示\n  登録完了メッセージをメッセージダイアログで表示する。\n",
+        "$output": {
+          "result": {
+            "type": "#dataType.number"
+          }
+        }
+      }
+    },
+    "$io": {
+      "INSERT_SALE": {
+        "type": "#ioType.DB",
+        "params$": {
+          "MODEL": {
+            "type": "#stockDomain.models$.SALE"
+          }
+        },
+        "sql": "INSERT INTO SALE \n(SALE_NO,ISSUE_DATE,DESCRIPTION,AMOUNT) \nVALUES (@MODEL.SALE_NO,@MODEL.ISSUE_DATE,@MODEL.DESCRIPTION,@MODEL.AMOUNT)"
+      },
+      "DELETE_SALE": {
+        "type": "#ioType.DB",
+        "params$": {
+          "MODEL": {
+            "type": "#stockDomain.models$.SALE"
+          }
+        },
+        "sql": "DELETE FROM SALE WHERE SALE_NO = @MODEL.SALE_NO"
+      },
+      "SELECT_SALE": {
+        "type": "#ioType.DB",
+        "params$": {
+          "MODEL": {
+            "type": "#stockDomain.models$.SALE"
+          }
+        },
+        "sql": "SELECT * FROM SALE WHERE SALE_NO = @MODEL.SALE_NO"
+      },
+      "stockTransfer": {
+        "insert": {
+          "type": "#ioType.DB",
+          "$param": {
+            "stockTransfer": {
+              "type": "#stock.$model.stockTransfer"
+            }
+          },
+          "sql": "INSERT INTO stock_transfer (stock_id, item_id, qty)\nVALUES ($stockTransfer.stockId, $stockTransfer.itemId, $stockTransfer.qty);"
+        }
+      }
+    },
+    "$model": {
+      "SALE": {
+        "SALE_NO": {
+          "type": "#dataType.number"
+        },
+        "ISSUE_DATE": {
+          "type": "#dataType.datetime"
+        },
+        "DESCRIPTION": {
+          "type": "#dataType.text"
+        },
+        "AMOUNT": {
+          "type": "#dataType.number"
+        }
+      },
+      "stockTransfer": {
+        "transferId": {
+          "type": "#domainType.id"
+        },
+        "stockId": {
+          "type": "#domainType.id"
+        },
+        "itemId": {
+          "type": "#domainType.id"
+        },
+        "qty": {
+          "type": "#domainType.qty"
+        }
+      }
+    }
+  },
+  "$database": {
+    "$table": {
+      "stock": {
+        "name": "在庫",
+        "$column": {
+          "stock_id": {
+            "type": "#domainType.id",
+            "name": "在庫ID"
+          },
+          "stock_cd": {
+            "type": "#domainType.stockCd",
+            "name": "在庫CD"
+          },
+          "place_id": {
+            "type": "#domainType.id",
+            "name": "場所ID"
+          },
+          "item_id": {
+            "type": "#domainType.id",
+            "name": "品目ID"
+          },
+          "qty": {
+            "type": "#domainType.stockQty",
+            "name": "在庫数量"
+          },
+          "reservedQty": {
+            "type": "#domainType.stockQty",
+            "name": "引当数量"
+          }
+        }
+      },
+      "stock_transfer": {
+        "name": "在庫受払",
+        "$column": {
+          "stock_transfer_id": {
+            "type": "#domainType.id",
+            "name": "受払ID"
+          },
+          "stock_id": {
+            "type": "#domainType.id",
+            "name": "在庫ID"
+          },
+          "item_id": {
+            "type": "#domainType.id",
+            "name": "品目ID"
+          },
+          "qty": {
+            "type": "#domainType.qty",
+            "name": "受払数量"
+          }
+        }
+      },
+      "item": {
+        "name": "品目",
+        "$column": {
+          "item_id": {
+            "type": "#domainType.id",
+            "name": "品目ID"
+          },
+          "item_cd": {
+            "type": "#domainType.itemCd",
+            "name": "品目CD"
+          },
+          "name": {
+            "type": "#domainType.longName",
+            "name": "商品名"
+          }
+        }
+      },
+      "place": {
+        "name": "場所",
+        "$column": {
+          "place_id": {
+            "type": "#domainType.id",
+            "name": "場所ID"
+          },
+          "place_cd": {
+            "type": "#domainType.placeCd",
+            "name": "場所CD"
+          },
+          "name": {
+            "type": "#domainType.longName",
+            "name": "場所名"
+          }
+        }
+      }
+    }
+  },
+  "$schema": {
+    "$view": {
+      "type": "object",
+      "properties": {
+        "$component": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    },
+    "newitem": "value"
+  }
+}
