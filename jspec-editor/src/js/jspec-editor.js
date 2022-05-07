@@ -54,10 +54,49 @@ var jspecEditor = {
           this.entryParent[this.entryKey] = newary;
         });
       } else {
-        if(newKey !== "") {
-          this.node[newKey] = this.node[oldKey];
+        if(newKey === "") {
+          delete this.node[oldKey];
         }
-        delete this.node[oldKey];
+        else {
+          let obj = this.node[oldKey];
+        
+          let key = null;
+          let getAbsPath = (node,parent,absPath,relPath,parentPath,root) => {
+            if(node == obj) {
+              key = absPath; 
+            }
+            return getAbsPath;
+          };
+
+          this.traverse(this.root, this.root, "", getAbsPath);
+          let keyFrom = key;
+
+          this.node[newKey] = this.node[oldKey];
+          delete this.node[oldKey];
+
+          this.traverse(this.root, this.root, "", getAbsPath);
+          let keyTo = key;
+
+          let updateRef = (node,parent,absPath,relPath,parentPath,root) => {
+            for(var k in node) {
+              let v = node[k];
+              if(this.isReference(v) && (v === ("#" + keyFrom))) {
+                console.log("detected", absPath);
+                node[k] = "#" + keyTo;
+              }
+            }
+            return updateRef;
+          };
+
+          this.traverse(this.root, this.root, "", updateRef);
+
+          for(var k in this.root) {
+            let v = this.root[k];
+            if(this.isReference(v) && (v === ("#" + keyFrom))) {
+              this.root[k] = "#" + keyTo;
+            }
+          }
+        }
       }
     },
     isStructureKey(key) {
@@ -170,6 +209,24 @@ var jspecEditor = {
       }
 
       return true;
+    },
+    nodep(value) {
+      return value !== null && typeof value === 'object';
+    },
+    traverse(root, node, path, op) {
+      // op : (node,parent,absPath,relPath,parentPath,root) => { (node,parent,absPath,relPath,parentPath,root) => ... | falsy }
+      for(var key in node) {
+        var child = node[key];
+        if(this.nodep(child)) {
+          let parentPath = path;
+          let absPath = ((path === "")? key : path + "." + key);
+          let relPath = key;
+          let nextop = op(child, node, absPath, relPath, parentPath, root);
+          if(nextop) {
+            this.traverse(root, child, absPath, nextop);
+          }
+        }
+      }
     }
   },
   template: `
