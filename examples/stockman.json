@@ -6,20 +6,25 @@
     "datetime": {}
   },
   "ioType": {
-    "DB": {},
+    "$name": "入出力タイプ",
+    "DB": {
+      "$name": "データベース"
+    },
     "FILE": {},
     "MODEL": {}
   },
   "layoutType": {
+    "$name": "レイアウトタイプ",
     "RECTANGLE": {},
     "LINE": {}
   },
   "domainType": {
     "id": {
+      "$name": "基本ID型",
+      "dbType": "bigint",
       "type": "long",
       "ddlOption": "autoincrement",
-      "desc": "標準のID型",
-      "dbType": "bigint"
+      "desc": "標準のID型"
     },
     "stockCd": {
       "name": "在庫CD",
@@ -170,6 +175,7 @@
         "sql": "SELECT * FROM SALE WHERE SALE_NO = @MODEL.SALE_NO"
       },
       "stockTransfer": {
+        "name": "在庫受払入出力",
         "insert": {
           "type": "#ioType.DB",
           "$param": {
@@ -309,7 +315,6 @@
           "properties": {}
         }
       }
-    },
-    "newitem": "value"
+    }
   }
 }
