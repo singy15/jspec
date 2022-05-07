@@ -9,6 +9,7 @@ var jspecEditor = {
     "autoresize-editor": autoresizeEditor.autoresizeEditor,
   },
   props: {
+    root: Object,
     node: null,
     entryParent: Object,
     entryKey: null,
@@ -154,6 +155,21 @@ var jspecEditor = {
       }
       
       return style;
+    },
+    resolvable(val) {
+      console.log(val);
+      let path = val.substring(1).split(".");
+      let cur = this.root;
+      for(var i = 0; i < path.length; i++) {
+        let p = path[i];
+        console.log(p);
+        cur = cur[p];
+        if(cur === undefined || cur == null) {
+          return false;
+        }
+      }
+
+      return true;
     }
   },
   template: `
@@ -172,7 +188,7 @@ var jspecEditor = {
           <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
           <autoresize-editor :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated"></autoresize-editor>
           <span style="vertical-align:top">: </span>
-          <jspec-editor :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1"></jspec-editor>
+          <jspec-editor :root="root" :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1"></jspec-editor>
           <br>
         </span>
         <span v-for="n in (level)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
@@ -194,6 +210,10 @@ var jspecEditor = {
       <!-- Value -->
       <span v-if="!((node != null) && typeof(node) === 'object')">
         <inplace-editor :obj="entryParent" :placeKey="entryKey" :watch-val="entryParent[entryKey]" :style="styleVal(entryKey, node)"></inplace-editor>
+        <span v-if="isReference(node) && !resolvable(node)" 
+            style="color:red; margin-left:1em;">
+          !
+        </span>
       </span>
 
     </span>
