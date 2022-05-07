@@ -60,21 +60,14 @@ var jspecEditor = {
       }
     },
     isStructureKey(key) {
-      return (null != key) && (typeof(key) === 'string') && (key.indexOf("$") > 0);
-    },
-    isIdentifierKey(key) {
-      return (null != key) && (typeof(key) === 'string') && (key.toUpperCase() === key) && (key.indexOf("$") < 0);
+      return (null != key) && (typeof(key) === 'string') && (key.indexOf("$") === 0);
     },
     isPropertyKey(key) {
-      return (null != key) && (typeof(key) === 'string') && (key.toUpperCase() !== key) && (key.indexOf("$") < 0);
+      return (null != key) && (typeof(key) === 'string') && (key.indexOf("$") < 0);
     },
     keyType(key) {
       if(this.isStructureKey(key)) {
         return "structure";
-      }
-
-      if(this.isIdentifierKey(key)) {
-        return "identifier";
       }
 
       if(this.isPropertyKey(key)) {
@@ -133,7 +126,7 @@ var jspecEditor = {
         style.fontWeight = "bold";
       }
 
-      if(this.isIdentifierKey(key, val)) {
+      if(this.isPropertyKey(key) && (key.toUpperCase() === key)) {
         style.color = "#22C";
       }
 
