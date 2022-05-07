@@ -4,7 +4,8 @@ module.exports = {
   target: 'web',
   entry: {
     // 'inplace-editor': './src/js/inplace-editor.js',
-    // 'jspec-editor': './src/js/jspec-editor.js',
+    'jspec-editor': './src/js/jspec-editor.js',
+    'jspec-view-deisgner': './src/js/jspec-view-designer.js',
     'index': './src/js/index.js',
   },
   mode: 'development',
