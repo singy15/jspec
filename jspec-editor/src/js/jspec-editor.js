@@ -126,10 +126,10 @@ var jspecEditor = {
       return (null != val) && (typeof(val) === 'boolean');
     },
     isString(val) {
-      return (null != val) && (typeof(val) === 'string') && (val.substring(0,1) !== "#");
+      return (null != val) && (typeof(val) === 'string') && !(/#\w+/.test(val));
     },
     isReference(val) {
-      return (null != val) && (typeof(val) === 'string') && (val.substring(0,1) === "#");
+      return (null != val) && (typeof(val) === 'string') && (/#\w+/.test(val));
     },
     isObject(val) {
       return (null != val) && (typeof(val) === 'object');
@@ -340,14 +340,20 @@ var jspecEditor = {
         let indexTo = keys.indexOf(keyTo);
         this.orderKey(indexTo - indexFrom, keyFrom); 
       } else {
-        let parentObjFrom = this.resolve("#"+parentFrom);
+        let parentObjFrom = null;
+        if(parentFrom !== "") {
+          parentObjFrom = this.resolve("#"+parentFrom);
+        } else {
+          parentObjFrom = this.root;
+        }
+
         let parentObjTo = null;
         if(parentTo !== "") {
           parentObjTo = this.resolve("#"+parentTo);
         } else {
           parentObjTo = this.root;
         }
-        console.log("move", parentObjFrom, parentObjTo);
+
         parentObjTo[keyFrom] = parentObjFrom[keyFrom];
         delete parentObjFrom[keyFrom];
       }
