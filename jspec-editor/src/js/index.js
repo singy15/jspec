@@ -1,5 +1,6 @@
 const Vue = require('vue');
 import {jspecEditor} from './jspec-editor.js';
+import {jspecViewDesigner} from './jspec-view-designer.js';
 
 let globalFSHandle;
 
@@ -171,13 +172,19 @@ writeLog(`support for nfs: ${(nativeFSSupported) ? "yes" : "no"}`);
 
 window.app = Vue.createApp({
   components: {
-    "jspec-editor": jspecEditor
+    "jspec-editor": jspecEditor,
+    "jspec-view-designer": jspecViewDesigner
   },
   data() {
     return {
       root: {},
       text: "",
-      showLogicalName: false
+      showLogicalName: false,
+      viewDesigner: {
+        viewPath: "",
+        showEditor: false,
+        view: null
+      }
     };
   },
   methods: {
@@ -196,6 +203,17 @@ window.app = Vue.createApp({
     },
     toggleLogicalName() {
       this.showLogicalName = !this.showLogicalName;
+    },
+    showViewDeisgner() {
+      this.viewDesigner.showEditor = true;
+    },
+    hideViewDeisgner() {
+      this.viewDesigner.showEditor = false;
+    },
+    viewEditStart(path) {
+      this.viewDesigner.view = this.viewDesigner.viewPath.split(".")
+        .reduce((memo,path) => { return memo[path]; }, this.root);
+      this.viewDesigner.editing = true;
     }
   },
   mounted() {

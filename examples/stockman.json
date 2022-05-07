@@ -71,55 +71,71 @@
     }
   },
   "viewComponentType": {
-    "DATETIMEPICKER": {},
-    "TEXTBOX": {},
-    "NUMBERBOX": {},
-    "BUTTON": {}
+    "form": {
+      "template": "`<div style=\"background-color:#EFEFEF; border:solid 1px ${type.borderColor}; width:100%; height:100%;\"><div style=\"top:0px; height:30px; background-color:${type.borderColor}; display:flex; justify-content:start; align-items:center; padding-left:5px; \">${(this.label)? this.label : ''}</div></div>`",
+      "borderColor": "#99F"
+    },
+    "textbox": {
+      "template": "`<input type=\"text\" style=\"width:100%; height:100%;\" value=\"${(this.label)? this.label : ''}\" />`"
+    },
+    "button": {
+      "template": "`<button style=\"width:100%; height:100%;\">${label}</button>`"
+    }
   },
   "stock": {
     "$view": {
       "storeStock": {
         "$component": {
+          "form": {
+            "type": "#viewComponentType.form",
+            "layout": {
+              "x": 5,
+              "y": 35,
+              "width": 605,
+              "height": 320
+            },
+            "label": "在庫入庫"
+          },
           "saleNo": {
-            "type": "#viewComponentType.NUMBERBOX",
+            "type": "#viewComponentType.textbox",
             "label": "売上No",
             "layout": {
               "type": "#layoutType.RECTANGLE",
-              "x": 100,
-              "y": 100,
+              "x": 130,
+              "y": 75,
               "width": 200,
               "height": 24
             }
           },
           "issueDate": {
-            "type": "#viewComponentType.DATETIMEPICKER",
+            "type": "#viewComponentType.textbox",
             "label": "発行日",
             "layout": {
               "type": "#layoutType.RECTANGLE",
-              "x": 100,
-              "y": 100,
+              "x": 120,
+              "y": 110,
               "width": 200,
               "height": 24
             }
           },
           "description": {
-            "type": "#viewComponentType.TEXTBOX",
+            "type": "#viewComponentType.textbox",
             "label": "備考",
             "layout": {
               "type": "#layoutType.RECTANGLE",
-              "x": 100,
-              "y": 100,
+              "x": 35,
+              "y": 145,
               "width": 200,
               "height": 24
             }
           },
           "amount": {
-            "type": "#viewComponentType.NUMBERBOX",
+            "type": "#viewComponentType.textbox",
             "label": "金額",
             "layout": {
               "type": "#layoutType.RECTANGLE",
-              "x": 100,
-              "y": 100,
+              "x": 145,
+              "y": 170,
               "width": 200,
               "height": 24
             }
