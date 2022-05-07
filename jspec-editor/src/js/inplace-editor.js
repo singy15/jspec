@@ -64,6 +64,19 @@ var inplaceEditor = {
     },
     onBlur() {
       this.focused = false;
+    },
+    keydown(event) {
+      let input = this.$refs.input;
+      let curPos = input.selectionStart;
+      let tabString = "  ";
+
+      if(9 === event.keyCode) {
+        event.preventDefault();
+        input.value = input.value.substr(0, curPos) 
+          + tabString 
+          + input.value.substr(curPos, input.value.length);
+        input.selectionEnd = curPos + tabString.length;
+      }
     }
   },
   computed: {
@@ -152,6 +165,7 @@ var inplaceEditor = {
           @compositionend="resize()"
           @focus="onFocused()"
           @blur="toggleMultiline(); onBlur()"
+          @keydown="keydown($event)"
           spellcheck="false"
           ref="input"
         ></textarea>
