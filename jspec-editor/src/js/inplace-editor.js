@@ -38,7 +38,7 @@ var inplaceEditor = {
     resize() {
       this.width = this.$refs.text.getBoundingClientRect().width;
       if(this.multiline) {
-        this.height = this.editValue.split("\n").length * this.$refs.text.getBoundingClientRect().height;
+        this.height = this.editValue.split("\n").length * this.$refs.text.getBoundingClientRect().height + 32;
       }
     },
     toggleMultiline() {
@@ -124,7 +124,11 @@ var inplaceEditor = {
   },
   template: `
     <span style="display:inline-block;">
-      <span ref="text" :style="Object.assign({visibility:'hidden'}, style)">{{editValue}}</span>
+      <span ref="text" 
+          :style="Object.assign({
+            visibility:'hidden',
+            fontFamily:(multiline)? 'monospace' : 'unset'}, style)">
+        {{editValue}}</span>
       <input type="text"
           v-if="!multiline"
           :style="Object.assign({
@@ -158,7 +162,8 @@ var inplaceEditor = {
             height:(height).toString()+'px',
             whiteSpace:'nowrap',
             marginLeft:(-width).toString()+'px',
-            outline:'solid 1px #CCC'
+            outline:'solid 1px #CCC',
+            fontFamily:(multiline)? 'monospace' : 'unset'
           }"
           @change="updateValueMultiline()" 
           @input="resize()" 
