@@ -71,11 +71,11 @@ var inplaceEditor = {
       let tabString = "  ";
 
       if(9 === event.keyCode) {
-        event.preventDefault();
         input.value = input.value.substr(0, curPos) 
           + tabString 
           + input.value.substr(curPos, input.value.length);
         input.selectionEnd = curPos + tabString.length;
+        event.preventDefault();
       }
     }
   },
@@ -164,7 +164,7 @@ var inplaceEditor = {
           @input="resize()" 
           @compositionend="resize()"
           @focus="onFocused()"
-          @blur="toggleMultiline(); onBlur()"
+          @blur="toggleMultiline(); updateValue(); onBlur()"
           @keydown="keydown($event)"
           spellcheck="false"
           ref="input"
