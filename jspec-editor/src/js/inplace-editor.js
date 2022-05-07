@@ -21,9 +21,9 @@ var inplaceEditor = {
       this.val = this.$refs.input.value;
       this.editValue = this.val;
 
-      // prevent null error. when value changed to object, inplace-editor automatically closed.
+      // prevent null error. when value changed to object or array, inplace-editor automatically closed.
       // so, this.$refs.input gone to null.
-      if(this.editValue !== "{}" && origValue !== "") {
+      if(this.editValue !== "{}" && this.editValue !== "[]" && origValue !== "") {
         this.$nextTick(() => {
           this.resize();
         });
@@ -58,6 +58,12 @@ var inplaceEditor = {
         }
         this.resize();
       });
+    },
+    onFocused() {
+      this.focused = true;
+    },
+    onBlur() {
+      this.focused = false;
     }
   },
   computed: {
@@ -123,8 +129,8 @@ var inplaceEditor = {
               @change="updateValue()" 
               @input="resize()" 
               @compositionend="resize()"
-              @focus="focused = true"
-              @blur="focused = false"
+              @focus="onFocused()"
+              @blur="onBlur()"
               @dblclick="toggleMultiline()"
           spellcheck="false"/>
       <textarea v-model="editValue" 
@@ -144,8 +150,8 @@ var inplaceEditor = {
           @change="updateValueMultiline()" 
           @input="resize()" 
           @compositionend="resize()"
-          @focus="focused = true"
-          @blur="toggleMultiline(); focused = false;"
+          @focus="onFocused()"
+          @blur="toggleMultiline(); onBlur()"
           spellcheck="false"
           ref="input"
         ></textarea>
