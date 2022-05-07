@@ -21,6 +21,11 @@ var autoresizeEditor = {
     update() {
       this.$emit('updated', this.val, this.before);
       this.before = this.val;
+    },
+    focus() {
+      this.focused = true;
+      this.$refs.input.selectionStart = 0;
+      this.$refs.input.selectionEnd = this.$refs.input.value.length;
     }
   },
   computed: {
@@ -47,7 +52,7 @@ var autoresizeEditor = {
           @change="update()" 
           @input="resize()" 
           @compositionend="resize()"
-          @focus="focused = true"
+          @focus="focus()"
           @blur="focused = false"
           spellcheck="false"/>
     </span>

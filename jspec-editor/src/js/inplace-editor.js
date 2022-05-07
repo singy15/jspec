@@ -61,6 +61,8 @@ var inplaceEditor = {
     },
     onFocused() {
       this.focused = true;
+      this.$refs.input.selectionStart = 0;
+      this.$refs.input.selectionEnd = this.$refs.input.value.length;
     },
     onBlur() {
       this.focused = false;
