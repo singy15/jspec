@@ -197,8 +197,20 @@ var jspecEditor = {
       
       return style;
     },
+    resolve(val) {
+      let path = val.substring(1).split(".");
+      let cur = this.root;
+      for(var i = 0; i < path.length; i++) {
+        let p = path[i];
+        cur = cur[p];
+        if(cur === undefined || cur == null) {
+          return undefined;
+        }
+      }
+
+      return cur;
+    },
     resolvable(val) {
-      console.log(val);
       let path = val.substring(1).split(".");
       let cur = this.root;
       for(var i = 0; i < path.length; i++) {
@@ -229,7 +241,140 @@ var jspecEditor = {
           }
         }
       }
+    },
+    orderKey(dir, key) {
+      // dir < 0 : up
+      let keys = [];
+      let vals = [];
+      for(var k in this.node) {
+        keys.push(k);
+        vals.push(this.node[k]);
+      }
+
+      let index = keys.indexOf(key);
+
+      if(dir < 0 && index == 0) {
+        return;
+      }
+      if(dir > 0 && index == (keys.length-1)) {
+        return;
+      }
+
+      let tmpKey = keys.splice(index,1)[0];
+      let tmpVal = vals.splice(index,1)[0];
+      keys.splice(index + dir,0,tmpKey);
+      vals.splice(index + dir,0,tmpVal);
+
+      for(var k in this.node) {
+        delete this.node[k];
+      }
+
+      for(var i = 0; i < keys.length; i++) {
+        this.node[keys[i]] = vals[i];
+      }
+    },
+    dragstart(event, node, val, key) {
+      let path = null;
+      let getAbsPath = (node,parent,absPath,relPath,parentPath,root) => {
+        if(node == val) {
+          path = absPath; 
+          return null;
+        }
+        for(var k in node) {
+          if(node[k] == val) {
+            path = absPath + "." + k;
+            return null;
+          }
+        }
+        return getAbsPath;
+      };
+      if(node == this.root) {
+        for(var k in this.root) {
+          if(this.root[k] == val) {
+            path = k;
+          }
+        }
+      }
+      this.traverse(this.root, this.root, "", getAbsPath);
+
+      event.dataTransfer.setData('text/plain', path);
+    },
+    drop(event, node, val, key) {
+      let path = null;
+      let getAbsPath = (node,parent,absPath,relPath,parentPath,root) => {
+        if(node == val) {
+          path = absPath; 
+          return null;
+        }
+        for(var k in node) {
+          if(node[k] == val) {
+            path = absPath + "." + k;
+            return null;
+          }
+        }
+        return getAbsPath;
+      };
+      if(node == this.root) {
+        for(var k in this.root) {
+          if(this.root[k] == val) {
+            path = k;
+          }
+        }
+      }
+      this.traverse(this.root, this.root, "", getAbsPath);
+
+      let moveFrom = event.dataTransfer.getData('text');
+      let moveTo = path;
+
+      let parentFrom = moveFrom.split(".").slice(0,-1).join(".");     
+      let parentTo = moveTo.split(".").slice(0,-1).join(".");     
+      let keyFrom = moveFrom.split(".").slice(-1)[0];
+      let keyTo = moveTo.split(".").slice(-1)[0];
+
+      if(parentTo === parentFrom) {
+        let keys = [];
+        for(var k in node) {
+          keys.push(k);
+        }
+        let indexFrom = keys.indexOf(keyFrom);
+        let indexTo = keys.indexOf(keyTo);
+        this.orderKey(indexTo - indexFrom, keyFrom); 
+      } else {
+        let parentObjFrom = this.resolve("#"+parentFrom);
+        let parentObjTo = null;
+        if(parentTo !== "") {
+          parentObjTo = this.resolve("#"+parentTo);
+        } else {
+          parentObjTo = this.root;
+        }
+        console.log("move", parentObjFrom, parentObjTo);
+        parentObjTo[keyFrom] = parentObjFrom[keyFrom];
+        delete parentObjFrom[keyFrom];
+      }
     }
+  },
+  computed: {
+    // sorted() {
+    //   var keys = [];
+    //   for(var k in this.node) {
+    //     keys.push({key:k,sortKey:((this.node[k].$seq)? this.node[k].$seq.toString() : "")+"_"+k});
+    //   }
+    //   keys.sort((a,b) => {
+    //     if(a.sortKey > b.sortKey) {
+    //       return 1;
+    //     } else if(a.sortKey === b.sortKey) {
+    //       return 0;
+    //     } else {
+    //       return -1;
+    //     }
+    //   });
+    //   var obj = {};
+    //   for(var i = 0; i < keys.length; i++) {
+    //     let k = keys[i].key;
+    //     obj[k] = this.node[k];
+    //   }
+    //   return obj;
+    // }
   },
   template: `
     <span>
@@ -245,7 +390,14 @@ var jspecEditor = {
         <br>
         <span v-for="(v,k) in node" style="white-space:nowrap;">
           <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
-          <autoresize-editor :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated"></autoresize-editor>
+          <!--
+          <span @click="orderKey(-1,k)">U</span>
+          <span @click="orderKey(1,k)">D</span>
+          <span draggable="true" @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)">*</span>
+          -->
+          <autoresize-editor :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated"
+              @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)">
+          </autoresize-editor>
           <span style="vertical-align:top">: </span>
           <jspec-editor :root="root" :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1"></jspec-editor>
           <br>
