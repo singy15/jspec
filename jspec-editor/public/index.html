@@ -53,9 +53,10 @@ body {
         <button class="button" @click="openJspec()">OPEN</button>
         <button class="button" @click="saveJspec()">SAVE</button>
         <button class="button" @click="reloadJspec()">RELOAD</button>
+        <button class="button" @click="toggleLogicalName()">SHOW/HIDE NAME</button>
       </div>
       <div>
-        <jspec-editor :root="root" :node="root" :entryParent="root" :entryKey="null" :level="0" :open-state="true"></jspec-editor>
+        <jspec-editor :root="root" :node="root" :entryParent="root" :entryKey="null" :level="0" :open-state="true" :show-name="showLogicalName"></jspec-editor>
       </div>
     </div>
 

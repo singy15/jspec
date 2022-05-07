@@ -176,7 +176,8 @@ window.app = Vue.createApp({
   data() {
     return {
       root: {},
-      text:""
+      text: "",
+      showLogicalName: false
     };
   },
   methods: {
@@ -192,6 +193,9 @@ window.app = Vue.createApp({
     },
     saveJspec() {
       saveOverwrite(JSON.stringify(this.root, null, 2));
+    },
+    toggleLogicalName() {
+      this.showLogicalName = !this.showLogicalName;
     }
   },
   mounted() {
