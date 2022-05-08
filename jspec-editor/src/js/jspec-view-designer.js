@@ -177,7 +177,7 @@ var jspecViewDesigner = {
       this.curId = this.curId + 1;
       let newid = "unnamed" + (this.curId).toString();
       let newcomp = {
-        type: "#viewComponentType.textbox",
+        type: "#viewComponentType.text",
         layout: {
           x: 100, y: 100, width: 100, height: 20
         }
