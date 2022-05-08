@@ -107,7 +107,7 @@
               "x": 10,
               "y": 35,
               "width": 385,
-              "height": 155
+              "height": 180
             },
             "label": "在庫入庫"
           },
@@ -168,7 +168,7 @@
             "type": "#viewComponentType.label",
             "layout": {
               "x": 15,
-              "y": 125,
+              "y": 150,
               "width": 50,
               "height": 20
             },
@@ -181,7 +181,7 @@
             "layout": {
               "type": "#layoutType.RECTANGLE",
               "x": 75,
-              "y": 125,
+              "y": 150,
               "width": 70,
               "height": 20
             }
@@ -192,7 +192,7 @@
             "layout": {
               "type": "#layoutType.RECTANGLE",
               "x": 20,
-              "y": 160,
+              "y": 185,
               "width": 90,
               "height": 20
             }
@@ -203,29 +203,31 @@
             "layout": {
               "type": "#layoutType.RECTANGLE",
               "x": 295,
-              "y": 160,
+              "y": 185,
               "width": 90,
               "height": 20
             }
           },
-          "radio1": {
-            "type": "#viewComponentType.radio",
+          "placeCd": {
+            "type": "#viewComponentType.text",
             "layout": {
-              "x": 155,
+              "x": 75,
               "y": 125,
-              "width": 75,
+              "width": 55,
               "height": 20
             },
-            "label": "test1"
+            "label": "XXXXXX"
           },
-          "date1": {
-            "type": "#viewComponentType.date",
+          "labelPlaceCd": {
+            "type": "#viewComponentType.label",
             "layout": {
-              "x": 240,
+              "x": 15,
               "y": 125,
-              "width": 100,
+              "width": 50,
               "height": 20
-            }
+            },
+            "label": "場所CD",
+            "textAlign": "end"
           }
         }
       },
@@ -237,9 +239,9 @@
               "x": 10,
               "y": 35,
               "width": 385,
-              "height": 155
+              "height": 180
             },
-            "label": "在庫入庫"
+            "label": "在庫出庫"
           },
           "labelStockCd": {
             "type": "#viewComponentType.label",
@@ -298,11 +300,11 @@
             "type": "#viewComponentType.label",
             "layout": {
               "x": 15,
-              "y": 125,
+              "y": 150,
               "width": 50,
               "height": 20
             },
-            "label": "入庫数量",
+            "label": "出庫数量",
             "textAlign": "end"
           },
           "qty": {
@@ -311,7 +313,7 @@
             "layout": {
               "type": "#layoutType.RECTANGLE",
               "x": 75,
-              "y": 125,
+              "y": 150,
               "width": 70,
               "height": 20
             }
@@ -322,7 +324,7 @@
             "layout": {
               "type": "#layoutType.RECTANGLE",
               "x": 20,
-              "y": 160,
+              "y": 185,
               "width": 90,
               "height": 20
             }
@@ -333,34 +335,207 @@
             "layout": {
               "type": "#layoutType.RECTANGLE",
               "x": 295,
-              "y": 160,
+              "y": 185,
               "width": 90,
               "height": 20
             }
           },
-          "radio1": {
-            "type": "#viewComponentType.radio",
+          "placeCd": {
+            "type": "#viewComponentType.text",
             "layout": {
-              "x": 155,
+              "x": 75,
               "y": 125,
-              "width": 75,
+              "width": 55,
               "height": 20
             },
-            "label": "test1"
+            "label": "XXXXXX"
           },
-          "date1": {
-            "type": "#viewComponentType.date",
+          "labelPlaceCd": {
+            "type": "#viewComponentType.label",
             "layout": {
-              "x": 240,
+              "x": 15,
               "y": 125,
-              "width": 100,
+              "width": 50,
               "height": 20
-            }
+            },
+            "label": "場所CD",
+            "textAlign": "end"
           }
         }
       },
       "transferStock": {
-        "$component": {}
+        "$component": {
+          "form": {
+            "type": "#viewComponentType.form",
+            "layout": {
+              "x": 10,
+              "y": 35,
+              "width": 420,
+              "height": 200
+            },
+            "label": "在庫移動"
+          },
+          "labelItemCd": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 20,
+              "y": 75,
+              "width": 50,
+              "height": 20
+            },
+            "label": "品目CD",
+            "textAlign": "end"
+          },
+          "itemCd": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 80,
+              "y": 75,
+              "width": 70,
+              "height": 20
+            },
+            "label": "XXXXXXXX"
+          },
+          "itemName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 150,
+              "y": 75,
+              "width": 230,
+              "height": 20
+            },
+            "label": "ＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮ"
+          },
+          "labelQty": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 30,
+              "y": 170,
+              "width": 50,
+              "height": 20
+            },
+            "label": "移動数量",
+            "textAlign": "end"
+          },
+          "qty": {
+            "type": "#viewComponentType.text",
+            "label": "999999999",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 90,
+              "y": 170,
+              "width": 70,
+              "height": 20
+            }
+          },
+          "register": {
+            "type": "#viewComponentType.button",
+            "label": "登録",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 20,
+              "y": 205,
+              "width": 90,
+              "height": 20
+            }
+          },
+          "close": {
+            "type": "#viewComponentType.button",
+            "label": "閉じる",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 330,
+              "y": 205,
+              "width": 90,
+              "height": 20
+            }
+          },
+          "labelFromStockCd": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 25,
+              "y": 110,
+              "width": 80,
+              "height": 20
+            },
+            "label": "移動元在庫CD",
+            "textAlign": "end"
+          },
+          "fromStockCd": {
+            "type": "#viewComponentType.text",
+            "label": "XXXXXXXXXXXX",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 110,
+              "y": 110,
+              "width": 100,
+              "height": 20
+            }
+          },
+          "labelFromPlaceCd": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 30,
+              "y": 135,
+              "width": 75,
+              "height": 20
+            },
+            "label": "移動元場所CD",
+            "textAlign": "end"
+          },
+          "fromPlaceCd": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 110,
+              "y": 135,
+              "width": 55,
+              "height": 20
+            },
+            "label": "XXXXXX"
+          },
+          "toStockCd": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 315,
+              "y": 110,
+              "width": 100,
+              "height": 20
+            },
+            "label": "XXXXXXXXXXXX"
+          },
+          "labelToStockCd": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 225,
+              "y": 110,
+              "width": 85,
+              "height": 20
+            },
+            "label": "移動先在庫CD",
+            "textAlign": "end"
+          },
+          "toPlaceCd": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 315,
+              "y": 135,
+              "width": 55,
+              "height": 20
+            },
+            "label": "XXXXXX"
+          },
+          "labelToPlaceCd": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 230,
+              "y": 135,
+              "width": 80,
+              "height": 20
+            },
+            "label": "移動先場所CD",
+            "textAlign": "end"
+          }
+        }
       }
     },
     "$process": {
