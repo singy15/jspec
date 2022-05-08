@@ -72,17 +72,29 @@
   },
   "viewComponentType": {
     "form": {
+      "$name": "画面",
       "template": "`<div style=\"background-color:#EFEFEF; border:solid 1px ${type.borderColor}; width:100%; height:100%;\"><div style=\"top:0px; height:30px; background-color:${type.borderColor}; display:flex; justify-content:start; align-items:center; padding-left:5px; \">${(this.label)? this.label : ''}</div></div>`",
       "borderColor": " #99F"
     },
-    "textbox": {
-      "template": "`<input type=\"text\" style=\"width:100%; height:100%;\" value=\"${(this.label)? this.label : ''}\" />`"
-    },
     "button": {
+      "$name": "ボタン",
       "template": "`<button style=\"width:100%; height:100%;\">${label}</button>`"
     },
     "label": {
+      "$name": "ラベル",
       "template": "`<span style=\"display:flex; justify-content:${(this.textAlign)? this.textAlign : ''}; align-items:center; width:100%; height:100%;\">${(this.label)? this.label : ''}</span>`"
+    },
+    "radio": {
+      "$name": "ラジオボタン",
+      "template": "`<label><input type=\"radio\" />${this.label}</label>`"
+    },
+    "text": {
+      "template": "`<input type=\"text\" style=\"width:100%; height:100%;\" value=\"${(this.label)? this.label : ''}\" />`",
+      "$name": "テキストボックス"
+    },
+    "date": {
+      "$name": "日付",
+      "template": "`<input type=\"date\" style=\"width:100%; height:100%;\" value=\"${(this.label)? this.label : ''}\" />`"
     }
   },
   "stock": {
@@ -111,7 +123,7 @@
             "textAlign": "end"
           },
           "stockCd": {
-            "type": "#viewComponentType.textbox",
+            "type": "#viewComponentType.text",
             "label": "XXXXXXXXXXXX",
             "layout": {
               "type": "#layoutType.RECTANGLE",
@@ -133,7 +145,7 @@
             "textAlign": "end"
           },
           "itemCd": {
-            "type": "#viewComponentType.textbox",
+            "type": "#viewComponentType.text",
             "layout": {
               "x": 75,
               "y": 100,
@@ -143,7 +155,7 @@
             "label": "XXXXXXXX"
           },
           "itemName": {
-            "type": "#viewComponentType.textbox",
+            "type": "#viewComponentType.text",
             "layout": {
               "x": 145,
               "y": 100,
@@ -164,7 +176,7 @@
             "textAlign": "end"
           },
           "qty": {
-            "type": "#viewComponentType.textbox",
+            "type": "#viewComponentType.text",
             "label": "999999999",
             "layout": {
               "type": "#layoutType.RECTANGLE",
@@ -193,6 +205,25 @@
               "x": 295,
               "y": 160,
               "width": 90,
+              "height": 20
+            }
+          },
+          "radio1": {
+            "type": "#viewComponentType.radio",
+            "layout": {
+              "x": 155,
+              "y": 125,
+              "width": 75,
+              "height": 20
+            },
+            "label": "test1"
+          },
+          "date1": {
+            "type": "#viewComponentType.date",
+            "layout": {
+              "x": 240,
+              "y": 125,
+              "width": 100,
               "height": 20
             }
           }

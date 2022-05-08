@@ -214,7 +214,54 @@ window.app = Vue.createApp({
       this.viewDesigner.view = this.viewDesigner.viewPath.split(".")
         .reduce((memo,path) => { return memo[path]; }, this.root);
       this.viewDesigner.editing = true;
-    }
+    },
+    onSelect(root, node, key) {
+      let val = node[key];
+      let path = null;
+      let getAbsPath = (node,parent,absPath,relPath,parentPath,root) => {
+        if(node == val) {
+          path = absPath; 
+          return null;
+        }
+        for(var k in node) {
+          if(node[k] == val) {
+            path = absPath + "." + k;
+            return null;
+          }
+        }
+        return getAbsPath;
+      };
+      if(node == root) {
+        for(var k in root) {
+          if(root[k] == val) {
+            path = k;
+          }
+        }
+      }
+      this.traverse(root, root, "", getAbsPath);
+
+      this.viewDesigner.viewPath = path;
+
+      console.log(root, node, key, path);
+    },
+    nodep(value) {
+      return value !== null && typeof value === 'object';
+    },
+    traverse(root, node, path, op) {
+      // op : (node,parent,absPath,relPath,parentPath,root) => { (node,parent,absPath,relPath,parentPath,root) => ... | falsy }
+      for(var key in node) {
+        var child = node[key];
+        if(this.nodep(child)) {
+          let parentPath = path;
+          let absPath = ((path === "")? key : path + "." + key);
+          let relPath = key;
+          let nextop = op(child, node, absPath, relPath, parentPath, root);
+          if(nextop) {
+            this.traverse(root, child, absPath, nextop);
+          }
+        }
+      }
+    },
   },
   mounted() {
   }

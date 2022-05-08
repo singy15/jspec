@@ -15,7 +15,8 @@ var jspecEditor = {
     entryKey: null,
     level: Number,
     openState: Boolean,
-    showName: Boolean
+    showName: Boolean,
+    onSelect: Function
   },
   data() {
     return {
@@ -398,11 +399,11 @@ var jspecEditor = {
         <span v-for="(v,k) in node" style="white-space:nowrap;">
           <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
           <autoresize-editor :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated"
-              @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)">
+              @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)" @click="onSelect(root, node, k)">
           </autoresize-editor>
           <span v-if="showName && v != null && v.$name" style="font-size:0.5rem;">&nbsp;({{v.$name}})</span>
           <span style="vertical-align:top">: </span>
-          <jspec-editor :root="root" :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1" :show-name="showName"></jspec-editor>
+          <jspec-editor :root="root" :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1" :show-name="showName" :on-select="onSelect"></jspec-editor>
           <br>
         </span>
         <span v-for="n in (level)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
