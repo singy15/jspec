@@ -230,7 +230,134 @@
         }
       },
       "retrieveStock": {
-        "$component": {}
+        "$component": {
+          "form": {
+            "type": "#viewComponentType.form",
+            "layout": {
+              "x": 10,
+              "y": 35,
+              "width": 385,
+              "height": 155
+            },
+            "label": "在庫入庫"
+          },
+          "labelStockCd": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 15,
+              "y": 75,
+              "width": 50,
+              "height": 20
+            },
+            "label": "在庫CD",
+            "textAlign": "end"
+          },
+          "stockCd": {
+            "type": "#viewComponentType.text",
+            "label": "XXXXXXXXXXXX",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 75,
+              "y": 75,
+              "width": 100,
+              "height": 20
+            }
+          },
+          "labelItemCd": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 15,
+              "y": 100,
+              "width": 50,
+              "height": 20
+            },
+            "label": "品目CD",
+            "textAlign": "end"
+          },
+          "itemCd": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 75,
+              "y": 100,
+              "width": 70,
+              "height": 20
+            },
+            "label": "XXXXXXXX"
+          },
+          "itemName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 145,
+              "y": 100,
+              "width": 230,
+              "height": 20
+            },
+            "label": "ＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮ"
+          },
+          "labelQty": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 15,
+              "y": 125,
+              "width": 50,
+              "height": 20
+            },
+            "label": "入庫数量",
+            "textAlign": "end"
+          },
+          "qty": {
+            "type": "#viewComponentType.text",
+            "label": "999999999",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 75,
+              "y": 125,
+              "width": 70,
+              "height": 20
+            }
+          },
+          "register": {
+            "type": "#viewComponentType.button",
+            "label": "登録",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 20,
+              "y": 160,
+              "width": 90,
+              "height": 20
+            }
+          },
+          "close": {
+            "type": "#viewComponentType.button",
+            "label": "閉じる",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 295,
+              "y": 160,
+              "width": 90,
+              "height": 20
+            }
+          },
+          "radio1": {
+            "type": "#viewComponentType.radio",
+            "layout": {
+              "x": 155,
+              "y": 125,
+              "width": 75,
+              "height": 20
+            },
+            "label": "test1"
+          },
+          "date1": {
+            "type": "#viewComponentType.date",
+            "layout": {
+              "x": 240,
+              "y": 125,
+              "width": 100,
+              "height": 20
+            }
+          }
+        }
       },
       "transferStock": {
         "$component": {}
