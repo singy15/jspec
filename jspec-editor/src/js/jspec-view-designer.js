@@ -194,6 +194,12 @@ var jspecViewDesigner = {
     },
     editEnd() {
       this.editing.editing = false;
+    },
+    generateCode() {
+      let codes = Object.keys(this.view.$component)
+        .map(k => this.view.$component[k])
+        .map(c => `<div style=" position: absolute; width: ${c.layout.width.toString()}px; height: ${c.layout.height.toString()}px; left: ${c.layout.x.toString()}px; top: ${c.layout.y.toString()}px; z-index: ${this.zindex(c.layout.x, c.layout.y)};" class="jspec-view-designer--component-base">${this.evalTemplate(c)}</div>`);
+      console.log(codes);
     }
   },
   computed: {
@@ -216,6 +222,7 @@ var jspecViewDesigner = {
           <input type="text" v-model="renaming.newName" :disabled="selected == null"/>
           <button class="jspec-view-designer--button" @click="rename()" :disabled="selected == null">RENAME</button>
           <button class="jspec-view-designer--button" @click="editStart()" :disabled="selected == null">EDIT</button>
+          <button class="jspec-view-designer--button" @click="generateCode()">GENCODE</button>
         </div>
 
         <div v-for="(v,k) in view.$component">
