@@ -73,12 +73,12 @@
   "viewComponentType": {
     "form": {
       "$name": "画面",
-      "template": "`<div style=\"background-color:#EFEFEF; border:solid 1px ${type.borderColor}; width:100%; height:100%;\"><div style=\"top:0px; height:30px; background-color:${type.borderColor}; display:flex; justify-content:start; align-items:center; padding-left:5px; \">${(this.label)? this.label : ''}</div></div>`",
-      "borderColor": " #99F"
+      "template": "`<div style=\"background-color:#EFEFEF; border:solid 1px ${type.borderColor}; border-radius:5px; width:100%; height:100%;\"><div style=\"top:0px; height:30px; background-color:${type.borderColor}; display:flex; justify-content:start; align-items:center; padding-left:5px; color:#fff;\">${(this.label)? this.label : ''}</div></div>`",
+      "borderColor": " #7272c7"
     },
     "button": {
       "$name": "ボタン",
-      "template": "`<button style=\"width:100%; height:100%;\">${label}</button>`"
+      "template": "`<button style=\"width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px;\">${label}</button>`"
     },
     "label": {
       "$name": "ラベル",
@@ -89,12 +89,15 @@
       "template": "`<label><input type=\"radio\" />${this.label}</label>`"
     },
     "text": {
-      "template": "`<input type=\"text\" style=\"width:100%; height:100%;\" value=\"${(this.label)? this.label : ''}\" />`",
+      "template": "`<input type=\"text\" style=\"width:100%; height:100%; border:solid 1px #888; outline:none; \" value=\"${(this.label)? this.label : ''}\" />`",
       "$name": "テキストボックス"
     },
     "date": {
       "$name": "日付",
       "template": "`<input type=\"date\" style=\"width:100%; height:100%;\" value=\"${(this.label)? this.label : ''}\" />`"
+    },
+    "container": {
+      "template": "`<div style=\"width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px;\"></div>`"
     }
   },
   "stock": {
@@ -106,16 +109,16 @@
             "layout": {
               "x": 10,
               "y": 35,
-              "width": 385,
-              "height": 180
+              "width": 410,
+              "height": 205
             },
             "label": "在庫入庫"
           },
           "labelStockCd": {
             "type": "#viewComponentType.label",
             "layout": {
-              "x": 15,
-              "y": 75,
+              "x": 30,
+              "y": 85,
               "width": 50,
               "height": 20
             },
@@ -127,8 +130,8 @@
             "label": "XXXXXXXXXXXX",
             "layout": {
               "type": "#layoutType.RECTANGLE",
-              "x": 75,
-              "y": 75,
+              "x": 90,
+              "y": 85,
               "width": 100,
               "height": 20
             }
@@ -136,8 +139,8 @@
           "labelItemCd": {
             "type": "#viewComponentType.label",
             "layout": {
-              "x": 15,
-              "y": 100,
+              "x": 30,
+              "y": 110,
               "width": 50,
               "height": 20
             },
@@ -147,8 +150,8 @@
           "itemCd": {
             "type": "#viewComponentType.text",
             "layout": {
-              "x": 75,
-              "y": 100,
+              "x": 90,
+              "y": 110,
               "width": 70,
               "height": 20
             },
@@ -157,8 +160,8 @@
           "itemName": {
             "type": "#viewComponentType.text",
             "layout": {
-              "x": 145,
-              "y": 100,
+              "x": 160,
+              "y": 110,
               "width": 230,
               "height": 20
             },
@@ -167,8 +170,8 @@
           "labelQty": {
             "type": "#viewComponentType.label",
             "layout": {
-              "x": 15,
-              "y": 150,
+              "x": 30,
+              "y": 160,
               "width": 50,
               "height": 20
             },
@@ -180,8 +183,8 @@
             "label": "999999999",
             "layout": {
               "type": "#layoutType.RECTANGLE",
-              "x": 75,
-              "y": 150,
+              "x": 90,
+              "y": 160,
               "width": 70,
               "height": 20
             }
@@ -192,7 +195,7 @@
             "layout": {
               "type": "#layoutType.RECTANGLE",
               "x": 20,
-              "y": 185,
+              "y": 205,
               "width": 90,
               "height": 20
             }
@@ -202,8 +205,8 @@
             "label": "閉じる",
             "layout": {
               "type": "#layoutType.RECTANGLE",
-              "x": 295,
-              "y": 185,
+              "x": 320,
+              "y": 205,
               "width": 90,
               "height": 20
             }
@@ -211,8 +214,8 @@
           "placeCd": {
             "type": "#viewComponentType.text",
             "layout": {
-              "x": 75,
-              "y": 125,
+              "x": 90,
+              "y": 135,
               "width": 55,
               "height": 20
             },
@@ -221,13 +224,22 @@
           "labelPlaceCd": {
             "type": "#viewComponentType.label",
             "layout": {
-              "x": 15,
-              "y": 125,
+              "x": 30,
+              "y": 135,
               "width": 50,
               "height": 20
             },
             "label": "場所CD",
             "textAlign": "end"
+          },
+          "detail": {
+            "type": "#viewComponentType.container",
+            "layout": {
+              "x": 20,
+              "y": 75,
+              "width": 390,
+              "height": 120
+            }
           }
         }
       },
