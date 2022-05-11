@@ -257,7 +257,7 @@ var jspecViewDesigner = {
           </div>
           <div :style="{
               position: 'absolute',
-              width: (3).toString() + 'px',
+              width: (5).toString() + 'px',
               height: (v.layout.height).toString() + 'px',
               left: (v.layout.x).toString() + 'px',
               top: (v.layout.y).toString() + 'px',
@@ -272,7 +272,7 @@ var jspecViewDesigner = {
           </div>
           <div :style="{
               position: 'absolute',
-              width: (3).toString() + 'px',
+              width: (5).toString() + 'px',
               height: (v.layout.height).toString() + 'px',
               left: (v.layout.x + v.layout.width).toString() + 'px',
               top: (v.layout.y).toString() + 'px',
@@ -288,7 +288,7 @@ var jspecViewDesigner = {
           <div :style="{
               position: 'absolute',
               width: (v.layout.width).toString() + 'px',
-              height: (3).toString() + 'px',
+              height: (5).toString() + 'px',
               left: (v.layout.x).toString() + 'px',
               top: (v.layout.y).toString() + 'px',
               backgroundColor: 'transparent',
@@ -303,7 +303,7 @@ var jspecViewDesigner = {
           <div :style="{
               position: 'absolute',
               width: (v.layout.width).toString() + 'px',
-              height: (3).toString() + 'px',
+              height: (5).toString() + 'px',
               left: (v.layout.x).toString() + 'px',
               top: (v.layout.y + v.layout.height).toString() + 'px',
               backgroundColor: 'transparent',
