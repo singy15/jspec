@@ -93,18 +93,18 @@ var inplaceEditor = {
         }
 
         var parsed = null;
-        try {
-          parsed = eval(newval);
-          if(parsed === undefined) {
-            throw new Error();
-          }
-        } catch(e) {
+        // try {
+        //   parsed = eval(newval);
+        //   if(parsed === undefined) {
+        //     throw new Error();
+        //   }
+        // } catch(e) {
           try {
             parsed = JSON.parse(newval);
           } catch(e2) {
             parsed = newval;
           }
-        } 
+        // } 
         this.obj[this.placeKey] = parsed;
       }
     },
