@@ -82,14 +82,14 @@
     },
     "label": {
       "$name": "ラベル",
-      "template": "`<span style=\"display:flex; justify-content:${(this.textAlign)? this.textAlign : ''}; align-items:center; width:100%; height:100%;\">${(this.label)? this.label : ''}</span>`"
+      "template": "`<span style=\\\"display:flex; justify-content:${(this.textAlign)? this.textAlign : ''}; align-items:center; width:100%; height:100%;\\\">${(this.label)? this.label : ''}</span>`"
     },
     "radio": {
       "$name": "ラジオボタン",
       "template": "`<label><input type=\"radio\" />${this.label}</label>`"
     },
     "text": {
-      "template": "`<input type=\"text\" style=\"width:100%; height:100%; border:solid 1px #888; outline:none; \" value=\"${(this.label)? this.label : ''}\" />`",
+      "template": "`<input type=\"text\" style=\"width:100%; height:100%; border:solid 1px #888; outline:none; \" v-model=\"${(this.model)? this.model : ''}\" />`",
       "$name": "テキストボックス"
     },
     "date": {
