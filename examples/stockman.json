@@ -73,7 +73,7 @@
   "viewComponentType": {
     "form": {
       "$name": "画面",
-      "template": "`<div style=\"background-color:#EFEFEF; border:solid 1px ${type.borderColor}; border-radius:5px; width:100%; height:100%;\"><div style=\"top:0px; height:30px; background-color:${type.borderColor}; display:flex; justify-content:start; align-items:center; padding-left:5px; color:#fff;\">${(this.label)? this.label : ''}</div></div>`",
+      "template": "`<div style=\"background-color:#EFEFEF; border:solid 1px ${type.borderColor}; border-radius:5px; width:100%; height:100%;\"><div style=\"top:0px; height:30px; background-color:${type.borderColor}; display:flex; justify-content:start; align-items:center; padding-left:5px; color:#fff;\">${(this.label)? this.label : ''}</div><contents></contents></div>`",
       "borderColor": " #7272c7"
     },
     "button": {
@@ -82,7 +82,7 @@
     },
     "label": {
       "$name": "ラベル",
-      "template": "`<span style=\\\"display:flex; justify-content:${(this.textAlign)? this.textAlign : ''}; align-items:center; width:100%; height:100%;\\\">${(this.label)? this.label : ''}</span>`"
+      "template": "`<span style=\\\"display:flex; justify-content:${(this.textAlign)? this.textAlign : ''}; align-items:center; width:100%; height:100%; ${(this.style)? this.style : ''} \\\">${(this.label)? this.label : ''}</span>`"
     },
     "radio": {
       "$name": "ラジオボタン",
@@ -97,7 +97,11 @@
       "template": "`<input type=\"date\" style=\"width:100%; height:100%;\" value=\"${(this.label)? this.label : ''}\" />`"
     },
     "container": {
-      "template": "`<div style=\"width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px;\"></div>`"
+      "template": "`<div style=\"width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; ${(this.style)? this.style : ''}\"><div style=\"position:relative\"><contents></contents></div></div>`"
+    },
+    "group": {
+      "template": "`<template v-for=\"(value,index) in ${this.model}\"><div :style=\"{position:'relative', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`",
+      "outerTagPositioning": "relative"
     }
   },
   "stock": {
@@ -546,6 +550,103 @@
             },
             "label": "移動先場所CD",
             "textAlign": "end"
+          }
+        }
+      },
+      "listStock": {
+        "$component": {
+          "form": {
+            "type": "#viewComponentType.form",
+            "layout": {
+              "x": 10,
+              "y": 35,
+              "width": 500,
+              "height": 360
+            },
+            "label": "在庫一覧"
+          },
+          "stocks": {
+            "type": "#viewComponentType.group",
+            "layout": {
+              "x": 30,
+              "y": 130,
+              "width": 130,
+              "height": 50
+            },
+            "model": "stocks"
+          },
+          "labelStockCd": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 60,
+              "y": 80,
+              "width": 100,
+              "height": 25
+            },
+            "label": "在庫CD",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "detail": {
+            "type": "#viewComponentType.container",
+            "layout": {
+              "x": 30,
+              "y": 130,
+              "width": 470,
+              "height": 185
+            },
+            "style": "overflow:auto; border-radius:0px; background-color:transparent; border:none;"
+          },
+          "stockCd": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 60,
+              "y": 130,
+              "width": 100,
+              "height": 25
+            },
+            "model": "value.stockCd"
+          },
+          "itemCd": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 60,
+              "y": 155,
+              "width": 100,
+              "height": 25
+            },
+            "model": "value.itemCd"
+          },
+          "labelItemCd": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 60,
+              "y": 105,
+              "width": 100,
+              "height": 25
+            },
+            "label": "品目CD",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "labelNo": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 30,
+              "y": 80,
+              "width": 30,
+              "height": 50
+            },
+            "label": "No",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "no": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 30,
+              "y": 130,
+              "width": 30,
+              "height": 50
+            },
+            "model": "index"
           }
         }
       }

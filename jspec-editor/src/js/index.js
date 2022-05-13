@@ -184,6 +184,9 @@ window.app = Vue.createApp({
         viewPath: "",
         showEditor: false,
         view: null
+      },
+      actions: {
+        selected: null
       }
     };
   },
@@ -242,6 +245,8 @@ window.app = Vue.createApp({
 
       this.viewDesigner.viewPath = path;
 
+      this.actions.selected = { key: key, node: node, val: node[key] };
+
       console.log(root, node, key, path);
     },
     nodep(value) {
@@ -262,6 +267,15 @@ window.app = Vue.createApp({
         }
       }
     },
+    copyEntry() {
+      navigator.clipboard.writeText(JSON.stringify(this.actions.selected.val))
+        .then(() => {
+          console.log("Text copied to clipboard...")
+        })
+        .catch(err => {
+          console.log('Something went wrong', err);
+        });
+    }
   },
   mounted() {
   }

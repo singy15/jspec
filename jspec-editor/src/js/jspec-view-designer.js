@@ -65,6 +65,12 @@ var jspecViewDesigner = {
         dragging: false,
         gridInterval: 5
       },
+      repositioning: {
+        dragstartPos: { x: 0, y: 0 },
+        diff: { x: 0, y: 0 },
+        dragging: false,
+        gridInterval: 5
+      },
       moving: {
         dragstartPos: { x: 0, y: 0 },
         diff: { x: 0, y: 0 },
@@ -101,6 +107,7 @@ var jspecViewDesigner = {
     clamp(n, interval) {
       return Math.floor(n/interval) * interval;
     },
+
     resizeStart(event, val, key) {
       this.resizing.target = val;
       this.resizing.dragstartPos.x = event.screenX;
@@ -120,6 +127,31 @@ var jspecViewDesigner = {
       val.layout.height = this.clamp(val.layout.height, this.resizing.gridInterval);
       this.resizing.dragging = false;
     },
+
+    repositionStart(event, val, key) {
+      this.repositioning.target = val;
+      this.repositioning.dragstartPos.x = event.screenX;
+      this.repositioning.dragstartPos.y = event.screenY;
+      this.repositioning.dragging = true;
+    },
+    repositionDrag(event, val, key) {
+      if((event.screenX !== 0) && (event.screenY !== 0)) {
+        this.repositioning.diff.x = this.clamp(event.screenX - this.repositioning.dragstartPos.x, this.repositioning.gridInterval);
+        this.repositioning.diff.y = this.clamp(event.screenY - this.repositioning.dragstartPos.y, this.repositioning.gridInterval);
+      }
+    },
+    repositionEnd(event, val, key) {
+      val.layout.x = val.layout.x + this.repositioning.diff.x;
+      val.layout.y = val.layout.y + this.repositioning.diff.y;
+      val.layout.width = val.layout.width - this.repositioning.diff.x;
+      val.layout.height = val.layout.height - this.repositioning.diff.y;
+      val.layout.x = this.clamp(val.layout.x, this.repositioning.gridInterval);
+      val.layout.y = this.clamp(val.layout.y, this.repositioning.gridInterval);
+      val.layout.width = this.clamp(val.layout.width, this.repositioning.gridInterval);
+      val.layout.height = this.clamp(val.layout.height, this.repositioning.gridInterval);
+      this.repositioning.dragging = false;
+    },
+
     moveStart(event, val, key) {
       this.moving.target = val;
       this.moving.dragstartPos.x = event.screenX;
@@ -200,6 +232,91 @@ var jspecViewDesigner = {
         .map(k => this.view.$component[k])
         .map(c => `<div style=" position: absolute; width: ${c.layout.width.toString()}px; height: ${c.layout.height.toString()}px; left: ${c.layout.x.toString()}px; top: ${c.layout.y.toString()}px; z-index: ${this.zindex(c.layout.x, c.layout.y)};" class="jspec-view-designer--component-base">${this.evalTemplate(c)}</div>`);
       console.log(codes);
+      this.createDOM();
+    },
+    createDOM() {
+      let includeGeometrically = (a, b) => {
+        // a include b?
+        let expand = 1;
+        return (a != b)
+          && ((a.layout.x - expand) <= b.layout.x)
+          && ((a.layout.y - expand) <= b.layout.y)
+          && ((b.layout.x + b.layout.width) <= (a.layout.x + a.layout.width + expand))
+          && ((b.layout.y + b.layout.height) <= (a.layout.y + a.layout.height + expand));
+      };
+
+      let dp = new DOMParser();
+
+      let cs = Object.keys(this.view.$component)
+        .map(k => this.view.$component[k])
+        .map(c => { 
+            let parsedDom = dp.parseFromString(`<div style=" position: absolute; width: ${c.layout.width.toString()}px; height: ${c.layout.height.toString()}px; left: ${c.layout.x.toString()}px; top: ${c.layout.y.toString()}px; z-index: ${this.zindex(c.layout.x, c.layout.y)};" class="jspec-view-designer--component-base">${this.evalTemplate(c)}</div>`, "text/html");
+            let dom = null;
+            if(parsedDom.querySelector("head").children.length > 0) {
+              dom = parsedDom.querySelector("head").children[0];
+            } else {
+              dom = parsedDom.querySelector("body").children[0];
+            }
+
+            return { 
+              component: c, 
+              dom: dom
+            }});
+
+      let prcs = cs.map(c => {
+          c.parentComponent = cs.reduce((m,cc) => {
+            return ((includeGeometrically(cc.component, c.component)) && (m.zindex < this.zindex(cc.component.layout.x, cc.component.layout.y)))? 
+                { zindex: this.zindex(cc.component.layout.x, cc.component.layout.y), parent: cc } : m;
+          }, { zindex: 0, parent: null }).parent;
+
+          if(c.parentComponent) {
+            let innerTag = c.parentComponent.dom.children[0];
+            let rootTag = null;
+
+            if(innerTag.tagName === "TEMPLATE") {
+              rootTag = innerTag.content;
+            } else {
+              rootTag = innerTag;
+            }
+
+            let contentTag = rootTag.querySelector("contents");
+            if(!contentTag) {
+              contentTag = rootTag.querySelector("template").content.querySelector("contents");
+            }
+            c.dom.style.position = c.component.outerTagPositioning || "absolute";
+            c.dom.style.left = (c.component.layout.x - c.parentComponent.component.layout.x).toString() + 'px';
+            c.dom.style.top = (c.component.layout.y - c.parentComponent.component.layout.y).toString() + 'px';
+            contentTag.appendChild(c.dom);
+          }
+
+          return c;
+        });
+
+      // cs.map(c => {
+      //   if(c.parentComponent) { 
+      //     let innerTag = c.parentComponent.dom.children[0];
+      //     let rootTag = null;
+
+      //     if(innerTag.tagName === "TEMPLATE") {
+      //       rootTag = innerTag.content;
+      //     } else {
+      //       rootTag = innerTag;
+      //     }
+
+      //     let contentTag = rootTag.querySelector("contents");
+      //     // if(!contentTag) {
+      //     //   if(rootTag.querySelector("template")
+      //     //   contentTag = rootTag.querySelector("template").content.querySelector("contents");
+      //     // }
+
+      //     if(contentTag) {
+      //       contentTag.parentElement.replaceWith(...contentTag.children);
+      //     }
+      //   }
+      // });
+
+      console.log(prcs[0].dom);
+      console.log((new XMLSerializer()).serializeToString(prcs[0].dom));
     }
   },
   computed: {
@@ -233,11 +350,28 @@ var jspecViewDesigner = {
               left: v.layout.x.toString() + 'px',
               top: v.layout.y.toString() + 'px',
               zIndex: zindex(v.layout.x, v.layout.y),
-              outline: (selected === k)? 'solid 1px #F00' : '',
+              outline: (selected === k)? 'solid 1px #F00' : 'dotted 1px #CCC',
               }"
               class="jspec-view-designer--component-base"
               v-html="evalTemplate(v)"
               @click.stop="select(v, k)">
+          </div>
+          <div :style="{
+              position: 'absolute',
+              width: '10px',
+              height: '10px',
+              // outline: 'solid 1px #000',
+              left: (v.layout.x - 5).toString() + 'px',
+              top: (v.layout.y - 5).toString() + 'px',
+              backgroundColor: 'transparent',
+              cursor: 'nwse-resize',
+              zIndex: 100000000,
+              }"
+              draggable="true"
+              @dragstart.stop="repositionStart($event, v, k)"
+              @dragend.stop="repositionEnd($event, v, k)"
+              @drag.stop="repositionDrag($event, v, k)"
+              v-if="selected === k">
           </div>
           <div :style="{
               position: 'absolute',
@@ -253,13 +387,14 @@ var jspecViewDesigner = {
               draggable="true"
               @dragstart.stop="resizeStart($event, v, k)"
               @dragend.stop="resizeEnd($event, v, k)"
-              @drag.stop="resizeDrag($event, v, k)">
+              @drag.stop="resizeDrag($event, v, k)"
+              v-if="selected === k">
           </div>
           <div :style="{
               position: 'absolute',
-              width: (5).toString() + 'px',
+              width: (4).toString() + 'px',
               height: (v.layout.height).toString() + 'px',
-              left: (v.layout.x).toString() + 'px',
+              left: (v.layout.x - 2).toString() + 'px',
               top: (v.layout.y).toString() + 'px',
               backgroundColor: 'transparent',
               cursor: 'move',
@@ -268,13 +403,14 @@ var jspecViewDesigner = {
               draggable="true"
               @dragstart.stop="moveStart($event, v, k)"
               @dragend.stop="moveEnd($event, v, k)"
-              @drag.stop="moveDrag($event, v, k)">
+              @drag.stop="moveDrag($event, v, k)"
+              v-if="selected === k">
           </div>
           <div :style="{
               position: 'absolute',
-              width: (5).toString() + 'px',
+              width: (4).toString() + 'px',
               height: (v.layout.height).toString() + 'px',
-              left: (v.layout.x + v.layout.width).toString() + 'px',
+              left: (v.layout.x + v.layout.width - 2).toString() + 'px',
               top: (v.layout.y).toString() + 'px',
               backgroundColor: 'transparent',
               cursor: 'move',
@@ -283,14 +419,15 @@ var jspecViewDesigner = {
               draggable="true"
               @dragstart.stop="moveStart($event, v, k)"
               @dragend.stop="moveEnd($event, v, k)"
-              @drag.stop="moveDrag($event, v, k)">
+              @drag.stop="moveDrag($event, v, k)"
+              v-if="selected === k">
           </div>
           <div :style="{
               position: 'absolute',
               width: (v.layout.width).toString() + 'px',
-              height: (5).toString() + 'px',
+              height: (4).toString() + 'px',
               left: (v.layout.x).toString() + 'px',
-              top: (v.layout.y).toString() + 'px',
+              top: (v.layout.y - 2).toString() + 'px',
               backgroundColor: 'transparent',
               cursor: 'move',
               zIndex: 100000000
@@ -298,14 +435,15 @@ var jspecViewDesigner = {
               draggable="true"
               @dragstart.stop="moveStart($event, v, k)"
               @dragend.stop="moveEnd($event, v, k)"
-              @drag.stop="moveDrag($event, v, k)">
+              @drag.stop="moveDrag($event, v, k)"
+              v-if="selected === k">
           </div>
           <div :style="{
               position: 'absolute',
               width: (v.layout.width).toString() + 'px',
-              height: (5).toString() + 'px',
+              height: (4).toString() + 'px',
               left: (v.layout.x).toString() + 'px',
-              top: (v.layout.y + v.layout.height).toString() + 'px',
+              top: (v.layout.y + v.layout.height - 2).toString() + 'px',
               backgroundColor: 'transparent',
               cursor: 'move',
               zIndex: 100000000
@@ -313,7 +451,26 @@ var jspecViewDesigner = {
               draggable="true"
               @dragstart.stop="moveStart($event, v, k)"
               @dragend.stop="moveEnd($event, v, k)"
-              @drag.stop="moveDrag($event, v, k)">
+              @drag.stop="moveDrag($event, v, k)"
+              v-if="selected === k">
+          </div>
+        </div>
+
+        <div v-if="repositioning.dragging">
+          <div :style="{
+              position: 'absolute',
+              width: (repositioning.target.layout.width - repositioning.diff.x).toString() + 'px',
+              height: (repositioning.target.layout.height - repositioning.diff.y).toString() + 'px',
+              left: (repositioning.target.layout.x + repositioning.diff.x).toString() + 'px',
+              top: (repositioning.target.layout.y + repositioning.diff.y).toString() + 'px',
+              opacity: 0.5,
+              pointerEvents: 'none',
+              cursor: 'default',
+              outline: 'solid 1px #F00',
+              zIndex: zindex(repositioning.target.layout.x, repositioning.target.layout.y)
+              }"
+              class="jspec-view-designer--component-base"
+              v-html="evalTemplate(repositioning.target)">
           </div>
         </div>
 

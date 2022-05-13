@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+  font-size: 11px;
+}
+
+.jspec-view-designer--component-base {
+  box-sizing: border-box;
+}
+
+.jspec-view-designer--component-base * {
+  box-sizing: border-box;
+}
+
+</style>
+</head>
+<body>
+  <div id="app">
+  <!-- -->
+
+<div xmlns="http://www.w3.org/1999/xhtml" style=" position: absolute; width: 500px; height: 360px; left: 10px; top: 35px; z-index: 3500010;" class="jspec-view-designer--component-base"><div style="background-color:#EFEFEF; border:solid 1px  #7272c7; border-radius:5px; width:100%; height:100%;"><div style="top:0px; height:30px; background-color: #7272c7; display:flex; justify-content:start; align-items:center; padding-left:5px; color:#fff;">İŒÉˆê——</div><contents><div style="position: absolute; width: 100px; height: 25px; left: 50px; top: 45px; z-index: 8000060;" class="jspec-view-designer--component-base"><span style="display:flex; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">İŒÉCD</span></div><div style="position: absolute; width: 470px; height: 185px; left: 20px; top: 95px; z-index: 13000030;" class="jspec-view-designer--component-base"><div style="width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; overflow:auto; border-radius:0px; background-color:transparent; border:none;"><div style="position:relative"><contents><div style="position: absolute; width: 130px; height: 50px; left: 0px; top: 0px; z-index: 13000030;" class="jspec-view-designer--component-base"><template v-for="(value,index) in stocks"><div :style="{position:'relative', marginTop:'0px', marginLeft:'0px', left:(index * 130).toString()+'px'}"><contents><div style="position: absolute; width: 100px; height: 25px; left: 30px; top: 0px; z-index: 13000060;" class="jspec-view-designer--component-base"><input type="text" style="width:100%; height:100%; border:solid 1px #888; outline:none; " v-model="value.stockCd" /></div><div style="position: absolute; width: 100px; height: 25px; left: 30px; top: 25px; z-index: 15500060;" class="jspec-view-designer--component-base"><input type="text" style="width:100%; height:100%; border:solid 1px #888; outline:none; " v-model="value.itemCd" /></div><div style="position: absolute; width: 30px; height: 50px; left: 0px; top: 0px; z-index: 13000030;" class="jspec-view-designer--component-base"><input type="text" style="width:100%; height:100%; border:solid 1px #888; outline:none; " v-model="index" /></div></contents></div></template></div></contents></div></div></div><div style="position: absolute; width: 100px; height: 25px; left: 50px; top: 70px; z-index: 10500060;" class="jspec-view-designer--component-base"><span style="display:flex; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">•i–ÚCD</span></div><div style="position: absolute; width: 30px; height: 50px; left: 20px; top: 45px; z-index: 8000030;" class="jspec-view-designer--component-base"><span style="display:flex; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">No</span></div></contents></div></div>
+
+  <!-- -->
+  </div>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    var app = Vue.createApp({
+      data() {
+        let data = {
+          stocks: []
+        };
+
+        for(var i = 0; i < 20; i++) {
+          data.stocks.push({
+              stockCd: "stockCd" + (i).toString(),
+              itemCd: "itemCd",
+              itemName: "itemName",
+              placeCd: "placeCd",
+              qty: 1234
+            });
+        }
+
+        return data;
+      },
+        });
+    app.config.isCustomElement = (tag) => { return tag === "contents"; };
+    app.mount("#app");
+  </script>
+</body>
+</html>
+
