@@ -230,7 +230,7 @@ var jspecViewDesigner = {
     generateCode() {
       let codes = Object.keys(this.view.$component)
         .map(k => this.view.$component[k])
-        .map(c => `<div style=" position: absolute; width: ${c.layout.width.toString()}px; height: ${c.layout.height.toString()}px; left: ${c.layout.x.toString()}px; top: ${c.layout.y.toString()}px; z-index: ${this.zindex(c.layout.x, c.layout.y)};" class="jspec-view-designer--component-base">${this.evalTemplate(c)}</div>`);
+        .map(c => `<div style=" position: absolute; width: ${c.layout.width.toString()}px; height: ${c.layout.height.toString()}px; left: ${c.layout.x.toString()}px; top: ${c.layout.y.toString()}px; z-index: ${this.zindex(c.layout.x, c.layout.y)}; box-sizing:border-box;">${this.evalTemplate(c)}</div>`);
       console.log(codes);
       this.createDOM();
     },
@@ -250,7 +250,7 @@ var jspecViewDesigner = {
       let cs = Object.keys(this.view.$component)
         .map(k => this.view.$component[k])
         .map(c => { 
-            let parsedDom = dp.parseFromString(`<div style=" position: absolute; width: ${c.layout.width.toString()}px; height: ${c.layout.height.toString()}px; left: ${c.layout.x.toString()}px; top: ${c.layout.y.toString()}px; z-index: ${this.zindex(c.layout.x, c.layout.y)};" class="jspec-view-designer--component-base">${this.evalTemplate(c)}</div>`, "text/html");
+            let parsedDom = dp.parseFromString(`<div style=" position: absolute; width: ${c.layout.width.toString()}px; height: ${c.layout.height.toString()}px; left: ${c.layout.x.toString()}px; top: ${c.layout.y.toString()}px; z-index: ${this.zindex(c.layout.x, c.layout.y)}; box-sizing:border-box;">${this.evalTemplate(c)}</div>`, "text/html");
             let dom = null;
             if(parsedDom.querySelector("head").children.length > 0) {
               dom = parsedDom.querySelector("head").children[0];
@@ -351,8 +351,8 @@ var jspecViewDesigner = {
               top: v.layout.y.toString() + 'px',
               zIndex: zindex(v.layout.x, v.layout.y),
               outline: (selected === k)? 'solid 1px #F00' : 'dotted 1px #CCC',
+              boxSizing: 'border-box'
               }"
-              class="jspec-view-designer--component-base"
               v-html="evalTemplate(v)"
               @click.stop="select(v, k)">
           </div>
@@ -467,9 +467,9 @@ var jspecViewDesigner = {
               pointerEvents: 'none',
               cursor: 'default',
               outline: 'solid 1px #F00',
-              zIndex: zindex(repositioning.target.layout.x, repositioning.target.layout.y)
+              zIndex: zindex(repositioning.target.layout.x, repositioning.target.layout.y),
+              boxSizing: 'border-box'
               }"
-              class="jspec-view-designer--component-base"
               v-html="evalTemplate(repositioning.target)">
           </div>
         </div>
@@ -485,9 +485,9 @@ var jspecViewDesigner = {
               pointerEvents: 'none',
               cursor: 'default',
               outline: 'solid 1px #F00',
-              zIndex: zindex(resizing.target.layout.x, resizing.target.layout.y)
+              zIndex: zindex(resizing.target.layout.x, resizing.target.layout.y),
+              boxSizing: 'border-box'
               }"
-              class="jspec-view-designer--component-base"
               v-html="evalTemplate(resizing.target)">
           </div>
         </div>
@@ -503,9 +503,9 @@ var jspecViewDesigner = {
               pointerEvents: 'none',
               cursor: 'default',
               outline: 'solid 1px #F00',
-              zIndex: zindex(moving.target.layout.x, moving.target.layout.y)
+              zIndex: zindex(moving.target.layout.x, moving.target.layout.y),
+              boxSizing: 'border-box'
               }"
-              class="jspec-view-designer--component-base"
               v-html="evalTemplate(moving.target)">
           </div>
         </div>
