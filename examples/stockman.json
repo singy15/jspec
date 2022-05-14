@@ -73,12 +73,12 @@
   "viewComponentType": {
     "form": {
       "$name": "画面",
-      "template": "`<div style=\"background-color:#EFEFEF; border:solid 1px ${type.borderColor}; border-radius:5px; width:100%; height:100%;\"><div style=\"top:0px; height:30px; background-color:${type.borderColor}; display:flex; justify-content:start; align-items:center; padding-left:5px; color:#fff;\">${(this.label)? this.label : ''}</div><contents></contents></div>`",
-      "borderColor": " #7272c7"
+      "template": "`<div style=\"background-color:#EFEFEF; border:solid 1px ${this.baseColor || type.baseColor}; border-radius:5px; width:100%; height:100%;\"><div style=\"top:0px; height:30px; background-color:${this.baseColor || type.baseColor}; display:flex; justify-content:start; align-items:center; padding-left:5px; color:#fff;\">${(this.label)? this.label : ''}</div><contents></contents></div>`",
+      "baseColor": " #7272c7"
     },
     "button": {
       "$name": "ボタン",
-      "template": "`<button style=\"width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px;\">${label}</button>`"
+      "template": "`<button style=\"width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px;\">${this.label}</button>`"
     },
     "label": {
       "$name": "ラベル",
@@ -647,6 +647,113 @@
               "height": 50
             },
             "model": "index"
+          }
+        }
+      },
+      "designer": {
+        "$component": {
+          "form": {
+            "type": "#viewComponentType.form",
+            "layout": {
+              "x": 15,
+              "y": 95,
+              "width": 580,
+              "height": 60
+            },
+            "label": "項目",
+            "baseColor": " #555"
+          },
+          "add": {
+            "type": "#viewComponentType.button",
+            "label": "追加",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 20,
+              "y": 130,
+              "width": 55,
+              "height": 20
+            }
+          },
+          "delete": {
+            "type": "#viewComponentType.button",
+            "label": "削除",
+            "layout": {
+              "type": "#layoutType.RECTANGLE",
+              "x": 80,
+              "y": 130,
+              "width": 55,
+              "height": 20
+            }
+          },
+          "name": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 140,
+              "y": 130,
+              "width": 230,
+              "height": 20
+            },
+            "label": "ＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮＮ"
+          },
+          "formOuter": {
+            "type": "#viewComponentType.form",
+            "layout": {
+              "x": 10,
+              "y": 35,
+              "width": 590,
+              "height": 200
+            },
+            "baseColor": " #555",
+            "label": "ビュー"
+          },
+          "viewPath": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 15,
+              "y": 70,
+              "width": 275,
+              "height": 20
+            }
+          },
+          "rename": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 375,
+              "y": 130,
+              "width": 65,
+              "height": 20
+            },
+            "label": "名称変更"
+          },
+          "edit": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 445,
+              "y": 130,
+              "width": 65,
+              "height": 20
+            },
+            "label": "編集"
+          },
+          "genCode": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 515,
+              "y": 130,
+              "width": 75,
+              "height": 20
+            },
+            "label": "コード生成"
+          },
+          "editView": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 295,
+              "y": 70,
+              "width": 100,
+              "height": 20
+            },
+            "label": "編集"
           }
         }
       }
