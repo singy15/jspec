@@ -314,9 +314,25 @@ var jspecViewDesigner = {
       //     }
       //   }
       // });
+      
+      let form = prcs[0].dom;
+      let formComp = prcs[0].component;
+      form.style.left = `calc(50% - ${Math.floor(formComp.layout.width / 2)}px)`;
+      form.style.top = `calc(50% - ${Math.floor(formComp.layout.height / 2)}px)`;
 
       console.log(prcs[0].dom);
-      console.log((new XMLSerializer()).serializeToString(prcs[0].dom));
+      let code = (new XMLSerializer()).serializeToString(prcs[0].dom);
+      console.log(code);
+
+
+      navigator.clipboard.writeText(code)
+        .then(() => {
+          console.log("Text copied to clipboard...")
+        })
+        .catch(err => {
+          console.log('Something went wrong', err);
+        });
+
     },
     onSelect(root, node, key) {
       this.select(node[key], key);
