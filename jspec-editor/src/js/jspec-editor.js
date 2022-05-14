@@ -359,6 +359,17 @@ var jspecEditor = {
         parentObjTo[keyFrom] = parentObjFrom[keyFrom];
         delete parentObjFrom[keyFrom];
       }
+    },
+    createOnCopyHandler(node, key) {
+      return () => {
+        navigator.clipboard.writeText(JSON.stringify(node[key]))
+          .then(() => {
+            console.log("Text copied to clipboard...")
+          })
+          .catch(err => {
+            console.log('Something went wrong', err);
+          });
+      };
     }
   },
   computed: {
@@ -398,7 +409,7 @@ var jspecEditor = {
         <br>
         <span v-for="(v,k) in node" style="white-space:nowrap;">
           <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
-          <autoresize-editor :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated"
+          <autoresize-editor :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated" :on-copy="createOnCopyHandler(node, k)"
               @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)" @click="(onSelect)? onSelect(root, node, k) : null">
           </autoresize-editor>
           <span v-if="showName && v != null && v.$name" style="font-size:0.5rem;">&nbsp;({{v.$name}})</span>

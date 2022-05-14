@@ -78,7 +78,7 @@
     },
     "button": {
       "$name": "ボタン",
-      "template": "`<button style=\"width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px;\">${this.label}</button>`"
+      "template": "`<button style=\"width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset;\">${this.label}</button>`"
     },
     "label": {
       "$name": "ラベル",
@@ -560,8 +560,8 @@
             "layout": {
               "x": 10,
               "y": 35,
-              "width": 500,
-              "height": 360
+              "width": 825,
+              "height": 540
             },
             "label": "在庫一覧"
           },
@@ -569,7 +569,7 @@
             "type": "#viewComponentType.group",
             "layout": {
               "x": 30,
-              "y": 130,
+              "y": 180,
               "width": 130,
               "height": 50
             },
@@ -579,7 +579,7 @@
             "type": "#viewComponentType.label",
             "layout": {
               "x": 60,
-              "y": 80,
+              "y": 120,
               "width": 100,
               "height": 25
             },
@@ -589,10 +589,10 @@
           "detail": {
             "type": "#viewComponentType.container",
             "layout": {
-              "x": 30,
-              "y": 130,
-              "width": 470,
-              "height": 185
+              "x": 25,
+              "y": 175,
+              "width": 795,
+              "height": 350
             },
             "style": "overflow:auto; border-radius:0px; background-color:transparent; border:none;"
           },
@@ -600,7 +600,7 @@
             "type": "#viewComponentType.text",
             "layout": {
               "x": 60,
-              "y": 130,
+              "y": 180,
               "width": 100,
               "height": 25
             },
@@ -610,7 +610,7 @@
             "type": "#viewComponentType.text",
             "layout": {
               "x": 60,
-              "y": 155,
+              "y": 205,
               "width": 100,
               "height": 25
             },
@@ -620,7 +620,7 @@
             "type": "#viewComponentType.label",
             "layout": {
               "x": 60,
-              "y": 105,
+              "y": 145,
               "width": 100,
               "height": 25
             },
@@ -631,7 +631,7 @@
             "type": "#viewComponentType.label",
             "layout": {
               "x": 30,
-              "y": 80,
+              "y": 120,
               "width": 30,
               "height": 50
             },
@@ -642,11 +642,85 @@
             "type": "#viewComponentType.text",
             "layout": {
               "x": 30,
-              "y": 130,
+              "y": 180,
               "width": 30,
               "height": 50
             },
             "model": "index"
+          },
+          "labelCondStockCd": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 20,
+              "y": 75,
+              "width": 55,
+              "height": 25
+            },
+            "label": "在庫CD",
+            "textAlign": "center",
+            "style": "background-color:#EAEAEA; border:solid 1px #CCC;"
+          },
+          "condStockCd": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 75,
+              "y": 75,
+              "width": 105,
+              "height": 25
+            },
+            "model": "condStockCd"
+          },
+          "labelCondItemCd": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 190,
+              "y": 75,
+              "width": 55,
+              "height": 25
+            },
+            "label": "品目CD",
+            "textAlign": "center",
+            "style": "background-color:#EAEAEA; border:solid 1px #CCC;"
+          },
+          "condItemCd": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 245,
+              "y": 75,
+              "width": 105,
+              "height": 25
+            },
+            "model": "condItemCd"
+          },
+          "search": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 735,
+              "y": 75,
+              "width": 90,
+              "height": 25
+            },
+            "label": "検索"
+          },
+          "sectionDetail": {
+            "type": "#viewComponentType.container",
+            "layout": {
+              "x": 20,
+              "y": 110,
+              "width": 805,
+              "height": 420
+            },
+            "style": "background-color:transparent;"
+          },
+          "unnamed2": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 725,
+              "y": 540,
+              "width": 100,
+              "height": 25
+            },
+            "label": "閉じる"
           }
         }
       },

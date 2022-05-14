@@ -317,6 +317,9 @@ var jspecViewDesigner = {
 
       console.log(prcs[0].dom);
       console.log((new XMLSerializer()).serializeToString(prcs[0].dom));
+    },
+    onSelect(root, node, key) {
+      this.select(node[key], key);
     }
   },
   computed: {
@@ -534,6 +537,10 @@ var jspecViewDesigner = {
             <div style="padding:5px; position:absolute; top:32px; left:0px; right:0px; bottom:0px; overflow:auto;" v-if="view.$component[selected]">
               <jspec-editor :root="root" :node="view.$component[selected]" :entryParent="view.$component[selected]" 
                 :entryKey="null" :level="0" :open-state="true" :show-name="false"></jspec-editor>
+            </div>
+            <div style="padding:5px; position:absolute; top:32px; left:0px; right:0px; bottom:0px; overflow:auto;" v-if="!(view.$component[selected])">
+              <jspec-editor :root="root" :node="view.$component" :entryParent="view.$component" 
+                :entryKey="null" :level="0" :open-state="true" :show-name="false" :on-select="onSelect"></jspec-editor>
             </div>
           </div>
         </div>

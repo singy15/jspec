@@ -3,7 +3,8 @@ var autoresizeEditor = {
   props: {
     value: null,
     updated: Function,
-    style: Object
+    style: Object,
+    onCopy: Function
   },
   data() {
     let tmp = this.value;
@@ -54,6 +55,7 @@ var autoresizeEditor = {
           @compositionend="resize()"
           @focus="focus()"
           @blur="focused = false"
+          @copy="(onCopy)? onCopy() : null"
           spellcheck="false"/>
     </span>
   `
