@@ -512,9 +512,9 @@ var jspecViewDesigner = {
 
         <div v-if="editing.editing"
              :style="{
-                position: 'fixed',
+                position: 'absolute',
                 top: '0px',
-                left: '0px',
+                width: '50%',
                 right: '0px',
                 bottom: '0px',
                 backgroundColor: 'rgba(0,0,0,0.3)',
@@ -522,18 +522,16 @@ var jspecViewDesigner = {
              }"
              @click.stop="editEnd()">
           <div :style="{
-                 position: 'fixed',
-                 top: '100px',
-                 left: '100px',
-                 right: '100px',
-                 bottom: '100px',
+                 position: 'absolute',
+                 width: '100%',
+                 height: '100%',
                  backgroundColor: '#FFF',
                  }"
                  @click.stop>
             <div class="jspec-view-editor--container" style="position:absolute; top:0px; left:0px;">
               <button class="jspec-view-designer--button" style="width:100px;" @click="editEnd()">CLOSE</button>
             </div>
-            <div style="padding:5px; position:absolute; top:32px; left:0px; right:0px; bottom:0px; overflow:auto;">
+            <div style="padding:5px; position:absolute; top:32px; left:0px; right:0px; bottom:0px; overflow:auto;" v-if="view.$component[selected]">
               <jspec-editor :root="root" :node="view.$component[selected]" :entryParent="view.$component[selected]" 
                 :entryKey="null" :level="0" :open-state="true" :show-name="false"></jspec-editor>
             </div>
