@@ -12,10 +12,10 @@
 <div xmlns="http://www.w3.org/1999/xhtml" style="position: absolute; width: 1415px; height: 575px; left: calc(50% - 707px); top: calc(50% - 287px); z-index: 3500010; box-sizing: border-box;">
 <div style="background-color:#EFEFEF; font-size:11px; font-family:unset; border:solid 1px  #7272c7; border-radius:5px; box-sizing:border-box; width:100%; height:100%;">
   <div style="top:0px; height:30px; box-sizing:border-box; background-color: #7272c7; display:flex; justify-content:start; align-items:center; padding-left:5px; color:#fff;">
-  テーブル
+  テーブルデザイナ
   </div>
   <contents>
-  <div style="position: absolute; width: 1040px; height: 400px; left: 10px; top: 130px; z-index: 16500020; box-sizing: border-box;"><div style="width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; box-sizing:border-box; background-color:transparent;"><div style="position:relative; box-sizing:border-box;"><contents><div style="position: absolute; width: 30px; height: 25px; left: 15px; top: 10px; z-index: 17500035; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; "></span></div><div style="position: absolute; width: 165px; height: 25px; left: 210px; top: 10px; z-index: 17500230; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">論理名</span></div><div style="position: absolute; width: 155px; height: 25px; left: 375px; top: 10px; z-index: 17500395; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">データ型</span></div><div style="position: absolute; width: 40px; height: 25px; left: 530px; top: 10px; z-index: 17500550; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">主キー</span></div><div style="position: absolute; width: 50px; height: 25px; left: 570px; top: 10px; z-index: 17500590; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">null許可</span></div><div style="position: absolute; width: 165px; height: 25px; left: 45px; top: 10px; z-index: 17500065; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">物理名</span></div><div style="position: absolute; width: 245px; height: 25px; left: 745px; top: 10px; z-index: 17500765; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">コメント</span></div><div style="position: absolute; width: 125px; height: 25px; left: 620px; top: 10px; z-index: 17500640; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">DDLオプション</span></div><div style="position: absolute; width: 1030px; height: 350px; left: 5px; top: 40px; z-index: 20500025; box-sizing: border-box;"><div style="width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; box-sizing:border-box; overflow-y:scroll; overflow-x:hidden; border-radius:0px; background-color:transparent; border:none;"><div style="position:relative; box-sizing:border-box;"><contents><div style="position: absolute; width: 1020px; height: 30px; left: 5px; top: 5px; z-index: 21000030; box-sizing: border-box;"><template v-for="(value,index) in table.columns"><div :style="{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * 30).toString()+'px'}"><contents><div style="position: absolute; width: 165px; height: 25px; left: 35px; top: 0px; z-index: 21000065; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="value.physicalName" spellcheck="false" /></div><div style="position: absolute; width: 165px; height: 25px; left: 200px; top: 0px; z-index: 21000230; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="value.logicalName" spellcheck="false" /></div><div style="position: absolute; width: 155px; height: 25px; left: 365px; top: 0px; z-index: 21000395; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="value.dataType" spellcheck="false" /></div><div style="position: absolute; width: 40px; height: 25px; left: 520px; top: 0px; z-index: 21000550; box-sizing: border-box;"><input type="number" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="value.primaryKey" spellcheck="false" /></div><div style="position: absolute; width: 125px; height: 25px; left: 610px; top: 0px; z-index: 21000640; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="value.ddlOption" spellcheck="false" /></div><div style="position: absolute; width: 245px; height: 25px; left: 735px; top: 0px; z-index: 21000765; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="value.comment" spellcheck="false" /></div><div style="position: absolute; width: 20px; height: 20px; left: 575px; top: 3px; z-index: 21300605; box-sizing: border-box;"><input type="checkbox" style="box-sizing:border-box; outline:none; " v-model="value.nullable" /></div><div style="position: absolute; width: 25px; height: 20px; left: 5px; top: 2px; z-index: 21200035; box-sizing: border-box;"><input type="radio" style="box-sizing:border-box;" :value="index" v-model="select" /></div></contents></div></template></div></contents></div></div></div></contents></div></div></div><div style="position: absolute; width: 90px; height: 25px; left: 10px; top: 40px; z-index: 7500020; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; background-color:#EAEAEA; border:solid 1px #CCC; ">テーブル物理名</span></div><div style="position: absolute; width: 300px; height: 25px; left: 100px; top: 40px; z-index: 7500110; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="table.tableName" spellcheck="false" /></div><div style="position: absolute; width: 105px; height: 25px; left: 1300px; top: 40px; z-index: 7501310; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; display:none;">表示</button></div><div style="position: absolute; width: 90px; height: 25px; left: 405px; top: 40px; z-index: 7500415; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; background-color:#EAEAEA; border:solid 1px #CCC; ">テーブル論理名</span></div><div style="position: absolute; width: 300px; height: 25px; left: 495px; top: 40px; z-index: 7500505; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="table.tableLogicalName" spellcheck="false" /></div><div style="position: absolute; width: 105px; height: 25px; left: 10px; top: 540px; z-index: 57500020; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; display:none;">登録</button></div><div style="position: absolute; width: 90px; height: 25px; left: 10px; top: 70px; z-index: 10500020; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; background-color:#EAEAEA; border:solid 1px #CCC; ">コメント</span></div><div style="position: absolute; width: 695px; height: 25px; left: 100px; top: 70px; z-index: 10500110; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="table.tableComment" spellcheck="false" /></div><div style="position: absolute; width: 105px; height: 25px; left: 1300px; top: 540px; z-index: 57501310; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; display:none;">閉じる</button></div><div style="position: absolute; width: 65px; height: 25px; left: 10px; top: 100px; z-index: 13500020; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; " @click="addColumn()">追加</button></div><div style="position: absolute; width: 65px; height: 25px; left: 80px; top: 100px; z-index: 13500090; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; " @click="deleteColumn()">削除</button></div><div style="position: absolute; width: 345px; height: 400px; left: 1060px; top: 130px; z-index: 16501070; box-sizing: border-box;"><textarea style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="source" spellcheck="false"></textarea></div><div style="position: absolute; width: 65px; height: 25px; left: 150px; top: 100px; z-index: 13500160; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; " @click="upColumn()">↑</button></div><div style="position: absolute; width: 65px; height: 25px; left: 220px; top: 100px; z-index: 13500230; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; " @click="downColumn()">↓</button></div><div style="position: absolute; width: 345px; height: 25px; left: 1060px; top: 100px; z-index: 13501070; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; " @click="copyToClipboard()">クリップボードにコピー</button></div></contents>
+  <div style="position: absolute; width: 1040px; height: 400px; left: 10px; top: 130px; z-index: 16500020; box-sizing: border-box;"><div style="width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; box-sizing:border-box; background-color:transparent;"><div style="position:relative; box-sizing:border-box;"><contents><div style="position: absolute; width: 30px; height: 25px; left: 15px; top: 10px; z-index: 17500035; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; "></span></div><div style="position: absolute; width: 165px; height: 25px; left: 210px; top: 10px; z-index: 17500230; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">論理名</span></div><div style="position: absolute; width: 155px; height: 25px; left: 375px; top: 10px; z-index: 17500395; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">データ型</span></div><div style="position: absolute; width: 40px; height: 25px; left: 530px; top: 10px; z-index: 17500550; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">主キー</span></div><div style="position: absolute; width: 50px; height: 25px; left: 570px; top: 10px; z-index: 17500590; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">null許可</span></div><div style="position: absolute; width: 165px; height: 25px; left: 45px; top: 10px; z-index: 17500065; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">物理名</span></div><div style="position: absolute; width: 245px; height: 25px; left: 745px; top: 10px; z-index: 17500765; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">コメント</span></div><div style="position: absolute; width: 125px; height: 25px; left: 620px; top: 10px; z-index: 17500640; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:; align-items:center; width:100%; height:100%; background-color:#FAFAFA; border:solid 1px #AAA; ">DDLオプション</span></div><div style="position: absolute; width: 1030px; height: 350px; left: 5px; top: 40px; z-index: 20500025; box-sizing: border-box;"><div style="width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; box-sizing:border-box; overflow-y:scroll; overflow-x:hidden; border-radius:0px; background-color:transparent; border:none;"><div style="position:relative; box-sizing:border-box;"><contents><div style="position: absolute; width: 1020px; height: 30px; left: 5px; top: 5px; z-index: 21000030; box-sizing: border-box;"><template v-for="(value,key,index) in table.$column"><div :style="{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * 30).toString()+'px'}"><contents><div style="position: absolute; width: 165px; height: 25px; left: 35px; top: 0px; z-index: 21000065; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="key" spellcheck="false" /></div><div style="position: absolute; width: 165px; height: 25px; left: 200px; top: 0px; z-index: 21000230; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="value.name" spellcheck="false" /></div><div style="position: absolute; width: 155px; height: 25px; left: 365px; top: 0px; z-index: 21000395; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="value.type" spellcheck="false" /></div><div style="position: absolute; width: 40px; height: 25px; left: 520px; top: 0px; z-index: 21000550; box-sizing: border-box;"><input type="number" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="value.primaryKey" spellcheck="false" /></div><div style="position: absolute; width: 125px; height: 25px; left: 610px; top: 0px; z-index: 21000640; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="value.ddlOption" spellcheck="false" /></div><div style="position: absolute; width: 245px; height: 25px; left: 735px; top: 0px; z-index: 21000765; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="value.comment" spellcheck="false" /></div><div style="position: absolute; width: 20px; height: 20px; left: 575px; top: 3px; z-index: 21300605; box-sizing: border-box;"><input type="checkbox" style="box-sizing:border-box; outline:none; " v-model="value.nullable" /></div><div style="position: absolute; width: 25px; height: 20px; left: 5px; top: 2px; z-index: 21200035; box-sizing: border-box;"><input type="radio" style="box-sizing:border-box;" :value="key" v-model="select" /></div></contents></div></template></div></contents></div></div></div></contents></div></div></div><div style="position: absolute; width: 105px; height: 25px; left: 1300px; top: 40px; z-index: 7501310; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; display:none;">表示</button></div><div style="position: absolute; width: 300px; height: 25px; left: 100px; top: 40px; z-index: 7500110; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="table.name" spellcheck="false" /></div><div style="position: absolute; width: 105px; height: 25px; left: 10px; top: 540px; z-index: 57500020; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; display:none;">登録</button></div><div style="position: absolute; width: 90px; height: 25px; left: 10px; top: 70px; z-index: 10500020; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; background-color:#EAEAEA; border:solid 1px #CCC; ">コメント</span></div><div style="position: absolute; width: 695px; height: 25px; left: 100px; top: 70px; z-index: 10500110; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="table.comment" spellcheck="false" /></div><div style="position: absolute; width: 105px; height: 25px; left: 1300px; top: 540px; z-index: 57501310; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; display:none;">閉じる</button></div><div style="position: absolute; width: 65px; height: 25px; left: 10px; top: 100px; z-index: 13500020; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; " @click="addColumn()">追加</button></div><div style="position: absolute; width: 65px; height: 25px; left: 80px; top: 100px; z-index: 13500090; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; " @click="deleteColumn()">削除</button></div><div style="position: absolute; width: 345px; height: 400px; left: 1060px; top: 130px; z-index: 16501070; box-sizing: border-box;"><textarea style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="source" spellcheck="false"></textarea></div><div style="position: absolute; width: 65px; height: 25px; left: 150px; top: 100px; z-index: 13500160; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; " @click="upColumn()">↑</button></div><div style="position: absolute; width: 65px; height: 25px; left: 220px; top: 100px; z-index: 13500230; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; " @click="downColumn()">↓</button></div><div style="position: absolute; width: 345px; height: 25px; left: 1060px; top: 100px; z-index: 13501070; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; " @click="copyToClipboard()">クリップボードにコピー</button></div><div style="position: absolute; width: 90px; height: 25px; left: 10px; top: 40px; z-index: 7500020; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; background-color:#EAEAEA; border:solid 1px #CCC; ">テーブル論理名</span></div></contents>
 </div>
 </div>
 
@@ -27,50 +27,31 @@
       data() {
         let data = {
           table: {
-            tableName: "",
-            tableLogicalName: "",
-            tableComment: "",
-            columns: [{
-            physicalName: "",
-            logicalName: "",
-            dataType: "",
-            primaryKey: 0,
-            nullable: false,
-            ddlOption: "",
+            name: "",
             comment: "",
-          }],
+            $column: {
+            },
           },
           select: 0
         };
-
-        // for(var i = 0; i < 20; i++) {
-        //   data.table.columns.push({
-        //     physicalName: "physicalName" + (i).toString(),
-        //     logicalName: "logicalName",
-        //     dataType: "dataType",
-        //     primaryKey: 1,
-        //     nullable: true,
-        //     ddlOption: "ddlOption",
-        //     comment: "comment",
-        //   });
-        // }
 
         return data;
       },
       methods: {
         addColumn() {
-          this.table.columns.push({
-            physicalName: "",
-            logicalName: "",
-            dataType: "",
+          this.table.$column.newitem = {
+            name: "",
+            type: "",
             primaryKey: 0,
             nullable: false,
             ddlOption: "",
             comment: "",
-          });
+          };
         },
         deleteColumn() {
-          this.table.columns.splice(this.select, 1);
+          delete this.table.$column[this.select];
+          this.table.$column = this.table.$column;
+          this.select = "";
         },
         copyToClipboard() {
           navigator.clipboard.writeText(this.source)
@@ -82,20 +63,50 @@
             });
         },
         upColumn() {
-          if(this.select === 0) {
+          if(!this.select) {
             return;
           }
-          let col = this.table.columns.splice(this.select,1);
-          this.table.columns.splice(this.select - 1,0,col[0]);
-          this.select = this.select - 1;
+
+          let columns = Object.keys(this.table.$column);
+
+          let index = columns.indexOf(this.select);
+
+          if(index === 0) {
+            return;
+          }
+          let col = columns.splice(index, 1);
+          columns.splice(index - 1, 0, col[0]);
+          // this.select = this.select - 1;
+          
+          this.table.$column = columns.reduce((m,x) => { m[x] = this.table.$column[x]; return m; }, {});
+          let tmp  = this.select;
+          this.select = "";
+          this.$nextTick(() => {
+            this.select = tmp;
+          });
         },
         downColumn() {
-          if(this.select === (this.table.columns.length - 1)) {
+          if(!this.select) {
             return;
           }
-          let col = this.table.columns.splice(this.select,1);
-          this.table.columns.splice(this.select + 1,0,col[0]);
-          this.select = this.select + 1;
+
+          let columns = Object.keys(this.table.$column);
+
+          let index = columns.indexOf(this.select);
+
+          if(index === (columns.length - 1)) {
+            return;
+          }
+          let col = columns.splice(index, 1);
+          columns.splice(index + 1, 0, col[0]);
+          // this.select = this.select + 1;
+
+          this.table.$column = columns.reduce((m,x) => { m[x] = this.table.$column[x]; return m; }, {});
+          let tmp  = this.select;
+          this.select = "";
+          this.$nextTick(() => {
+            this.select = tmp;
+          });
         }
       },
       computed: {
@@ -110,7 +121,7 @@
       }
     });
     app.config.isCustomElement = (tag) => { return tag === "contents"; };
-    app.mount("#app");
+    window.app = app.mount("#app");
   </script>
 </body>
 </html>

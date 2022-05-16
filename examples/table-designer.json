@@ -62,11 +62,15 @@
     "number": {
       "template": "`<input type=\"number\" style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} spellcheck=\"false\" />`",
       "$name": "数値入力"
+    },
+    "groupObj": {
+      "template": "`<template v-for=\"(value,key,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`",
+      "outerTagPositioning": "relative"
     }
   },
-  "tableDesigner": {
+  "designer": {
     "$view": {
-      "designer": {
+      "processDesigner": {
         "$component": {
           "form": {
             "type": "#viewComponentType.form",
@@ -440,6 +444,361 @@
             },
             "label": "クリップボードにコピー",
             "click": "copyToClipboard()"
+          }
+        }
+      },
+      "tableDesigner": {
+        "$component": {
+          "form": {
+            "type": "#viewComponentType.form",
+            "layout": {
+              "x": 10,
+              "y": 35,
+              "width": 1415,
+              "height": 575
+            },
+            "label": "テーブルデザイナ"
+          },
+          "labelNo": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 35,
+              "y": 175,
+              "width": 30,
+              "height": 25
+            },
+            "label": "",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "sectionDetail": {
+            "type": "#viewComponentType.container",
+            "layout": {
+              "x": 20,
+              "y": 165,
+              "width": 1040,
+              "height": 400
+            },
+            "style": "background-color:transparent;"
+          },
+          "display": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 1310,
+              "y": 75,
+              "width": 105,
+              "height": 25
+            },
+            "label": "表示",
+            "style": "display:none;"
+          },
+          "columns": {
+            "type": "#viewComponentType.groupObj",
+            "layout": {
+              "x": 30,
+              "y": 210,
+              "width": 1020,
+              "height": 30
+            },
+            "model": "table.$column"
+          },
+          "labelLogicalName": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 230,
+              "y": 175,
+              "width": 165,
+              "height": 25
+            },
+            "label": "論理名",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "labelDataType": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 395,
+              "y": 175,
+              "width": 155,
+              "height": 25
+            },
+            "label": "データ型",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "labelPrimaryKey": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 550,
+              "y": 175,
+              "width": 40,
+              "height": 25
+            },
+            "label": "主キー",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "labelNullable": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 590,
+              "y": 175,
+              "width": 50,
+              "height": 25
+            },
+            "label": "null許可",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "labelPhysicalName": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 65,
+              "y": 175,
+              "width": 165,
+              "height": 25
+            },
+            "label": "物理名",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "labelComment": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 765,
+              "y": 175,
+              "width": 245,
+              "height": 25
+            },
+            "label": "コメント",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "labelDdlOption": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 640,
+              "y": 175,
+              "width": 125,
+              "height": 25
+            },
+            "label": "DDLオプション",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "columnsContainer": {
+            "type": "#viewComponentType.container",
+            "layout": {
+              "x": 25,
+              "y": 205,
+              "width": 1030,
+              "height": 350
+            },
+            "style": "overflow-y:scroll; overflow-x:hidden; border-radius:0px; background-color:transparent; border:none;"
+          },
+          "physicalName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 65,
+              "y": 210,
+              "width": 165,
+              "height": 25
+            },
+            "model": "key"
+          },
+          "logicalName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 230,
+              "y": 210,
+              "width": 165,
+              "height": 25
+            },
+            "model": "value.name"
+          },
+          "dataType": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 395,
+              "y": 210,
+              "width": 155,
+              "height": 25
+            },
+            "model": "value.type"
+          },
+          "primaryKey": {
+            "type": "#viewComponentType.number",
+            "layout": {
+              "x": 550,
+              "y": 210,
+              "width": 40,
+              "height": 25
+            },
+            "model": "value.primaryKey"
+          },
+          "ddlOption": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 640,
+              "y": 210,
+              "width": 125,
+              "height": 25
+            },
+            "model": "value.ddlOption"
+          },
+          "comment": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 765,
+              "y": 210,
+              "width": 245,
+              "height": 25
+            },
+            "model": "value.comment"
+          },
+          "nullable": {
+            "type": "#viewComponentType.check",
+            "layout": {
+              "x": 605,
+              "y": 213,
+              "width": 20,
+              "height": 20
+            },
+            "model": "value.nullable"
+          },
+          "condTableLogicalName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 110,
+              "y": 75,
+              "width": 300,
+              "height": 25
+            },
+            "model": "table.name"
+          },
+          "register": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 20,
+              "y": 575,
+              "width": 105,
+              "height": 25
+            },
+            "label": "登録",
+            "style": "display:none;"
+          },
+          "labelTableComment": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 20,
+              "y": 105,
+              "width": 90,
+              "height": 25
+            },
+            "label": "コメント",
+            "textAlign": "center",
+            "style": "background-color:#EAEAEA; border:solid 1px #CCC;"
+          },
+          "tableComment": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 110,
+              "y": 105,
+              "width": 695,
+              "height": 25
+            },
+            "model": "table.comment"
+          },
+          "close": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 1310,
+              "y": 575,
+              "width": 105,
+              "height": 25
+            },
+            "label": "閉じる",
+            "style": "display:none;"
+          },
+          "select": {
+            "type": "#viewComponentType.radio",
+            "layout": {
+              "x": 35,
+              "y": 212,
+              "width": 25,
+              "height": 20
+            },
+            "value": "key",
+            "model": "select"
+          },
+          "addColumn": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 20,
+              "y": 135,
+              "width": 65,
+              "height": 25
+            },
+            "label": "追加",
+            "click": "addColumn()"
+          },
+          "deleteColumn": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 90,
+              "y": 135,
+              "width": 65,
+              "height": 25
+            },
+            "label": "削除",
+            "click": "deleteColumn()"
+          },
+          "source": {
+            "type": "#viewComponentType.textarea",
+            "layout": {
+              "x": 1070,
+              "y": 165,
+              "width": 345,
+              "height": 400
+            },
+            "model": "source"
+          },
+          "upColumn": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 160,
+              "y": 135,
+              "width": 65,
+              "height": 25
+            },
+            "label": "↑",
+            "click": "upColumn()"
+          },
+          "downColumn": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 230,
+              "y": 135,
+              "width": 65,
+              "height": 25
+            },
+            "label": "↓",
+            "click": "downColumn()"
+          },
+          "copyToClipboard": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 1070,
+              "y": 135,
+              "width": 345,
+              "height": 25
+            },
+            "label": "クリップボードにコピー",
+            "click": "copyToClipboard()"
+          },
+          "labelTableLogicalName": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 20,
+              "y": 75,
+              "width": 90,
+              "height": 25
+            },
+            "label": "テーブル論理名",
+            "textAlign": "center",
+            "style": "background-color:#EAEAEA; border:solid 1px #CCC;"
           }
         }
       }
