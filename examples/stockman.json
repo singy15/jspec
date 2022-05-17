@@ -7,11 +7,13 @@
   },
   "ioType": {
     "$name": "入出力タイプ",
-    "DB": {
-      "$name": "データベース"
+    "db": {
+      "$name": "データベース",
+      "query": {},
+      "command": {}
     },
-    "FILE": {},
-    "MODEL": {}
+    "model": {},
+    "file": {}
   },
   "layoutType": {
     "$name": "レイアウトタイプ",
@@ -859,7 +861,7 @@
     },
     "$io": {
       "INSERT_SALE": {
-        "type": "#ioType.DB",
+        "type": "#ioType.db",
         "params$": {
           "MODEL": {
             "type": "#stockDomain.models$.SALE"
@@ -868,7 +870,7 @@
         "sql": "INSERT INTO SALE \n(SALE_NO,ISSUE_DATE,DESCRIPTION,AMOUNT) \nVALUES (@MODEL.SALE_NO,@MODEL.ISSUE_DATE,@MODEL.DESCRIPTION,@MODEL.AMOUNT)"
       },
       "DELETE_SALE": {
-        "type": "#ioType.DB",
+        "type": "#ioType.db",
         "params$": {
           "MODEL": {
             "type": "#stockDomain.models$.SALE"
@@ -876,25 +878,25 @@
         },
         "sql": "DELETE FROM SALE WHERE SALE_NO = @MODEL.SALE_NO"
       },
-      "SELECT_SALE": {
-        "type": "#ioType.DB",
-        "params$": {
-          "MODEL": {
-            "type": "#stockDomain.models$.SALE"
-          }
-        },
-        "sql": "SELECT * FROM SALE WHERE SALE_NO = @MODEL.SALE_NO"
-      },
       "stockTransfer": {
         "name": "在庫受払入出力",
         "insert": {
-          "type": "#ioType.DB",
+          "type": "#ioType.db",
           "$param": {
             "stockTransfer": {
               "type": "#stock.$model.stockTransfer"
             }
           },
           "sql": "INSERT INTO stock_transfer (stock_id, item_id, qty)\nVALUES ($stockTransfer.stockId, $stockTransfer.itemId, $stockTransfer.qty);"
+        }
+      },
+      "stock": {
+        "selectByPrimaryKey": {
+          "type": "#ioType.db.query",
+          "sql": "SELECT stock_id as stockId, stock_cd as stockCd, place_id as placeId, item_id as itemId, qty, reserved_qty as reservedQty FROM stock WHERE stock_id = @stockId",
+          "param": {
+            "stockId": {}
+          }
         }
       }
     },
@@ -931,35 +933,6 @@
   },
   "$database": {
     "$table": {
-      "stock": {
-        "name": "在庫",
-        "$column": {
-          "stock_id": {
-            "type": "#domainType.id",
-            "name": "在庫ID"
-          },
-          "stock_cd": {
-            "type": "#domainType.stockCd",
-            "name": "在庫CD"
-          },
-          "place_id": {
-            "type": "#domainType.id",
-            "name": "場所ID"
-          },
-          "item_id": {
-            "type": "#domainType.id",
-            "name": "品目ID"
-          },
-          "qty": {
-            "type": "#domainType.stockQty",
-            "name": "在庫数量"
-          },
-          "reservedQty": {
-            "type": "#domainType.stockQty",
-            "name": "引当数量"
-          }
-        }
-      },
       "stock_transfer": {
         "name": "在庫受払",
         "$column": {
@@ -1012,6 +985,38 @@
           "name": {
             "type": "#domainType.longName",
             "name": "場所名"
+          }
+        }
+      },
+      "stock": {
+        "name": "在庫",
+        "$column": {
+          "stock_id": {
+            "type": "bigint",
+            "name": "在庫ID",
+            "primaryKey": 1,
+            "ddlOption": "auto_increment"
+          },
+          "stock_cd": {
+            "type": "varchar(8)",
+            "name": "在庫CD",
+            "comment": ""
+          },
+          "place_id": {
+            "type": "bigint",
+            "name": "場所ID"
+          },
+          "item_id": {
+            "type": "bigint",
+            "name": "品目ID"
+          },
+          "qty": {
+            "type": "bigint",
+            "name": "在庫数量"
+          },
+          "reserved_qty": {
+            "type": "bigint",
+            "name": "引当数量"
           }
         }
       }
