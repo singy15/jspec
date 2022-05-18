@@ -101,10 +101,6 @@
     "container": {
       "template": "`<div style=\"width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; box-sizing:border-box; ${(this.style)? this.style : ''}\"><div style=\"position:relative; box-sizing:border-box;\"><contents></contents></div></div>`"
     },
-    "group": {
-      "template": "`<template v-for=\"(value,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`",
-      "outerTagPositioning": "relative"
-    },
     "textarea": {
       "template": "`<textarea style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} spellcheck=\"false\"></textarea>`",
       "$name": "テキストエリア"
@@ -116,6 +112,22 @@
     "number": {
       "template": "`<input type=\"number\" style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} spellcheck=\"false\" />`",
       "$name": "数値入力"
+    },
+    "arrayGroupVertical": {
+      "template": "`<template v-for=\"(value,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`",
+      "outerTagPositioning": "relative"
+    },
+    "arrayGroupHorizontal": {
+      "template": "`<template v-for=\"(value,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', left:(index * ${this.layout.width}).toString()+'px'}\"><contents></contents></div></template>`",
+      "outerTagPositioning": "relative"
+    },
+    "objectGroupVertical": {
+      "template": "`<template v-for=\"(value,key,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`",
+      "outerTagPositioning": "relative"
+    },
+    "objectGroupHorizontal": {
+      "template": "`<template v-for=\"(value,key,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', left:(index * ${this.layout.width}).toString()+'px'}\"><contents></contents></div></template>`",
+      "outerTagPositioning": "relative"
     }
   },
   "stock": {
@@ -580,7 +592,7 @@
             "label": "在庫一覧"
           },
           "stocks": {
-            "type": "#viewComponentType.group",
+            "type": "#viewComponentType.arrayGroupVertical",
             "layout": {
               "x": 30,
               "y": 180,
