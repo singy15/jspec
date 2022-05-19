@@ -801,6 +801,83 @@
             "style": "background-color:#EAEAEA; border:solid 1px #CCC;"
           }
         }
+      },
+      "codeGeneratorModel": {
+        "$component": {
+          "form": {
+            "type": "#viewComponentType.form",
+            "layout": {
+              "x": 15,
+              "y": 45,
+              "width": 640,
+              "height": 460
+            },
+            "label": "CodeGenerator - Model"
+          },
+          "modelName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 105,
+              "y": 85,
+              "width": 175,
+              "height": 20
+            },
+            "model": "modelName"
+          },
+          "labelModelName": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 25,
+              "y": 85,
+              "width": 80,
+              "height": 20
+            },
+            "label": "Model name",
+            "textAlign": "center"
+          },
+          "labelModelDefinition": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 25,
+              "y": 110,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Model definition",
+            "textAlign": "center"
+          },
+          "modelDefinition": {
+            "type": "#viewComponentType.textarea",
+            "layout": {
+              "x": 25,
+              "y": 135,
+              "width": 620,
+              "height": 155
+            },
+            "model": "modelDefinition"
+          },
+          "labelCodeGenerated": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 25,
+              "y": 295,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Code generated",
+            "textAlign": "center"
+          },
+          "codeGenerated": {
+            "type": "#viewComponentType.textarea",
+            "layout": {
+              "x": 25,
+              "y": 320,
+              "width": 620,
+              "height": 175
+            },
+            "model": "codeGenerated"
+          }
+        }
       }
     }
   }

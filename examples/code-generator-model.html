@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+</style>
+</head>
+<body>
+  <div id="app">
+  <!-- -->
+
+<div xmlns="http://www.w3.org/1999/xhtml" style="position: absolute; width: 640px; height: 460px; left: calc(50% - 320px); top: calc(50% - 230px); z-index: 4500015; box-sizing: border-box;">
+<div style="background-color:#EFEFEF; font-size:11px; font-family:unset; border:solid 1px  #7272c7; border-radius:5px; box-sizing:border-box; width:100%; height:100%;">
+  <div style="top:0px; height:30px; box-sizing:border-box; background-color: #7272c7; display:flex; justify-content:start; align-items:center; padding-left:5px; color:#fff;">
+  CodeGenerator - Model
+  </div>
+  <contents>
+  <div style="position: absolute; width: 175px; height: 20px; left: 90px; top: 40px; z-index: 8500105; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="modelName" spellcheck="false" /></div><div style="position: absolute; width: 80px; height: 20px; left: 10px; top: 40px; z-index: 8500025; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%;  ">Model name</span></div><div style="position: absolute; width: 100px; height: 20px; left: 10px; top: 65px; z-index: 11000025; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%;  ">Model definition</span></div><div style="position: absolute; width: 620px; height: 155px; left: 10px; top: 90px; z-index: 13500025; box-sizing: border-box;"><textarea style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="modelDefinition" spellcheck="false"></textarea></div><div style="position: absolute; width: 100px; height: 20px; left: 10px; top: 250px; z-index: 29500025; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%;  ">Code generated</span></div><div style="position: absolute; width: 620px; height: 175px; left: 10px; top: 275px; z-index: 32000025; box-sizing: border-box;"><textarea style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="codeGenerated" spellcheck="false"></textarea></div></contents>
+</div>
+</div>
+
+  <!-- -->
+  </div>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    var app = Vue.createApp({
+      data() {
+        let data = {
+          modelName: "sampleModel",
+          modelDefinition: JSON.stringify({
+            itemId: { type: "long" },
+            name: { type: "string" }
+          })
+        };
+
+        return data;
+      },
+      methods: {
+      },
+      computed: {
+        codeGenerated() {
+          let model = JSON.parse(this.modelDefinition);
+          return [
+            `public class ${this.modelName[0].toUpperCase() + this.modelName.substring(1)} {`,
+            ...Object.keys(model)
+              .map(k => `    public ${model[k].type} ${k[0].toUpperCase() + k.substring(1)} { get; set; }`),
+            `}`
+          ].join("\n");
+        }
+      }
+    });
+    app.config.isCustomElement = (tag) => { return tag === "contents"; };
+    window.app = app.mount("#app");
+  </script>
+</body>
+</html>
+
