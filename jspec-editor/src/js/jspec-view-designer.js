@@ -320,11 +320,23 @@ var jspecViewDesigner = {
       form.style.left = `calc(50% - ${Math.floor(formComp.layout.width / 2)}px)`;
       form.style.top = `calc(50% - ${Math.floor(formComp.layout.height / 2)}px)`;
 
-      console.log(prcs[0].dom);
+      var replaceTemplateContents = (t) => {
+        let dom = (t.tagName === "TEMPLATE")? t.content : t;
+        while(dom.querySelector("contents")) {
+          let contents = dom.querySelector("contents");
+          contents.replaceWith(...contents.children);
+        }
+
+        var templates = dom.querySelectorAll("template");
+        for(var i = 0; i < templates.length; i++) {
+          replaceTemplateContents(templates[i]);
+        }
+      };
+
+      replaceTemplateContents(prcs[0].dom);
+
       let code = (new XMLSerializer()).serializeToString(prcs[0].dom);
-      console.log(code);
-
-
+   
       navigator.clipboard.writeText(code)
         .then(() => {
           console.log("Text copied to clipboard...")
