@@ -230,9 +230,12 @@ var jspecViewDesigner = {
     generateCode() {
       let codes = Object.keys(this.view.$component)
         .map(k => this.view.$component[k])
+        .filter(c => { return !(c.undocumented); })
+        .map(c => { console.log(c); return c; })
         .map(c => `<div style=" position: absolute; width: ${c.layout.width.toString()}px; height: ${c.layout.height.toString()}px; left: ${c.layout.x.toString()}px; top: ${c.layout.y.toString()}px; z-index: ${this.zindex(c.layout.x, c.layout.y)}; box-sizing:border-box;">${this.evalTemplate(c)}</div>`);
       console.log(codes);
       this.createDOM();
+      alert("The code copied to clipboard!");
     },
     createDOM() {
       let includeGeometrically = (a, b) => {
