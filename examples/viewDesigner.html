@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+</style>
+</head>
+<body>
+  <div id="app">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="position: absolute; width: 1060px; height: 540px; left: calc(50% - 530px); top: calc(50% - 270px); z-index: 3500010; box-sizing: border-box;">
+    <div style="background-color:#EFEFEF; font-size:11px; font-family:unset; border:solid 1px  #7272c7; border-radius:5px; box-sizing:border-box; width:100%; height:100%;">
+      <div style="top:0px; height:30px; box-sizing:border-box; background-color: #7272c7; display:flex; justify-content:start; align-items:center; padding-left:5px; color:#fff;">
+      ビューデザイナ
+      </div>
+      <div style="position: absolute; width: 1040px; height: 310px; left: 10px; top: 130px; z-index: 16500020; box-sizing: border-box;"><div style="width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; box-sizing:border-box; background-color:transparent;"><div style="position:relative; box-sizing:border-box;"><div style="position: absolute; width: 30px; height: 25px; left: 15px; top: 10px; z-index: 17500035; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; border:solid 1px #CCC; background-color:#FAFAFA; border:solid 1px #AAA; "></span></div><div style="position: absolute; width: 165px; height: 25px; left: 210px; top: 10px; z-index: 17500230; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; border:solid 1px #CCC; background-color:#FAFAFA; border:solid 1px #AAA; ">論理名</span></div><div style="position: absolute; width: 165px; height: 25px; left: 45px; top: 10px; z-index: 17500065; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; border:solid 1px #CCC; background-color:#FAFAFA; border:solid 1px #AAA; ">物理名</span></div><div style="position: absolute; width: 1030px; height: 260px; left: 5px; top: 40px; z-index: 20500025; box-sizing: border-box;"><div style="width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; box-sizing:border-box; overflow-y:scroll; overflow-x:hidden; border-radius:0px; background-color:transparent; border:none;"><div style="position:relative; box-sizing:border-box;"><div style="position: absolute; width: 1020px; height: 30px; left: 5px; top: 5px; z-index: 21000030; box-sizing: border-box;"><template v-for="(value,key,index) in view.$component"><div :style="{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * 30).toString()+'px'}"><div style="position: absolute; width: 165px; height: 25px; left: 35px; top: 0px; z-index: 21000065; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " @change="keychange($event,key)" :value="key" spellcheck="false" /></div><div style="position: absolute; width: 165px; height: 25px; left: 200px; top: 0px; z-index: 21000230; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="value.name" spellcheck="false" /></div><div style="position: absolute; width: 25px; height: 20px; left: 5px; top: 2px; z-index: 21200035; box-sizing: border-box;"><input type="radio" style="box-sizing:border-box;" :value="key" v-model="select" /></div><div style="position: absolute; width: 155px; height: 25px; left: 365px; top: 0px; z-index: 21000395; box-sizing: border-box;"><select style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="value.type" spellcheck="false"><option v-for="value in viewComponentTypeArray" :value="value.value">{{value.text}}</option></select></div></div></template></div></div></div></div><div style="position: absolute; width: 155px; height: 25px; left: 375px; top: 10px; z-index: 17500395; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; border:solid 1px #CCC; background-color:#FAFAFA; border:solid 1px #AAA; ">コンポーネント型</span></div></div></div></div><div style="position: absolute; width: 65px; height: 25px; left: 10px; top: 100px; z-index: 13500020; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; cursor:pointer; " @click="addColumn()">追加</button></div><div style="position: absolute; width: 65px; height: 25px; left: 80px; top: 100px; z-index: 13500090; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; cursor:pointer; " @click="deleteColumn()">削除</button></div><div style="position: absolute; width: 910px; height: 85px; left: 10px; top: 445px; z-index: 48000020; box-sizing: border-box;"><textarea style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none;  " v-model="source" spellcheck="false"></textarea></div><div style="position: absolute; width: 65px; height: 25px; left: 150px; top: 100px; z-index: 13500160; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; cursor:pointer; " @click="upColumn()">↑</button></div><div style="position: absolute; width: 65px; height: 25px; left: 220px; top: 100px; z-index: 13500230; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; cursor:pointer; " @click="downColumn()">↓</button></div><div style="position: absolute; width: 125px; height: 85px; left: 925px; top: 445px; z-index: 48000935; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; cursor:pointer; " @click="copyToClipboard()">クリップボードに<br />コピー</button></div><div style="position: absolute; width: 90px; height: 25px; left: 10px; top: 40px; z-index: 7500020; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; border:solid 1px #CCC; background-color:#EAEAEA; border:solid 1px #CCC; ">ビュー論理名</span></div><div style="position: absolute; width: 300px; height: 25px; left: 100px; top: 40px; z-index: 7500110; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="view.name" spellcheck="false" /></div><div style="position: absolute; width: 90px; height: 25px; left: 10px; top: 70px; z-index: 10500020; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; border:solid 1px #CCC; background-color:#EAEAEA; border:solid 1px #CCC; ">コメント</span></div><div style="position: absolute; width: 695px; height: 25px; left: 100px; top: 70px; z-index: 10500110; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " v-model="view.comment" spellcheck="false" /></div>
+    </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    var app = Vue.createApp({
+      data() {
+        let data = {
+          viewComponentType: {"form":{"$name":"画面","template":"`\n<div style=\"background-color:#EFEFEF; font-size:11px; font-family:unset; border:solid 1px ${this.baseColor || type.baseColor}; border-radius:5px; box-sizing:border-box; width:100%; height:100%;\">\n  <div style=\"top:0px; height:30px; box-sizing:border-box; background-color:${this.baseColor || type.baseColor}; display:flex; justify-content:start; align-items:center; padding-left:5px; color:#fff;\">\n  ${(this.label)? this.label : ''}\n  </div>\n  <contents>\n  </contents>\n</div>\n`","baseColor":" #7272c7"},"button":{"$name":"ボタン","template":"`<button style=\"width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; cursor:pointer; ${(this.style)? this.style : ''}\" ${(this.click)? '@click=\"' + this.click + '\"' : ''} ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''}>${this.label}</button>`"},"label":{"$name":"ラベル","template":"`<span style=\"display:flex; box-sizing:border-box; justify-content:${(this.textAlign)? this.textAlign : 'center'}; align-items:center; width:100%; height:100%; border:solid 1px #CCC; ${(this.style)? this.style : ''} \" ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''} ${(this.html)? 'v-html=\"'+this.html+'\"' : ''}>${(this.label)? this.label : ''}</span>`"},"radio":{"$name":"ラジオボタン","template":"`<input type=\"radio\" style=\"box-sizing:border-box;\" ${(this.value)? ':value=\"' + this.value + '\"' : ''} ${(this.model)? 'v-model=\"' + this.model + '\"' : ''} />`"},"text":{"template":"`<input type=\"text\" style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''} spellcheck=\"false\" />`","$name":"テキストボックス"},"date":{"$name":"日付","template":"`<input type=\"date\" style=\"width:100%; height:100%; box-sizing:border-box;\" value=\"${(this.label)? this.label : ''}\" />`"},"container":{"template":"`<div style=\"width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; box-sizing:border-box; ${(this.style)? this.style : ''}\" ${(this.vue)? Object.keys(this.vue).map(k => `v-${k}=\"${this.vue[k]}\"`).join(\" \") : ''}><div style=\"position:relative; box-sizing:border-box;\" ${(this.tabindex)? 'tabindex=\"'+this.tabindex+'\"' : ''}><contents></contents></div></div>`"},"textarea":{"template":"`<textarea style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none;  ${(this.style)? this.style : ''}\" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} spellcheck=\"false\"></textarea>`","$name":"テキストエリア"},"check":{"template":"`<input type=\"checkbox\" style=\"box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} />`","$name":"チェックボックス"},"number":{"template":"`<input type=\"number\" style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} spellcheck=\"false\" />`","$name":"数値入力"},"arrayGroupVertical":{"template":"`<template v-for=\"(value,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`","outerTagPositioning":"relative"},"arrayGroupHorizontal":{"template":"`<template v-for=\"(value,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', left:(index * ${this.layout.width}).toString()+'px'}\"><contents></contents></div></template>`","outerTagPositioning":"relative"},"objectGroupVertical":{"template":"`<template v-for=\"(value,key,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`","outerTagPositioning":"relative"},"objectGroupHorizontal":{"template":"`<template v-for=\"(value,key,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', left:(index * ${this.layout.width}).toString()+'px'}\"><contents></contents></div></template>`","outerTagPositioning":"relative"},"raw":{"template":"`${(this.html)? this.html : ''}`"},"image":{"template":"`<div style=\"width:100%; height:100%;display:flex;align-items:center;justify-content:center;\"><img style=\"max-width:100%; max-height:100%; width:fit-content; height:fit-content; box-sizing:border-box; font-size:11px; font-family:unset; ${(this.style)? this.style : ''}\" ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''} /></div>`"},"dropdown":{"template":"`<select style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.readonly)? 'readonly' : ''} ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''} spellcheck=\"false\"><option v-for=\"value in ${this.source}\" :value=\"value.value\">{{value.text}}</option></select>`"}},
+          view: {
+            name: "viewName",
+            comment: "comment",
+            $component: {
+              comp1: {
+                name: "comp1name",
+                type: "#viewComponentType.text"
+              },
+              comp2: {
+                name: "comp2name",
+                type: "#viewComponentType.text"
+              },
+              comp3: {
+                name: "comp3name",
+                type: "#viewComponentType.text"
+              }
+            }
+          },
+          select: 0,
+        };
+
+        return data;
+      },
+      methods: {
+        addColumn() {
+          this.view.$component.newitem = {
+            name: "",
+            type: "#viewComponentType.text",
+            comment: "",
+            layout: { x: 100, y:100, width:100, height:20 }
+          };
+        },
+        deleteColumn() {
+          delete this.view.$component[this.select];
+          this.view.$component = this.view.$component;
+          this.select = "";
+        },
+        copyToClipboard() {
+          navigator.clipboard.writeText(this.source)
+            .then(() => {
+              console.log("Text copied to clipboard...")
+            })
+            .catch(err => {
+              console.log('Something went wrong', err);
+            });
+        },
+        upColumn() {
+          if(!this.select) {
+            return;
+          }
+
+          let columns = Object.keys(this.view.$component);
+
+          let index = columns.indexOf(this.select);
+
+          if(index === 0) {
+            return;
+          }
+          let col = columns.splice(index, 1);
+          columns.splice(index - 1, 0, col[0]);
+          // this.select = this.select - 1;
+          
+          this.view.$component = columns.reduce((m,x) => { m[x] = this.view.$component[x]; return m; }, {});
+          let tmp  = this.select;
+          this.select = "";
+          this.$nextTick(() => {
+            this.select = tmp;
+          });
+        },
+        downColumn() {
+          if(!this.select) {
+            return;
+          }
+
+          let columns = Object.keys(this.view.$component);
+
+          let index = columns.indexOf(this.select);
+
+          if(index === (columns.length - 1)) {
+            return;
+          }
+          let col = columns.splice(index, 1);
+          columns.splice(index + 1, 0, col[0]);
+          // this.select = this.select + 1;
+
+          this.view.$component = columns.reduce((m,x) => { m[x] = this.view.$component[x]; return m; }, {});
+          let tmp  = this.select;
+          this.select = "";
+          this.$nextTick(() => {
+            this.select = tmp;
+          });
+        },
+        keychange(event, oldkey) {
+          let newkey = event.target.value;
+          if(this.view.$component[newkey]) {
+            alert("duplicate key!");
+            event.target.value = oldkey;
+            return false;
+          }
+
+          this.view.$component = Object.keys(this.view.$component)
+            .reduce((m,k) => {
+                m[((k === oldkey)? newkey : k)] = this.view.$component[k];
+                return m;
+              }, {});
+        }
+      },
+      computed: {
+        source: {
+          get() { return JSON.stringify(this.view, null, 2); },
+          set(value) { this.view = JSON.parse(value); }
+        },
+        viewComponentTypeArray() {
+          return Object.keys(this.viewComponentType)
+                .map(k => { return { text: k, value: "#viewComponentType." + k }; });
+        }
+      }
+    });
+    window.app = app.mount("#app");
+  </script>
+</body>
+</html>
+

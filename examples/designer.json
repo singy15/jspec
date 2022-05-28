@@ -26,18 +26,18 @@
     },
     "button": {
       "$name": "ボタン",
-      "template": "`<button style=\"width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; ${(this.style)? this.style : ''}\" ${(this.click)? '@click=\"' + this.click + '\"' : ''}>${this.label}</button>`"
+      "template": "`<button style=\"width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; cursor:pointer; ${(this.style)? this.style : ''}\" ${(this.click)? '@click=\"' + this.click + '\"' : ''} ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''}>${this.label}</button>`"
     },
     "label": {
       "$name": "ラベル",
-      "template": "`<span style=\\\"display:flex; box-sizing:border-box; justify-content:${(this.textAlign)? this.textAlign : ''}; align-items:center; width:100%; height:100%; ${(this.style)? this.style : ''} \\\">${(this.label)? this.label : ''}</span>`"
+      "template": "`<span style=\"display:flex; box-sizing:border-box; justify-content:${(this.textAlign)? this.textAlign : 'center'}; align-items:center; width:100%; height:100%; border:solid 1px #CCC; ${(this.style)? this.style : ''} \" ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''} ${(this.html)? 'v-html=\"'+this.html+'\"' : ''}>${(this.label)? this.label : ''}</span>`"
     },
     "radio": {
       "$name": "ラジオボタン",
       "template": "`<input type=\"radio\" style=\"box-sizing:border-box;\" ${(this.value)? ':value=\"' + this.value + '\"' : ''} ${(this.model)? 'v-model=\"' + this.model + '\"' : ''} />`"
     },
     "text": {
-      "template": "`<input type=\"text\" style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} spellcheck=\"false\" />`",
+      "template": "`<input type=\"text\" style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''} spellcheck=\"false\" />`",
       "$name": "テキストボックス"
     },
     "date": {
@@ -45,14 +45,10 @@
       "template": "`<input type=\"date\" style=\"width:100%; height:100%; box-sizing:border-box;\" value=\"${(this.label)? this.label : ''}\" />`"
     },
     "container": {
-      "template": "`<div style=\"width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; box-sizing:border-box; ${(this.style)? this.style : ''}\"><div style=\"position:relative; box-sizing:border-box;\"><contents></contents></div></div>`"
-    },
-    "group": {
-      "template": "`<template v-for=\"(value,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`",
-      "outerTagPositioning": "relative"
+      "template": "`<div style=\"width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; box-sizing:border-box; ${(this.style)? this.style : ''}\" ${(this.vue)? Object.keys(this.vue).map(k => `v-${k}=\"${this.vue[k]}\"`).join(\" \") : ''}><div style=\"position:relative; box-sizing:border-box;\" ${(this.tabindex)? 'tabindex=\"'+this.tabindex+'\"' : ''}><contents></contents></div></div>`"
     },
     "textarea": {
-      "template": "`<textarea style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} spellcheck=\"false\"></textarea>`",
+      "template": "`<textarea style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none;  ${(this.style)? this.style : ''}\" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} spellcheck=\"false\"></textarea>`",
       "$name": "テキストエリア"
     },
     "check": {
@@ -63,9 +59,30 @@
       "template": "`<input type=\"number\" style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} spellcheck=\"false\" />`",
       "$name": "数値入力"
     },
-    "groupObj": {
+    "arrayGroupVertical": {
+      "template": "`<template v-for=\"(value,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`",
+      "outerTagPositioning": "relative"
+    },
+    "arrayGroupHorizontal": {
+      "template": "`<template v-for=\"(value,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', left:(index * ${this.layout.width}).toString()+'px'}\"><contents></contents></div></template>`",
+      "outerTagPositioning": "relative"
+    },
+    "objectGroupVertical": {
       "template": "`<template v-for=\"(value,key,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`",
       "outerTagPositioning": "relative"
+    },
+    "objectGroupHorizontal": {
+      "template": "`<template v-for=\"(value,key,index) in ${this.model}\"><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', left:(index * ${this.layout.width}).toString()+'px'}\"><contents></contents></div></template>`",
+      "outerTagPositioning": "relative"
+    },
+    "raw": {
+      "template": "`${(this.html)? this.html : ''}`"
+    },
+    "image": {
+      "template": "`<div style=\"width:100%; height:100%;display:flex;align-items:center;justify-content:center;\"><img style=\"max-width:100%; max-height:100%; width:fit-content; height:fit-content; box-sizing:border-box; font-size:11px; font-family:unset; ${(this.style)? this.style : ''}\" ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''} /></div>`"
+    },
+    "dropdown": {
+      "template": "`<select style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.readonly)? 'readonly' : ''} ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''} spellcheck=\"false\"><option v-for=\"value in ${this.source}\" :value=\"value.value\">{{value.text}}</option></select>`"
     }
   },
   "designer": {
@@ -876,6 +893,571 @@
               "height": 175
             },
             "model": "codeGenerated"
+          }
+        }
+      },
+      "viewModeDesigner": {
+        "$component": {
+          "form": {
+            "type": "#viewComponentType.form",
+            "layout": {
+              "x": 10,
+              "y": 35,
+              "width": 1065,
+              "height": 550
+            },
+            "label": "ビューモードデザイナ"
+          },
+          "labelNo": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 35,
+              "y": 175,
+              "width": 30,
+              "height": 25
+            },
+            "label": "",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "sectionDetail": {
+            "type": "#viewComponentType.container",
+            "layout": {
+              "x": 20,
+              "y": 165,
+              "width": 1040,
+              "height": 400
+            },
+            "style": "background-color:transparent;"
+          },
+          "columns": {
+            "type": "#viewComponentType.groupObj",
+            "layout": {
+              "x": 30,
+              "y": 290,
+              "width": 1020,
+              "height": 30
+            },
+            "model": "table.$column"
+          },
+          "labelLogicalName": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 230,
+              "y": 175,
+              "width": 165,
+              "height": 40
+            },
+            "label": "論理名",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;",
+            "textAlign": "center"
+          },
+          "labelNullable": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 265,
+              "y": 435,
+              "width": 50,
+              "height": 25
+            },
+            "label": "null許可",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "labelPhysicalName": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 65,
+              "y": 175,
+              "width": 165,
+              "height": 40
+            },
+            "label": "物理名",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;",
+            "textAlign": "center"
+          },
+          "columnsContainer": {
+            "type": "#viewComponentType.container",
+            "layout": {
+              "x": 25,
+              "y": 285,
+              "width": 1030,
+              "height": 235
+            },
+            "style": "overflow-y:scroll; overflow-x:hidden; border-radius:0px; background-color:transparent; border:none;"
+          },
+          "physicalName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 65,
+              "y": 290,
+              "width": 165,
+              "height": 25
+            },
+            "model": "key",
+            "readonly": true
+          },
+          "logicalName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 230,
+              "y": 290,
+              "width": 165,
+              "height": 25
+            },
+            "model": "value.name",
+            "readonly": true
+          },
+          "primaryKey": {
+            "type": "#viewComponentType.number",
+            "layout": {
+              "x": 90,
+              "y": 440,
+              "width": 40,
+              "height": 25
+            },
+            "model": "value.primaryKey"
+          },
+          "ddlOption": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 610,
+              "y": 290,
+              "width": 125,
+              "height": 25
+            },
+            "model": "value.ddlOption"
+          },
+          "comment": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 765,
+              "y": 290,
+              "width": 245,
+              "height": 25
+            },
+            "model": "value.comment"
+          },
+          "nullable": {
+            "type": "#viewComponentType.check",
+            "layout": {
+              "x": 165,
+              "y": 450,
+              "width": 20,
+              "height": 20
+            },
+            "model": "value.nullable"
+          },
+          "select": {
+            "type": "#viewComponentType.radio",
+            "layout": {
+              "x": 35,
+              "y": 290,
+              "width": 25,
+              "height": 20
+            },
+            "value": "key",
+            "model": "select"
+          },
+          "copyToClipboard": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 505,
+              "y": 135,
+              "width": 345,
+              "height": 25
+            },
+            "label": "クリップボードにコピー",
+            "click": "copyToClipboard()"
+          },
+          "labelViewLogicalName": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 20,
+              "y": 75,
+              "width": 90,
+              "height": 25
+            },
+            "label": "ビュー論理名",
+            "textAlign": "center",
+            "style": "background-color:#EAEAEA; border:solid 1px #CCC;"
+          },
+          "viewLogicalName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 110,
+              "y": 75,
+              "width": 300,
+              "height": 25
+            },
+            "model": "table.name"
+          },
+          "viewComment": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 110,
+              "y": 105,
+              "width": 695,
+              "height": 25
+            },
+            "model": "table.comment"
+          },
+          "labelViewComment": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 20,
+              "y": 105,
+              "width": 90,
+              "height": 25
+            },
+            "label": "コメント",
+            "textAlign": "center",
+            "style": "background-color:#EAEAEA; border:solid 1px #CCC;"
+          },
+          "labelReadonly": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 600,
+              "y": 175,
+              "width": 125,
+              "height": 25
+            },
+            "label": "編集不可条件",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "labelShow": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 395,
+              "y": 175,
+              "width": 100,
+              "height": 45
+            },
+            "label": "表示<br>条件",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;",
+            "textAlign": "center"
+          }
+        }
+      },
+      "viewDesigner": {
+        "$component": {
+          "form": {
+            "type": "#viewComponentType.form",
+            "layout": {
+              "x": 10,
+              "y": 35,
+              "width": 1060,
+              "height": 540
+            },
+            "label": "ビューデザイナ"
+          },
+          "labelNo": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 35,
+              "y": 175,
+              "width": 30,
+              "height": 25
+            },
+            "label": "",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "sectionDetail": {
+            "type": "#viewComponentType.container",
+            "layout": {
+              "x": 20,
+              "y": 165,
+              "width": 1040,
+              "height": 310
+            },
+            "style": "background-color:transparent;"
+          },
+          "columns": {
+            "type": "#viewComponentType.objectGroupVertical",
+            "layout": {
+              "x": 30,
+              "y": 210,
+              "width": 1020,
+              "height": 30
+            },
+            "model": "view.$component"
+          },
+          "labelLogicalName": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 230,
+              "y": 175,
+              "width": 165,
+              "height": 25
+            },
+            "label": "論理名",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "labelPhysicalName": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 65,
+              "y": 175,
+              "width": 165,
+              "height": 25
+            },
+            "label": "物理名",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "columnsContainer": {
+            "type": "#viewComponentType.container",
+            "layout": {
+              "x": 25,
+              "y": 205,
+              "width": 1030,
+              "height": 260
+            },
+            "style": "overflow-y:scroll; overflow-x:hidden; border-radius:0px; background-color:transparent; border:none;"
+          },
+          "physicalName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 65,
+              "y": 210,
+              "width": 165,
+              "height": 25
+            },
+            "event": {
+              "change": "keychange($event,key)"
+            },
+            "bind": {
+              "value": "key"
+            }
+          },
+          "logicalName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 230,
+              "y": 210,
+              "width": 165,
+              "height": 25
+            },
+            "model": "value.name"
+          },
+          "select": {
+            "type": "#viewComponentType.radio",
+            "layout": {
+              "x": 35,
+              "y": 212,
+              "width": 25,
+              "height": 20
+            },
+            "value": "key",
+            "model": "select"
+          },
+          "addColumn": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 20,
+              "y": 135,
+              "width": 65,
+              "height": 25
+            },
+            "label": "追加",
+            "click": "addColumn()"
+          },
+          "deleteColumn": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 90,
+              "y": 135,
+              "width": 65,
+              "height": 25
+            },
+            "label": "削除",
+            "click": "deleteColumn()"
+          },
+          "source": {
+            "type": "#viewComponentType.textarea",
+            "layout": {
+              "x": 20,
+              "y": 480,
+              "width": 910,
+              "height": 85
+            },
+            "model": "source"
+          },
+          "upColumn": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 160,
+              "y": 135,
+              "width": 65,
+              "height": 25
+            },
+            "label": "↑",
+            "click": "upColumn()"
+          },
+          "downColumn": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 230,
+              "y": 135,
+              "width": 65,
+              "height": 25
+            },
+            "label": "↓",
+            "click": "downColumn()"
+          },
+          "copyToClipboard": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 935,
+              "y": 480,
+              "width": 125,
+              "height": 85
+            },
+            "label": "クリップボードに<br>コピー",
+            "click": "copyToClipboard()"
+          },
+          "labelType": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 395,
+              "y": 175,
+              "width": 155,
+              "height": 25
+            },
+            "label": "コンポーネント型",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "labelViewLogicalName": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 20,
+              "y": 75,
+              "width": 90,
+              "height": 25
+            },
+            "label": "ビュー論理名",
+            "textAlign": "center",
+            "style": "background-color:#EAEAEA; border:solid 1px #CCC;"
+          },
+          "viewLogicalName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 110,
+              "y": 75,
+              "width": 300,
+              "height": 25
+            },
+            "model": "view.name"
+          },
+          "labelViewComment": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 20,
+              "y": 105,
+              "width": 90,
+              "height": 25
+            },
+            "label": "コメント",
+            "textAlign": "center",
+            "style": "background-color:#EAEAEA; border:solid 1px #CCC;"
+          },
+          "viewComment": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 110,
+              "y": 105,
+              "width": 695,
+              "height": 25
+            },
+            "model": "view.comment"
+          },
+          "type": {
+            "type": "#viewComponentType.dropdown",
+            "layout": {
+              "x": 395,
+              "y": 210,
+              "width": 155,
+              "height": 25
+            },
+            "source": "viewComponentTypeArray",
+            "model": "value.type"
+          }
+        }
+      },
+      "scrollTest": {
+        "$component": {
+          "form": {
+            "type": "#viewComponentType.form",
+            "layout": {
+              "x": 25,
+              "y": 50,
+              "width": 460,
+              "height": 250
+            },
+            "label": "scroll test"
+          },
+          "container1": {
+            "type": "#viewComponentType.container",
+            "layout": {
+              "x": 40,
+              "y": 95,
+              "width": 430,
+              "height": 90
+            },
+            "style": "overflow:scroll;",
+            "bind": {
+              "class": "'scroll_sync'"
+            }
+          },
+          "container2": {
+            "type": "#viewComponentType.container",
+            "layout": {
+              "x": 40,
+              "y": 195,
+              "width": 430,
+              "height": 90
+            },
+            "style": "overflow:scroll;",
+            "bind": {
+              "class": "'scroll_sync'"
+            }
+          },
+          "group1": {
+            "type": "#viewComponentType.group",
+            "layout": {
+              "x": 50,
+              "y": 105,
+              "width": 110,
+              "height": 30
+            },
+            "model": "items"
+          },
+          "group2": {
+            "type": "#viewComponentType.arrayGroupHorizontal",
+            "layout": {
+              "x": 50,
+              "y": 205,
+              "width": 110,
+              "height": 30
+            },
+            "model": "items"
+          },
+          "name1": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 55,
+              "y": 110,
+              "width": 100,
+              "height": 20
+            },
+            "model": "value.name"
+          },
+          "unnamed7": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 55,
+              "y": 210,
+              "width": 100,
+              "height": 20
+            },
+            "model": "value.name"
           }
         }
       }
