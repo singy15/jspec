@@ -351,6 +351,28 @@ var jspecViewDesigner = {
     },
     onSelect(root, node, key) {
       this.select(node[key], key);
+    },
+    copyComponent() {
+      console.log("copyComponent", );
+      let copyText = JSON.stringify(this.view.$component[this.selected]);
+      navigator.clipboard.writeText(copyText)
+        .then(() => {
+          console.log("Text copied to clipboard...")
+        })
+        .catch(err => {
+          console.log('Something went wrong', err);
+        });
+    },
+    pasteComponent() {
+      console.log("pasteComponent");
+      navigator.clipboard.readText()
+        .then(clipText => {
+          this.curId = this.curId + 1;
+          let newid = "unnamed" + (this.curId).toString();
+          let newcomp = JSON.parse(clipText);
+          this.view.$component[newid] = newcomp;
+          this.select(newcomp, newid);
+        });
     }
   },
   computed: {
@@ -366,7 +388,7 @@ var jspecViewDesigner = {
           height: '100%',
           overflow: 'auto'
           }"
-          @click.stop="unselect()">
+          @click.stop="unselect()" >
         <div class="jspec-view-editor--container" @click.stop>
           <button class="jspec-view-designer--button" style="width:32px" @click="addComp()">+</button>
           <button class="jspec-view-designer--button" style="width:32px" @click="delComp()" :disabled="selected == null">-</button>
@@ -374,6 +396,8 @@ var jspecViewDesigner = {
           <button class="jspec-view-designer--button" @click="rename()" :disabled="selected == null">RENAME</button>
           <button class="jspec-view-designer--button" @click="editStart()" :disabled="selected == null">EDIT</button>
           <button class="jspec-view-designer--button" @click="generateCode()">GENCODE</button>
+          <button class="jspec-view-designer--button" @click="copyComponent()">COPY</button>
+          <button class="jspec-view-designer--button" @click="pasteComponent()">PASTE</button>
         </div>
 
         <div v-for="(v,k) in view.$component">
