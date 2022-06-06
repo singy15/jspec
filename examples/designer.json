@@ -1460,6 +1460,216 @@
           }
         },
         "name": "ビューモードデザイナ"
+      },
+      "viewControlDesigner": {
+        "$component": {
+          "form": {
+            "type": "#viewComponentType.form",
+            "layout": {
+              "x": 10,
+              "y": 35,
+              "width": 1045,
+              "height": 585
+            },
+            "label": "ビューモードデザイナ"
+          },
+          "sectionDetail": {
+            "type": "#viewComponentType.container",
+            "layout": {
+              "x": 20,
+              "y": 110,
+              "width": 635,
+              "height": 500
+            },
+            "style": "background-color:transparent;"
+          },
+          "labelLogicalName": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 200,
+              "y": 120,
+              "width": 165,
+              "height": 25
+            },
+            "label": "論理名",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "labelPhysicalName": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 35,
+              "y": 120,
+              "width": 165,
+              "height": 25
+            },
+            "label": "物理名",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "columnsContainer": {
+            "type": "#viewComponentType.container",
+            "layout": {
+              "x": 25,
+              "y": 150,
+              "width": 620,
+              "height": 440
+            },
+            "style": "overflow-y:scroll; overflow-x:scroll; border-radius:0px; background-color:transparent; border:none;",
+            "bind": {
+              "class": "'scroll_hsync'"
+            }
+          },
+          "physicalName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 35,
+              "y": 155,
+              "width": 165,
+              "height": 25
+            },
+            "event": {
+              "change": "keychange($event,key)"
+            },
+            "bind": {
+              "value": "key"
+            }
+          },
+          "logicalName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 200,
+              "y": 155,
+              "width": 165,
+              "height": 25
+            },
+            "model": "value.name"
+          },
+          "source": {
+            "type": "#viewComponentType.textarea",
+            "layout": {
+              "x": 665,
+              "y": 110,
+              "width": 380,
+              "height": 500
+            },
+            "model": "source"
+          },
+          "copyToClipboard": {
+            "type": "#viewComponentType.button",
+            "layout": {
+              "x": 665,
+              "y": 80,
+              "width": 380,
+              "height": 25
+            },
+            "label": "クリップボードにコピー",
+            "click": "copyToClipboard()"
+          },
+          "labelViewLogicalName": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 20,
+              "y": 75,
+              "width": 90,
+              "height": 25
+            },
+            "label": "ビュー論理名",
+            "textAlign": "center",
+            "style": "background-color:#EAEAEA; border:solid 1px #CCC;"
+          },
+          "viewLogicalName": {
+            "type": "#viewComponentType.text",
+            "layout": {
+              "x": 110,
+              "y": 75,
+              "width": 300,
+              "height": 25
+            },
+            "model": "view.name",
+            "readonly": true
+          },
+          "viewMode": {
+            "type": "#viewComponentType.dropdown",
+            "layout": {
+              "x": 415,
+              "y": 75,
+              "width": 155,
+              "height": 25
+            },
+            "source": "viewModeArray",
+            "model": "value.type"
+          },
+          "unnamed1": {
+            "type": "#viewComponentType.objectGroupVertical",
+            "layout": {
+              "x": 30,
+              "y": 155,
+              "width": 530,
+              "height": 30
+            },
+            "model": "view.$component"
+          },
+          "readonly": {
+            "type": "#viewComponentType.check",
+            "layout": {
+              "x": 390,
+              "y": 160,
+              "width": 20,
+              "height": 20
+            }
+          },
+          "unnamed3": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 370,
+              "y": 120,
+              "width": 60,
+              "height": 25
+            },
+            "label": "読取専用",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "unnamed4": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 430,
+              "y": 120,
+              "width": 60,
+              "height": 25
+            },
+            "label": "無効",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "unnamed6": {
+            "type": "#viewComponentType.label",
+            "layout": {
+              "x": 490,
+              "y": 120,
+              "width": 60,
+              "height": 25
+            },
+            "label": "非表示",
+            "style": "background-color:#FAFAFA; border:solid 1px #AAA;"
+          },
+          "disabled": {
+            "type": "#viewComponentType.check",
+            "layout": {
+              "x": 450,
+              "y": 160,
+              "width": 20,
+              "height": 20
+            }
+          },
+          "hidden": {
+            "type": "#viewComponentType.check",
+            "layout": {
+              "x": 510,
+              "y": 160,
+              "width": 20,
+              "height": 20
+            }
+          }
+        },
+        "name": "ビューモードデザイナ"
       }
     }
   }
