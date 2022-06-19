@@ -52,7 +52,7 @@
       "$name": "テキストエリア"
     },
     "check": {
-      "template": "`<input type=\"checkbox\" style=\"box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} />`",
+      "template": "`<input type=\"checkbox\" style=\"box-sizing:border-box; outline:none; \" ${(this.model)? 'v-model=\"'+this.model+'\"' : ''} ${(this.value)? ':value=\"'+this.value+'\"' : ''} ${(this.readonly)? 'readonly' : ''} ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''} />`",
       "$name": "チェックボックス"
     },
     "number": {
@@ -1541,7 +1541,7 @@
               "width": 165,
               "height": 25
             },
-            "model": "value.name"
+            "model": "value.$name"
           },
           "source": {
             "type": "#viewComponentType.textarea",
@@ -1584,7 +1584,7 @@
               "width": 300,
               "height": 25
             },
-            "model": "view.name",
+            "model": "view.$name",
             "readonly": true
           },
           "viewMode": {
@@ -1595,8 +1595,8 @@
               "width": 155,
               "height": 25
             },
-            "source": "viewModeArray",
-            "model": "value.type"
+            "source": "Object.keys(this.view.$mode).map(x => { return { value: x, text: x }; })",
+            "model": "viewMode"
           },
           "unnamed1": {
             "type": "#viewComponentType.objectGroupVertical",
@@ -1615,6 +1615,12 @@
               "y": 160,
               "width": 20,
               "height": 20
+            },
+            "bind": {
+              "checked": "getState(value, viewMode, 'readonly')"
+            },
+            "event": {
+              "click": "toggleState(value, viewMode, 'readonly')"
             }
           },
           "unnamed3": {
@@ -1657,6 +1663,12 @@
               "y": 160,
               "width": 20,
               "height": 20
+            },
+            "bind": {
+              "checked": "getState(value, viewMode, 'disabled')"
+            },
+            "event": {
+              "click": "toggleState(value, viewMode, 'disabled')"
             }
           },
           "hidden": {
@@ -1666,6 +1678,12 @@
               "y": 160,
               "width": 20,
               "height": 20
+            },
+            "bind": {
+              "checked": "getState(value, viewMode, 'hidden')"
+            },
+            "event": {
+              "click": "toggleState(value, viewMode, 'hidden')"
             }
           }
         },

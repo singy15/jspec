@@ -164,6 +164,14 @@
               "y": 85,
               "width": 100,
               "height": 20
+            },
+            "$name": "在庫CD",
+            "$control": {
+              "initial": {
+                "disabled": true,
+                "readonly": true,
+                "hidden": true
+              }
             }
           },
           "labelItemCd": {
@@ -271,7 +279,16 @@
               "height": 120
             }
           }
-        }
+        },
+        "$mode": {
+          "initial": {
+            "$name": "初期"
+          },
+          "insert": {
+            "$name": "登録"
+          }
+        },
+        "$name": "在庫受入"
       },
       "retrieveStock": {
         "$component": {
