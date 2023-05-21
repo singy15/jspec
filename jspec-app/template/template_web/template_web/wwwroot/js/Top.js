@@ -7,9 +7,6 @@ let app = createApp({
     },
     computed: {},
     methods: {
-        openProjects() {
-            location.href = "/View/ProjectList";
-        }
     }
 }).mount('#app');
 
