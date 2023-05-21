@@ -2,7 +2,7 @@
   "codegen": {
     "view": {
       "codegenSqlCreateTable": {
-        "$component": {
+        "component": {
           "form": {
             "type": "#def.view.componentType.form",
             "layout": {

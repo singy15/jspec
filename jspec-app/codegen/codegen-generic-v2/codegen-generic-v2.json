@@ -2,7 +2,7 @@
   "codegen": {
     "view": {
       "codegenGenericV2": {
-        "$component": {
+        "component": {
           "form": {
             "type": "#def.view.componentType.form",
             "layout": {
