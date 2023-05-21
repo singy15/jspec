@@ -26,7 +26,7 @@ var jspecViewDesigner = {
       },
       $view: {
         stockRegister: {
-          $component: {
+          component: {
             form: {
               type: "#viewComponentType.form",
               label: "検索",
@@ -173,8 +173,8 @@ var jspecViewDesigner = {
       val.layout.y = this.clamp(val.layout.y, this.moving.gridInterval);
 
       let baseZIndex = this.zindex(originalLayout.x, originalLayout.y);
-      for(var k in this.view.$component) {
-        let c = this.view.$component[k];
+      for(var k in this.view.component) {
+        let c = this.view.component[k];
         if((this.zindex(c.layout.x, c.layout.y) > baseZIndex)
             && (originalLayout.x < c.layout.x)
             && ((originalLayout.x + originalLayout.width) > (c.layout.x + c.layout.width))
@@ -201,24 +201,24 @@ var jspecViewDesigner = {
       this.selected = null;
     },
     rename() {
-      let comp = this.view.$component[this.selected];
-      this.view.$component[this.renaming.newName] = comp;
-      delete this.view.$component[this.selected];
+      let comp = this.view.component[this.selected];
+      this.view.component[this.renaming.newName] = comp;
+      delete this.view.component[this.selected];
     },
     addComp() {
       this.curId = this.curId + 1;
       let newid = "unnamed" + (this.curId).toString();
       let newcomp = {
-        type: "#viewComponentType.text",
+        type: "#def.view.componentType.text",
         layout: {
           x: 100, y: 100, width: 100, height: 20
         }
       };
-      this.view.$component[newid] = newcomp;
+      this.view.component[newid] = newcomp;
       this.select(newcomp, newid);
     },
     delComp() {
-      delete this.view.$component[this.selected];
+      delete this.view.component[this.selected];
       this.selected = null;
     },
     editStart() {
@@ -228,8 +228,8 @@ var jspecViewDesigner = {
       this.editing.editing = false;
     },
     generateCode() {
-      let codes = Object.keys(this.view.$component)
-        .map(k => this.view.$component[k])
+      let codes = Object.keys(this.view.component)
+        .map(k => this.view.component[k])
         .filter(c => { return !(c.undocumented); })
         .map(c => { console.log(c); return c; })
         .map(c => `<div style=" position: absolute; width: ${c.layout.width.toString()}px; height: ${c.layout.height.toString()}px; left: ${c.layout.x.toString()}px; top: ${c.layout.y.toString()}px; z-index: ${this.zindex(c.layout.x, c.layout.y)}; box-sizing:border-box;">${this.evalTemplate(c)}</div>`);
@@ -250,8 +250,8 @@ var jspecViewDesigner = {
 
       let dp = new DOMParser();
 
-      let cs = Object.keys(this.view.$component)
-        .map(k => this.view.$component[k])
+      let cs = Object.keys(this.view.component)
+        .map(k => this.view.component[k])
         .map(c => { 
             let parsedDom = dp.parseFromString(`<div style=" position: absolute; width: ${c.layout.width.toString()}px; height: ${c.layout.height.toString()}px; left: ${c.layout.x.toString()}px; top: ${c.layout.y.toString()}px; z-index: ${this.zindex(c.layout.x, c.layout.y)}; box-sizing:border-box;">${this.evalTemplate(c)}</div>`, "text/html");
             let dom = null;
@@ -354,7 +354,7 @@ var jspecViewDesigner = {
     },
     copyComponent() {
       console.log("copyComponent", );
-      let copyText = JSON.stringify(this.view.$component[this.selected]);
+      let copyText = JSON.stringify(this.view.component[this.selected]);
       navigator.clipboard.writeText(copyText)
         .then(() => {
           console.log("Text copied to clipboard...")
@@ -370,7 +370,7 @@ var jspecViewDesigner = {
           this.curId = this.curId + 1;
           let newid = "unnamed" + (this.curId).toString();
           let newcomp = JSON.parse(clipText);
-          this.view.$component[newid] = newcomp;
+          this.view.component[newid] = newcomp;
           this.select(newcomp, newid);
         });
     }
@@ -400,7 +400,7 @@ var jspecViewDesigner = {
           <button class="jspec-view-designer--button" @click="pasteComponent()">PASTE</button>
         </div>
 
-        <div v-for="(v,k) in view.$component">
+        <div v-for="(v,k) in view.component">
           <div :style="{
               position: 'absolute',
               width: v.layout.width.toString() + 'px',
@@ -589,12 +589,12 @@ var jspecViewDesigner = {
             <div class="jspec-view-editor--container" style="position:absolute; top:0px; left:0px;">
               <button class="jspec-view-designer--button" style="width:100px;" @click="editEnd()">CLOSE</button>
             </div>
-            <div style="padding:5px; position:absolute; top:32px; left:0px; right:0px; bottom:0px; overflow:auto;" v-if="view.$component[selected]">
-              <jspec-editor :root="root" :node="view.$component[selected]" :entryParent="view.$component[selected]" 
+            <div style="padding:5px; position:absolute; top:32px; left:0px; right:0px; bottom:0px; overflow:auto;" v-if="view.component[selected]">
+              <jspec-editor :root="root" :node="view.component[selected]" :entryParent="view.component[selected]" 
                 :entryKey="null" :level="0" :open-state="true" :show-name="false"></jspec-editor>
             </div>
-            <div style="padding:5px; position:absolute; top:32px; left:0px; right:0px; bottom:0px; overflow:auto;" v-if="!(view.$component[selected])">
-              <jspec-editor :root="root" :node="view.$component" :entryParent="view.$component" 
+            <div style="padding:5px; position:absolute; top:32px; left:0px; right:0px; bottom:0px; overflow:auto;" v-if="!(view.component[selected])">
+              <jspec-editor :root="root" :node="view.component" :entryParent="view.component" 
                 :entryKey="null" :level="0" :open-state="true" :show-name="false" :on-select="onSelect"></jspec-editor>
             </div>
           </div>
