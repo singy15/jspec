@@ -4,7 +4,15 @@ var inplaceEditor = {
     obj: Object,
     placeKey: null,
     style: Object,
-    watchVal: null
+    watchVal: null,
+    forecolor: {
+      type: String,
+      default: "#CCC"
+    },
+    backcolor: {
+      type: String,
+      default: "#333"
+    }
   },
   data() {
     return {
@@ -142,7 +150,9 @@ var inplaceEditor = {
               padding:'0px',
               border:'none',
               outline:(focused)? 'solid 1px #CCC' : 'none',
-              marginLeft:(-width).toString()+'px'
+              marginLeft:(-width).toString()+'px',
+              background: backcolor,
+              color: forecolor
             }, style)"
           v-model="editValue" ref="input" 
               @change="updateValue()" 
@@ -165,7 +175,9 @@ var inplaceEditor = {
             whiteSpace:'nowrap',
             marginLeft:(-width).toString()+'px',
             outline:'solid 1px #CCC',
-            fontFamily:(multiline)? 'monospace' : 'unset'
+            fontFamily:(multiline)? 'monospace' : 'unset',
+            background: backcolor,
+            color: forecolor
           }"
           @change="updateValueMultiline()" 
           @input="resize()" 

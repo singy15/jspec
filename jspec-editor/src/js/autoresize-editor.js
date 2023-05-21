@@ -4,7 +4,15 @@ var autoresizeEditor = {
     value: null,
     updated: Function,
     style: Object,
-    onCopy: Function
+    onCopy: Function,
+    forecolor: {
+      type: String,
+      default: "#CCC"
+    },
+    backcolor: {
+      type: String,
+      default: "#333"
+    }
   },
   data() {
     let tmp = this.value;
@@ -47,7 +55,9 @@ var autoresizeEditor = {
               padding:'0px',
               border:'none',
               outline:(focused)? 'solid 1px #CCC' : 'none',
-              marginLeft:(-width).toString()+'px'
+              marginLeft:(-width).toString()+'px',
+              background: backcolor,
+              color: forecolor
             }, style)"
           v-model="val" ref="input" 
           @change="update()" 

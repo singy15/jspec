@@ -5,11 +5,19 @@
 * {
   font-size:11px;
   font-family:unset;
+  /* color: #CCC; */
 }
+
+/*
+input,textarea {
+  background: #333;
+}
+*/
 
 body {
   padding: 0px;
   margin: 0px;
+  background-color: #333;
 }
 
 .container {
@@ -55,7 +63,7 @@ body {
       </div>
       <div>
         <jspec-editor :root="root" :node="root" :entryParent="root" :entryKey="null" :level="0" 
-            :open-state="true" :show-name="showLogicalName" :on-select="onSelect"></jspec-editor>
+            :open-state="true" :show-name="showLogicalName" :on-select="onSelect" :theme="'dark'"></jspec-editor>
       </div>
 
       <div v-if="viewDesigner.showEditor" 

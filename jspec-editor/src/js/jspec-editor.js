@@ -16,7 +16,11 @@ var jspecEditor = {
     level: Number,
     openState: Boolean,
     showName: Boolean,
-    onSelect: Function
+    onSelect: Function,
+    theme: {
+      type: String,
+      default: "dark"
+    }
   },
   data() {
     return {
@@ -180,7 +184,7 @@ var jspecEditor = {
       let style = {};
 
       if(this.isNull(val)) {
-        style.color = "#A00";
+        style.color = "#c86464";
       }
 
       if(this.isNumber(val)) {
@@ -192,7 +196,7 @@ var jspecEditor = {
       }
 
       if(this.isReference(val)) {
-        style.color = "#55C";
+        style.color = "#9696ff";
         style.fontStyle = 'italic';
         style.textDecoration = 'underline';
       }
@@ -394,9 +398,29 @@ var jspecEditor = {
     //   }
     //   return obj;
     // }
+    colors() {
+      if(this.theme === "dark") {
+        return {
+          forecolor: "#CCC",
+          backcolor: "#333",
+        };
+      }
+      else if(this.theme === "light") {
+        return {
+          forecolor: "#000",
+          backcolor: "#FFF",
+        };
+      }
+      else {
+        return {
+          forecolor: "#CCC",
+          backcolor: "#333",
+        };
+      }
+    }
   },
   template: `
-    <span>
+    <span :style="{ color: colors.forecolor }">
 
       <!-- Object -->
       <span v-if="(node != null) && typeof(node) === 'object' && open">
@@ -408,16 +432,17 @@ var jspecEditor = {
         <span @click.stop="addItem()" style="cursor:pointer;">+</span>
         <br>
         <span v-for="(v,k) in node" style="white-space:nowrap;">
-          <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
+          <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px ' + colors.forecolor, 'opacity':0.3 }"></span>
           <autoresize-editor :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated" :on-copy="createOnCopyHandler(node, k)"
-              @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)" @click="(onSelect)? onSelect(root, node, k) : null">
+              @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)" @click="(onSelect)? onSelect(root, node, k) : null"
+              :forecolor="colors.forecolor" :backcolor="colors.backcolor">
           </autoresize-editor>
           <span v-if="showName && v != null && v.$name" style="font-size:0.5rem;">&nbsp;({{v.$name}})</span>
           <span style="vertical-align:top">: </span>
-          <jspec-editor :root="root" :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1" :show-name="showName" :on-select="onSelect"></jspec-editor>
+          <jspec-editor :root="root" :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1" :show-name="showName" :on-select="onSelect" :theme="theme"></jspec-editor>
           <br>
         </span>
-        <span v-for="n in (level)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px #CCC', 'opacity':0.5 }"></span>
+        <span v-for="n in (level)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px ' + colors.forecolor, 'opacity':0.3 }"></span>
         <span :style="{'cursor':'pointer'}" @click="toggleOpen()">
           <span v-if="!Array.isArray(node)">}</span>
           <span v-if="Array.isArray(node)">]</span>
@@ -435,7 +460,7 @@ var jspecEditor = {
 
       <!-- Value -->
       <span v-if="!((node != null) && typeof(node) === 'object')">
-        <inplace-editor :obj="entryParent" :placeKey="entryKey" :watch-val="entryParent[entryKey]" :style="styleVal(entryKey, node)"></inplace-editor>
+        <inplace-editor :obj="entryParent" :placeKey="entryKey" :watch-val="entryParent[entryKey]" :style="styleVal(entryKey, node)" :forecolor="colors.forecolor" :backcolor="colors.backcolor"></inplace-editor>
         <span v-if="isReference(node) && !resolvable(node)" 
             style="color:red; margin-left:1em;">
           !
