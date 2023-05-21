@@ -1,0 +1,3 @@
+build:
+  > npx webpack watch
+

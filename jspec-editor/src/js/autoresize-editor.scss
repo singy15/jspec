@@ -1,0 +1,42 @@
+/*
+.autoresize-editor--input-text__item {
+  position: relative;
+  display: inline;
+}
+
+.autoresize-editor--input-text__dummy {
+  display: inline-block;
+  overflow: hidden;
+  min-width: 2em;
+  white-space: nowrap;
+  opacity: 0;
+  line-height:1px;
+}
+
+.autoresize-editor--input-text__dummy::before {
+  content: '';
+}
+
+.autoresize-editor--input-text__dummy:empty::before {
+  content: attr(data-placeholder);
+  color: blue;
+  box-sizing: border-box;
+  border:none;
+  outline:none;
+  font-size: 1.1em;
+}
+
+.autoresize-editor--input-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+  border:none;
+  outline:none;
+}
+
+.autoresize-editor--input-text:focus {
+  outline:solid 1px #CCC;
+}
+*/
