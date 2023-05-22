@@ -401,7 +401,7 @@ var jspecEditor = {
     colors() {
       if(this.theme === "dark") {
         return {
-          forecolor: "#CCC",
+          forecolor: "#FFF",
           backcolor: "#333",
         };
       }
