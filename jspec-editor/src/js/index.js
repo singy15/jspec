@@ -194,6 +194,7 @@ window.app = Vue.createApp({
     openJspec() {
       openFile().then((result) => {
         this.root = JSON.parse(result.text);
+        document.title = globalFSHandle.name;
       });
     },
     reloadJspec() {
