@@ -339,6 +339,8 @@ var jspecViewDesigner = {
       replaceTemplateContents(prcs[0].dom);
 
       let code = (new XMLSerializer()).serializeToString(prcs[0].dom);
+
+      console.log(code);
    
       navigator.clipboard.writeText(code)
         .then(() => {
