@@ -572,7 +572,7 @@ var jspecViewDesigner = {
              :style="{
                 position: 'absolute',
                 top: '0px',
-                width: '50%',
+                width: '30%',
                 right: '0px',
                 bottom: '0px',
                 backgroundColor: 'rgba(0,0,0,0.3)',
