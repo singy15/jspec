@@ -1,0 +1,879 @@
+{
+  "def": {
+    "view": {
+      "componentType": {
+        "form": {
+          "$name": "画面",
+          "template": "`\n<div style=\"background-color:#EFEFEF; font-size:11px; font-family:unset; border:solid 1px ${this.baseColor || type.baseColor}; border-radius:5px; box-sizing:border-box; width:100%; height:100%;\">\n  <div style=\"top:0px; height:30px; box-sizing:border-box; background-color:${this.baseColor || type.baseColor}; display:flex; justify-content:start; align-items:center; padding-left:5px; color:#fff;\">\n  ${(this.label)? this.label : ''}\n  </div>\n  <contents>\n  </contents>\n</div>\n`",
+          "baseColor": " #7272c7"
+        },
+        "button": {
+          "$name": "ボタン",
+          "template": "`<button style=\"width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; cursor:pointer;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}>${this.label}</button>`"
+        },
+        "label": {
+          "$name": "ラベル",
+          "template": "`<span style=\"display:flex; box-sizing:border-box; justify-content:${(this.textAlign)? this.textAlign : 'center'}; align-items:center; width:100%; height:100%; border:solid 1px #CCC; ${(this.style)? this.style : ''}\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}>${(this.label)? this.label : ''}</span>`"
+        },
+        "radio": {
+          "$name": "ラジオボタン",
+          "template": "`<input type=\"radio\" style=\"box-sizing:border-box;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''} />`"
+        },
+        "text": {
+          "template": "`<input type=\"text\" style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" spellcheck=\"false\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}/>`",
+          "$name": "テキストボックス"
+        },
+        "date": {
+          "$name": "日付",
+          "template": "`<input type=\"date\" style=\"width:100%; height:100%; box-sizing:border-box;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}/>`"
+        },
+        "container": {
+          "template": "`<div style=\"width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; box-sizing:border-box;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><div style=\"position:relative; box-sizing:border-box;\" ><contents></contents></div></div>`"
+        },
+        "textarea": {
+          "template": "`<textarea style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none;  ${(this.style)? this.style : ''}\" spellcheck=\"false\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}></textarea>`",
+          "$name": "テキストエリア"
+        },
+        "check": {
+          "template": "`<input type=\"checkbox\" style=\"box-sizing:border-box; outline:none;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}/>`",
+          "$name": "チェックボックス"
+        },
+        "number": {
+          "template": "`<input type=\"number\" style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" spellcheck=\"false\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}/>`",
+          "$name": "数値入力"
+        },
+        "arrayGroupVertical": {
+          "template": "`<template v-for=\"(${(this.value)? this.value : 'value'},${(this.index)? this.index : 'index'}) in ${this.model}\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`",
+          "outerTagPositioning": "relative"
+        },
+        "arrayGroupHorizontal": {
+          "template": "`<template v-for=\"(${(this.value)? this.value : 'value'},${(this.index)? this.index : 'index'}) in ${this.model}\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', left:(index * ${this.layout.width}).toString()+'px'}\"><contents></contents></div></template>`",
+          "outerTagPositioning": "relative"
+        },
+        "objectGroupVertical": {
+          "template": "`<template v-for=\"(${(this.value)? this.value : 'value'},${(this.key)? this.key : 'key'},${(this.index)? this.index : 'index'}) in ${this.model}\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`",
+          "outerTagPositioning": "relative"
+        },
+        "objectGroupHorizontal": {
+          "template": "`<template v-for=\"(${(this.value)? this.value : 'value'},${(this.key)? this.key : 'key'},${(this.index)? this.index : 'index'}) in ${this.model}\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', left:(index * ${this.layout.width}).toString()+'px'}\"><contents></contents></div></template>`",
+          "outerTagPositioning": "relative"
+        },
+        "raw": {
+          "template": "`${(this.html)? this.html : ''}`"
+        },
+        "image": {
+          "template": "`<div style=\"width:100%; height:100%;display:flex;align-items:center;justify-content:center;\"><img style=\"max-width:100%; max-height:100%; width:fit-content; height:fit-content; box-sizing:border-box; font-size:11px; font-family:unset; ${(this.style)? this.style : ''}\" ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''} /></div>`"
+        },
+        "dropdown": {
+          "template": "`<select style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" spellcheck=\"false\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><option v-for=\"value in ${this.source}\" v-bind:value=\"value.value\">{{value.text}}</option></select>`"
+        },
+        "hyperlink": {
+          "template": "`<a href=\"#\" style=\"display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; border:solid 1px #CCC;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}>${this.label}</a>`"
+        }
+      }
+    },
+    "model": {
+      "fieldType": {
+        "integer": {},
+        "string": {},
+        "double": {}
+      }
+    },
+    "db": {
+      "columnType": {
+        "number": {},
+        "text": {}
+      },
+      "objectType": {
+        "table": {},
+        "view": {},
+        "index": {}
+      },
+      "dbType": {
+        "mssql": {},
+        "sqlite": {}
+      }
+    },
+    "version": "0.0.1"
+  },
+  "testair": {
+    "view": {
+      "projectCreate": {
+        "component": {
+          "form": {
+            "type": "#def.view.componentType.form",
+            "layout": {
+              "x": 10,
+              "y": 35,
+              "width": 435,
+              "height": 130
+            },
+            "label": "Create Project"
+          },
+          "btnCreate": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 20,
+              "y": 135,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Create",
+            "attr": {
+              "v-on:click": "create()"
+            }
+          },
+          "btnCancel": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 335,
+              "y": 135,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Cancel",
+            "attr": {
+              "v-on:click": "cancel()"
+            }
+          },
+          "lbProjectCd": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 20,
+              "y": 75,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Code"
+          },
+          "tbProjectCd": {
+            "type": "#def.view.componentType.text",
+            "layout": {
+              "x": 125,
+              "y": 75,
+              "width": 100,
+              "height": 20
+            },
+            "attr": {
+              "v-model": "project.project_cd"
+            }
+          },
+          "lbProjectName": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 20,
+              "y": 100,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Name"
+          },
+          "tbProjectName": {
+            "type": "#def.view.componentType.text",
+            "layout": {
+              "x": 125,
+              "y": 100,
+              "width": 310,
+              "height": 20
+            },
+            "attr": {
+              "v-model": "project.project_name"
+            }
+          }
+        }
+      },
+      "projectList": {
+        "component": {
+          "form": {
+            "type": "#def.view.componentType.form",
+            "layout": {
+              "x": 10,
+              "y": 35,
+              "width": 675,
+              "height": 480
+            },
+            "label": "Projects"
+          },
+          "btnClose": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 575,
+              "y": 485,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Close",
+            "click": "close()"
+          },
+          "projectId": {
+            "type": "#def.view.componentType.text",
+            "layout": {
+              "x": 55,
+              "y": 110,
+              "width": 100,
+              "height": 20
+            },
+            "model": "value.project_id"
+          },
+          "projectName": {
+            "type": "#def.view.componentType.text",
+            "layout": {
+              "x": 160,
+              "y": 110,
+              "width": 420,
+              "height": 20
+            },
+            "model": "value.project_name"
+          },
+          "labelProjectId": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 55,
+              "y": 75,
+              "width": 100,
+              "height": 20
+            },
+            "label": "ID"
+          },
+          "labelProjectName": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 160,
+              "y": 75,
+              "width": 420,
+              "height": 20
+            },
+            "label": "Name"
+          },
+          "btnCreate": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 20,
+              "y": 485,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Create",
+            "click": "create()"
+          },
+          "rbSelect": {
+            "type": "#def.view.componentType.radio",
+            "layout": {
+              "x": 30,
+              "y": 110,
+              "width": 20,
+              "height": 20
+            },
+            "model": "selectedProjectId",
+            "value": "value.project_id"
+          },
+          "btnOpen": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 585,
+              "y": 110,
+              "width": 60,
+              "height": 20
+            },
+            "label": "Open",
+            "click": "open()"
+          },
+          "unnamed4": {
+            "type": "#def.view.componentType.arrayGroupVertical",
+            "layout": {
+              "x": 25,
+              "y": 105,
+              "width": 625,
+              "height": 30
+            },
+            "model": "projects",
+            "value": "value"
+          },
+          "plProjects": {
+            "type": "#def.view.componentType.container",
+            "layout": {
+              "x": 20,
+              "y": 100,
+              "width": 655,
+              "height": 375
+            },
+            "style": "overflow-y:scroll;"
+          }
+        }
+      },
+      "testEdit": {
+        "component": {
+          "form": {
+            "type": "#def.view.componentType.form",
+            "layout": {
+              "x": 10,
+              "y": 40,
+              "width": 1475,
+              "height": 760
+            }
+          },
+          "ddnProject": {
+            "type": "#def.view.componentType.dropdown",
+            "layout": {
+              "x": 80,
+              "y": 80,
+              "width": 125,
+              "height": 20
+            },
+            "source": "ddnSourceProject",
+            "attr": {
+              "v-model": "currentProjectId"
+            }
+          },
+          "agvTestsuites": {
+            "type": "#def.view.componentType.arrayGroupVertical",
+            "layout": {
+              "x": 25,
+              "y": 140,
+              "width": 190,
+              "height": 30
+            },
+            "value": "testsuite",
+            "model": "testsuites",
+            "attr": {
+              "v-bind:key": "testsuite.testsuite_id"
+            }
+          },
+          "rbCurrentTestsuiteId": {
+            "type": "#def.view.componentType.radio",
+            "layout": {
+              "x": 30,
+              "y": 145,
+              "width": 20,
+              "height": 20
+            },
+            "attr": {
+              "v-model": "currentTestsuiteId",
+              "v-bind:value": "testsuite.testsuite_id"
+            }
+          },
+          "contTestsuites": {
+            "type": "#def.view.componentType.container",
+            "layout": {
+              "x": 20,
+              "y": 135,
+              "width": 220,
+              "height": 625
+            },
+            "attr": {
+              "v-bind:style": "{ 'overflow' : 'hidden scroll' }"
+            }
+          },
+          "tbTestsuitesName": {
+            "type": "#def.view.componentType.text",
+            "layout": {
+              "x": 55,
+              "y": 145,
+              "width": 155,
+              "height": 20
+            },
+            "attr": {
+              "v-model": "testsuite.testsuite_name",
+              "readonly": "true"
+            }
+          },
+          "tbTestsuiteName": {
+            "type": "#def.view.componentType.text",
+            "layout": {
+              "x": 495,
+              "y": 80,
+              "width": 355,
+              "height": 20
+            },
+            "attr": {
+              "v-model": "testsuite.testsuite_name",
+              "v-on:change": "updateTestsuite(testsuite)"
+            }
+          },
+          "tbTestsuiteCd": {
+            "type": "#def.view.componentType.text",
+            "layout": {
+              "x": 330,
+              "y": 80,
+              "width": 75,
+              "height": 20
+            },
+            "attr": {
+              "v-model": "testsuite.testsuite_cd",
+              "v-on:change": "updateTestsuite(testsuite)"
+            }
+          },
+          "contTestcase": {
+            "type": "#def.view.componentType.container",
+            "layout": {
+              "x": 245,
+              "y": 155,
+              "width": 1155,
+              "height": 605
+            },
+            "attr": {
+              "v-bind:style": "{ 'overflow' : 'hidden scroll' }"
+            }
+          },
+          "agvTestcase": {
+            "type": "#def.view.componentType.arrayGroupVertical",
+            "layout": {
+              "x": 250,
+              "y": 160,
+              "width": 1145,
+              "height": 55
+            },
+            "model": "testcases",
+            "value": "testcase",
+            "attr": {
+              "v-bind:key": "testcase.testcase_id"
+            }
+          },
+          "unnamed5": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 780,
+              "y": 130,
+              "width": 255,
+              "height": 20
+            },
+            "label": "Condition"
+          },
+          "unnamed6": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 525,
+              "y": 130,
+              "width": 255,
+              "height": 20
+            },
+            "label": "Action"
+          },
+          "unnamed7": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 1035,
+              "y": 130,
+              "width": 255,
+              "height": 20
+            },
+            "label": "Expected"
+          },
+          "btnAddTestcase": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 245,
+              "y": 765,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Add",
+            "attr": {
+              "v-on:click": "addTestcase()"
+            }
+          },
+          "btnDeleteTestcase": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 455,
+              "y": 765,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Delete",
+            "attr": {
+              "v-on:click": "delTestcase()"
+            }
+          },
+          "tbTestcaseCd": {
+            "type": "#def.view.componentType.text",
+            "layout": {
+              "x": 300,
+              "y": 165,
+              "width": 75,
+              "height": 20
+            },
+            "attr": {
+              "v-model": "testcase.testcase_cd",
+              "v-on:change": "updateTestcase(testcase)"
+            }
+          },
+          "tbTestcaseName": {
+            "type": "#def.view.componentType.textarea",
+            "layout": {
+              "x": 375,
+              "y": 165,
+              "width": 150,
+              "height": 45
+            },
+            "attr": {
+              "v-model": "testcase.testcase_name",
+              "v-bind:style": "{ 'resize' : 'none' }",
+              "v-on:change": "updateTestcase(testcase)"
+            }
+          },
+          "tbTestcaseDescAction": {
+            "type": "#def.view.componentType.textarea",
+            "layout": {
+              "x": 525,
+              "y": 165,
+              "width": 255,
+              "height": 45
+            },
+            "attr": {
+              "v-model": "testcase.desc_action",
+              "v-bind:style": "{ 'resize' : 'none' }",
+              "v-on:change": "updateTestcase(testcase)"
+            }
+          },
+          "tbTestcaseDescCondition": {
+            "type": "#def.view.componentType.textarea",
+            "layout": {
+              "x": 780,
+              "y": 165,
+              "width": 255,
+              "height": 45
+            },
+            "attr": {
+              "v-model": "testcase.desc_condition",
+              "v-bind:style": "{ 'resize' : 'none' }",
+              "v-on:change": "updateTestcase(testcase)"
+            }
+          },
+          "tbTestcaseDescExpected": {
+            "type": "#def.view.componentType.textarea",
+            "layout": {
+              "x": 1035,
+              "y": 165,
+              "width": 255,
+              "height": 45
+            },
+            "attr": {
+              "v-model": "testcase.desc_expected",
+              "v-bind:style": "{ 'resize' : 'none' }",
+              "v-on:change": "updateTestcase(testcase)"
+            }
+          },
+          "rbCurrentTestcaseId": {
+            "type": "#def.view.componentType.radio",
+            "layout": {
+              "x": 275,
+              "y": 165,
+              "width": 20,
+              "height": 20
+            },
+            "attr": {
+              "v-model": "currentTestcaseId",
+              "v-bind:value": "testcase.testcase_id"
+            }
+          },
+          "lbProject": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 20,
+              "y": 80,
+              "width": 55,
+              "height": 20
+            },
+            "label": "Project"
+          },
+          "lbTestsuites": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 20,
+              "y": 110,
+              "width": 220,
+              "height": 20
+            },
+            "label": "TestSuites"
+          },
+          "lbTestsuiteCd": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 250,
+              "y": 80,
+              "width": 75,
+              "height": 20
+            },
+            "label": "Code"
+          },
+          "lbTestsuiteName": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 415,
+              "y": 80,
+              "width": 75,
+              "height": 20
+            },
+            "label": "Name"
+          },
+          "lbTestcaseName": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 375,
+              "y": 130,
+              "width": 150,
+              "height": 20
+            },
+            "label": "Name"
+          },
+          "lbTestcaseCd": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 300,
+              "y": 130,
+              "width": 75,
+              "height": 20
+            },
+            "label": "Code"
+          },
+          "ddnTestcaseResultSuccess": {
+            "type": "#def.view.componentType.dropdown",
+            "layout": {
+              "x": 1290,
+              "y": 165,
+              "width": 75,
+              "height": 20
+            },
+            "attr": {
+              "v-model": "testcase.result_success",
+              "v-on:change": "updateTestcase(testcase)"
+            },
+            "source": "ddnSourceResultSuccess"
+          },
+          "btnAddTestsuite": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 20,
+              "y": 765,
+              "width": 75,
+              "height": 20
+            },
+            "label": "Add",
+            "attr": {
+              "v-on:click": "addTestsuite()"
+            }
+          },
+          "btnDeleteTestsuite": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 100,
+              "y": 765,
+              "width": 75,
+              "height": 20
+            },
+            "label": "Delete",
+            "attr": {
+              "v-on:click": "delTestsuite()"
+            }
+          },
+          "btnAddProject": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 210,
+              "y": 80,
+              "width": 35,
+              "height": 20
+            },
+            "label": "Add",
+            "attr": {
+              "v-on:click": "addProject()"
+            }
+          },
+          "btnUp": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 605,
+              "y": 765,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Up",
+            "attr": {
+              "v-on:click": "moveTestcase(-1)"
+            }
+          },
+          "btnDown": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 710,
+              "y": 765,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Down",
+            "attr": {
+              "v-on:click": "moveTestcase(1)"
+            }
+          },
+          "btnInsertTestcase": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 350,
+              "y": 765,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Insert",
+            "attr": {
+              "v-on:click": "insertTestcase()"
+            }
+          }
+        }
+      }
+    },
+    "db": {
+      "table": {
+        "project": {
+          "name": "project",
+          "comment": "",
+          "column": {
+            "project_id": {
+              "name": "",
+              "type": "integer",
+              "primaryKey": 1,
+              "nullable": false,
+              "ddlOption": "AUTOINCREMENT",
+              "comment": ""
+            },
+            "project_cd": {
+              "name": "",
+              "type": "text",
+              "primaryKey": 0,
+              "nullable": false,
+              "ddlOption": "",
+              "comment": ""
+            },
+            "project_name": {
+              "name": "",
+              "type": "text",
+              "primaryKey": 0,
+              "nullable": false,
+              "ddlOption": "",
+              "comment": ""
+            }
+          },
+          "sql": "CREATE TABLE project (\n  project_id integer,\n  project_cd text,\n  project_name text\n  ,PRIMARY KEY(project_id)\n);"
+        },
+        "testsuite": {
+          "name": "testsuite",
+          "comment": "",
+          "sql": "CREATE TABLE testsuite (\n  testsuite_id integer,\n  project_id integer,\n  testsuite_cd text,\n  testsuite_name text\n  ,PRIMARY KEY(testsuite_id)\n);",
+          "column": {
+            "testsuite_id": {
+              "name": "",
+              "type": "integer",
+              "primaryKey": 1,
+              "nullable": false,
+              "ddlOption": "AUTOINCREMENT",
+              "comment": ""
+            },
+            "project_id": {
+              "name": "",
+              "type": "integer",
+              "primaryKey": 0,
+              "nullable": false,
+              "ddlOption": "",
+              "comment": ""
+            },
+            "testsuite_cd": {
+              "name": "",
+              "type": "text",
+              "primaryKey": 0,
+              "nullable": false,
+              "ddlOption": "",
+              "comment": "unique in project"
+            },
+            "testsuite_name": {
+              "name": "",
+              "type": "text",
+              "primaryKey": 0,
+              "nullable": false,
+              "ddlOption": "",
+              "comment": ""
+            }
+          }
+        },
+        "testcase": {
+          "name": "testcase",
+          "comment": "",
+          "column": {
+            "testcase_id": {
+              "name": "",
+              "type": "integer",
+              "primaryKey": 1,
+              "nullable": false,
+              "ddlOption": "AUTOINCREMENT",
+              "comment": ""
+            },
+            "testsuite_id": {
+              "name": "",
+              "type": "integer",
+              "primaryKey": 0,
+              "nullable": false,
+              "ddlOption": "",
+              "comment": ""
+            },
+            "testcase_cd": {
+              "name": "",
+              "type": "text",
+              "primaryKey": 0,
+              "nullable": false,
+              "ddlOption": "",
+              "comment": "unique in testsuite"
+            },
+            "testcase_name": {
+              "name": "",
+              "type": "text",
+              "primaryKey": 0,
+              "nullable": false,
+              "ddlOption": "",
+              "comment": ""
+            },
+            "desc_condition": {
+              "name": "",
+              "type": "text",
+              "primaryKey": 0,
+              "nullable": false,
+              "ddlOption": "",
+              "comment": ""
+            },
+            "desc_action": {
+              "name": "",
+              "type": "text",
+              "primaryKey": 0,
+              "nullable": false,
+              "ddlOption": "",
+              "comment": ""
+            },
+            "desc_expected": {
+              "name": "",
+              "type": "text",
+              "primaryKey": 0,
+              "nullable": false,
+              "ddlOption": "",
+              "comment": ""
+            },
+            "result_success": {
+              "name": "",
+              "type": "integer",
+              "primaryKey": 0,
+              "nullable": false,
+              "ddlOption": "",
+              "comment": "1:success,0:failed, n/a:-1"
+            },
+            "sort_order": {
+              "name": "",
+              "type": "integer",
+              "primaryKey": 0,
+              "nullable": false,
+              "ddlOption": "",
+              "comment": ""
+            }
+          },
+          "sql": "CREATE TABLE testcase (\n  testcase_id integer,\n  testsuite_id integer,\n  testcase_cd text,\n  testcase_name text,\n  desc_condition text,\n  desc_action text,\n  desc_expected text,\n  result_success integer,\n  sort_order integer\n  ,PRIMARY KEY(testcase_id)\n);"
+        }
+      }
+    }
+  }
+}

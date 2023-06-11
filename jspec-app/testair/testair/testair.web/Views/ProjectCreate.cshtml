@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div id="app">
+
+        <div xmlns="http://www.w3.org/1999/xhtml" style="position: absolute; width: 435px; height: 130px; left: calc(50% - 217px); top: calc(50% - 65px); z-index: 3500010; box-sizing: border-box;">
+            <div style="background-color:#EFEFEF; font-size:11px; font-family:unset; border:solid 1px  #7272c7; border-radius:5px; box-sizing:border-box; width:100%; height:100%;">
+                <div style="top:0px; height:30px; box-sizing:border-box; background-color: #7272c7; display:flex; justify-content:start; align-items:center; padding-left:5px; color:#fff;">
+                    Create Project
+                </div>
+                <div style="position: absolute; width: 100px; height: 20px; left: 10px; top: 100px; z-index: 13500020; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; cursor:pointer;" v-on:click="create()">Create</button></div><div style="position: absolute; width: 100px; height: 20px; left: 325px; top: 100px; z-index: 13500335; box-sizing: border-box;"><button style="width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; cursor:pointer;" v-on:click="cancel()">Cancel</button></div><div style="position: absolute; width: 100px; height: 20px; left: 10px; top: 40px; z-index: 7500020; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; border:solid 1px #CCC; ">Code</span></div><div style="position: absolute; width: 100px; height: 20px; left: 115px; top: 40px; z-index: 7500125; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " spellcheck="false" v-model="project.project_cd" /></div><div style="position: absolute; width: 100px; height: 20px; left: 10px; top: 65px; z-index: 10000020; box-sizing: border-box;"><span style="display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; border:solid 1px #CCC; ">Name</span></div><div style="position: absolute; width: 310px; height: 20px; left: 115px; top: 65px; z-index: 10000125; box-sizing: border-box;"><input type="text" style="width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; " spellcheck="false" v-model="project.project_name" /></div>
+            </div>
+        </div>
+
+    </div>
+    <script src="~/lib/vue.global.js"></script>
+    <script src="~/js/ProjectCreate.js"></script>
+</body>
+</html>
+
