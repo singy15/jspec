@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace template_web.Util
 
         public IDbConnection Connection { get; }
 
-        public int Insert(IDbTransaction tx, string tableName, Dictionary<string, object> param);
+        public long Insert(IDbTransaction tx, string tableName, Dictionary<string, object> param);
 
         public int Update(IDbTransaction tx, string tableName, Dictionary<string, object> param, Dictionary<string, object> key);
 
@@ -47,7 +47,7 @@ namespace template_web.Util
             }
         }
 
-        public int Insert(IDbTransaction tx, string tableName, Dictionary<string, object> param) { 
+        public long Insert(IDbTransaction tx, string tableName, Dictionary<string, object> param) { 
 
             using (var cmd = tx.Connection.CreateCommand())
             {
@@ -61,10 +61,11 @@ namespace template_web.Util
                     
                 var columns = String.Join(",", param.Keys);
                 var values = String.Join(",", param.Keys.Select(k => "@" + k));
-                var sql = $"insert into {tableName} ({columns}) values ({values})";
+                var sql = $"insert into {tableName} ({columns}) values ({values}); select last_insert_rowid() as rowid;";
 
                 cmd.CommandText = sql;
-                return cmd.ExecuteNonQuery();
+                var rowid = cmd.ExecuteScalar();
+                return (Int64)rowid;
             }
         }
 
