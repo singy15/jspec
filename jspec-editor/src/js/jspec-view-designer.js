@@ -394,7 +394,7 @@ var jspecViewDesigner = {
         <div class="jspec-view-editor--container" @click.stop>
           <button class="jspec-view-designer--button" style="width:32px" @click="addComp()">+</button>
           <button class="jspec-view-designer--button" style="width:32px" @click="delComp()" :disabled="selected == null">-</button>
-          <input type="text" v-model="renaming.newName" :disabled="selected == null"/>
+          <input type="text" v-model="renaming.newName" :disabled="selected == null" @keypress.enter="rename()"/>
           <button class="jspec-view-designer--button" @click="rename()" :disabled="selected == null">RENAME</button>
           <button class="jspec-view-designer--button" @click="editStart()" :disabled="selected == null">EDIT</button>
           <button class="jspec-view-designer--button" @click="generateCode()">GENCODE</button>
