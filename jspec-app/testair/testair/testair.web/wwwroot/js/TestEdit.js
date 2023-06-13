@@ -264,6 +264,48 @@ let app = createApp({
                 x.sort_order = (i + 1) * 100;
             });
             this.dbBatchUpdateTestcase([...this.testcases]);
+        },
+        styleCommon(column, index) {
+            let style = { resize: "none", whiteSpace: "break-spaces" };
+
+            if (column === "testcase_cd") {
+                style.textWrap = "nowrap";
+            }
+
+            if ((column === "testcase_name") && (index > 0)
+                && (this.testcases[index - 1].testcase_name === this.testcases[index].testcase_name)) {
+                style.color = "#DDD";
+                style.backgroundColor = "#DDD";
+            }
+
+            if ((column === "desc_action") && (index > 0)
+                && (this.testcases[index - 1].testcase_name === this.testcases[index].testcase_name)
+                && (this.testcases[index - 1].desc_action === this.testcases[index].desc_action)
+            ) {
+                style.color = "#DDD";
+                style.backgroundColor = "#DDD";
+            }
+
+            if ((column === "desc_condition") && (index > 0)
+                && (this.testcases[index - 1].testcase_name === this.testcases[index].testcase_name)
+                && (this.testcases[index - 1].desc_action === this.testcases[index].desc_action)
+                && (this.testcases[index - 1].desc_condition === this.testcases[index].desc_condition)
+            ) {
+                style.color = "#DDD";
+                style.backgroundColor = "#DDD";
+            }
+
+            if ((column === "desc_expected") && (index > 0)
+                && (this.testcases[index - 1].testcase_name === this.testcases[index].testcase_name)
+                && (this.testcases[index - 1].desc_action === this.testcases[index].desc_action)
+                && (this.testcases[index - 1].desc_condition === this.testcases[index].desc_condition)
+                && (this.testcases[index - 1].desc_expected === this.testcases[index].desc_expected)
+            ) {
+                style.color = "#DDD";
+                style.backgroundColor = "#DDD";
+            }
+
+            return style;
         }
     },
     mounted() {

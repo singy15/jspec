@@ -486,16 +486,17 @@
             }
           },
           "tbTestcaseCd": {
-            "type": "#def.view.componentType.text",
+            "type": "#def.view.componentType.textarea",
             "layout": {
               "x": 300,
               "y": 165,
               "width": 75,
-              "height": 20
+              "height": 45
             },
             "attr": {
               "v-model": "testcase.testcase_cd",
-              "v-on:change": "updateTestcase(testcase)"
+              "v-on:change": "updateTestcase(testcase)",
+              "v-bind:style": "styleCommon('testcase_cd', index)"
             }
           },
           "tbTestcaseName": {
@@ -508,7 +509,7 @@
             },
             "attr": {
               "v-model": "testcase.testcase_name",
-              "v-bind:style": "{ 'resize' : 'none' }",
+              "v-bind:style": "styleCommon('testcase_name', index)",
               "v-on:change": "updateTestcase(testcase)"
             }
           },
@@ -522,7 +523,7 @@
             },
             "attr": {
               "v-model": "testcase.desc_action",
-              "v-bind:style": "{ 'resize' : 'none' }",
+              "v-bind:style": "styleCommon('desc_action', index)",
               "v-on:change": "updateTestcase(testcase)"
             }
           },
@@ -536,7 +537,7 @@
             },
             "attr": {
               "v-model": "testcase.desc_condition",
-              "v-bind:style": "{ 'resize' : 'none' }",
+              "v-bind:style": "styleCommon('desc_condition', index)",
               "v-on:change": "updateTestcase(testcase)"
             }
           },
@@ -550,7 +551,7 @@
             },
             "attr": {
               "v-model": "testcase.desc_expected",
-              "v-bind:style": "{ 'resize' : 'none' }",
+              "v-bind:style": "styleCommon('desc_expected', index)",
               "v-on:change": "updateTestcase(testcase)"
             }
           },
@@ -558,7 +559,7 @@
             "type": "#def.view.componentType.radio",
             "layout": {
               "x": 275,
-              "y": 165,
+              "y": 175,
               "width": 20,
               "height": 20
             },
@@ -633,7 +634,7 @@
               "x": 1290,
               "y": 165,
               "width": 75,
-              "height": 20
+              "height": 45
             },
             "attr": {
               "v-model": "testcase.result_success",
