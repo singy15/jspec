@@ -58,7 +58,7 @@ namespace testair.web.Controllers
             {
                 var dt = _dbutil.Query(tx, $"select max(testcase_id) as sort_order from testcase");
                 tx.Commit();
-                if (dt.Rows[0]["sort_order"] == null) { 
+                if (dt.Rows[0]["sort_order"] is DBNull) { 
                     return Content(JsonConvert.SerializeObject(0), "application/json");
                 } else
                 {
