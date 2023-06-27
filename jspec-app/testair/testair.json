@@ -407,57 +407,13 @@
             "type": "#def.view.componentType.container",
             "layout": {
               "x": 245,
-              "y": 155,
+              "y": 135,
               "width": 1155,
-              "height": 605
+              "height": 625
             },
             "attr": {
-              "v-bind:style": "{ 'overflow' : 'hidden scroll' }"
+              "v-bind:style": "{ 'overflow' : 'scroll scroll' }"
             }
-          },
-          "agvTestcase": {
-            "type": "#def.view.componentType.arrayGroupVertical",
-            "layout": {
-              "x": 250,
-              "y": 160,
-              "width": 1145,
-              "height": 55
-            },
-            "model": "testcases",
-            "value": "testcase",
-            "attr": {
-              "v-bind:key": "testcase.testcase_id"
-            }
-          },
-          "unnamed5": {
-            "type": "#def.view.componentType.label",
-            "layout": {
-              "x": 780,
-              "y": 130,
-              "width": 255,
-              "height": 20
-            },
-            "label": "Condition"
-          },
-          "unnamed6": {
-            "type": "#def.view.componentType.label",
-            "layout": {
-              "x": 525,
-              "y": 130,
-              "width": 255,
-              "height": 20
-            },
-            "label": "Action"
-          },
-          "unnamed7": {
-            "type": "#def.view.componentType.label",
-            "layout": {
-              "x": 1035,
-              "y": 130,
-              "width": 255,
-              "height": 20
-            },
-            "label": "Expected"
           },
           "btnAddTestcase": {
             "type": "#def.view.componentType.button",
@@ -483,89 +439,6 @@
             "label": "Delete",
             "attr": {
               "v-on:click": "delTestcase()"
-            }
-          },
-          "tbTestcaseCd": {
-            "type": "#def.view.componentType.textarea",
-            "layout": {
-              "x": 300,
-              "y": 165,
-              "width": 75,
-              "height": 45
-            },
-            "attr": {
-              "v-model": "testcase.testcase_cd",
-              "v-on:change": "updateTestcase(testcase)",
-              "v-bind:style": "styleCommon('testcase_cd', index)"
-            }
-          },
-          "tbTestcaseName": {
-            "type": "#def.view.componentType.textarea",
-            "layout": {
-              "x": 375,
-              "y": 165,
-              "width": 150,
-              "height": 45
-            },
-            "attr": {
-              "v-model": "testcase.testcase_name",
-              "v-bind:style": "styleCommon('testcase_name', index)",
-              "v-on:change": "updateTestcase(testcase)"
-            }
-          },
-          "tbTestcaseDescAction": {
-            "type": "#def.view.componentType.textarea",
-            "layout": {
-              "x": 525,
-              "y": 165,
-              "width": 255,
-              "height": 45
-            },
-            "attr": {
-              "v-model": "testcase.desc_action",
-              "v-bind:style": "styleCommon('desc_action', index)",
-              "v-on:change": "updateTestcase(testcase)"
-            }
-          },
-          "tbTestcaseDescCondition": {
-            "type": "#def.view.componentType.textarea",
-            "layout": {
-              "x": 780,
-              "y": 165,
-              "width": 255,
-              "height": 45
-            },
-            "attr": {
-              "v-model": "testcase.desc_condition",
-              "v-bind:style": "styleCommon('desc_condition', index)",
-              "v-on:change": "updateTestcase(testcase)"
-            }
-          },
-          "tbTestcaseDescExpected": {
-            "type": "#def.view.componentType.textarea",
-            "layout": {
-              "x": 1035,
-              "y": 165,
-              "width": 255,
-              "height": 45
-            },
-            "attr": {
-              "v-model": "testcase.desc_expected",
-              "v-bind:style": "styleCommon('desc_expected', index)",
-              "v-on:change": "updateTestcase(testcase)"
-            }
-          },
-          "rbCurrentTestcaseId": {
-            "type": "#def.view.componentType.radio",
-            "layout": {
-              "x": 275,
-              "y": 175,
-              "width": 20,
-              "height": 20
-            },
-            "attr": {
-              "v-model": "currentTestcaseId",
-              "v-bind:value": "testcase.testcase_id"
             }
           },
           "lbProject": {
@@ -607,40 +480,6 @@
               "height": 20
             },
             "label": "Name"
-          },
-          "lbTestcaseName": {
-            "type": "#def.view.componentType.label",
-            "layout": {
-              "x": 375,
-              "y": 130,
-              "width": 150,
-              "height": 20
-            },
-            "label": "Name"
-          },
-          "lbTestcaseCd": {
-            "type": "#def.view.componentType.label",
-            "layout": {
-              "x": 300,
-              "y": 130,
-              "width": 75,
-              "height": 20
-            },
-            "label": "Code"
-          },
-          "ddnTestcaseResultSuccess": {
-            "type": "#def.view.componentType.dropdown",
-            "layout": {
-              "x": 1290,
-              "y": 165,
-              "width": 75,
-              "height": 45
-            },
-            "attr": {
-              "v-model": "testcase.result_success",
-              "v-on:change": "updateTestcase(testcase)"
-            },
-            "source": "ddnSourceResultSuccess"
           },
           "btnAddTestsuite": {
             "type": "#def.view.componentType.button",
@@ -718,6 +557,41 @@
             "label": "Insert",
             "attr": {
               "v-on:click": "insertTestcase()"
+            }
+          },
+          "lbTestcase": {
+            "type": "#def.view.componentType.label",
+            "layout": {
+              "x": 245,
+              "y": 110,
+              "width": 220,
+              "height": 20
+            },
+            "label": "TestCases"
+          },
+          "rawTestcases": {
+            "type": "#def.view.componentType.raw",
+            "layout": {
+              "x": 250,
+              "y": 140,
+              "width": 1145,
+              "height": 75
+            },
+            "attr": {},
+            "html": "<trivial-spread ref=\"spread\" v-on:datachanged=\"eventDatachanged\"></trivial-spread>"
+          },
+          "btnSave": {
+            "type": "#def.view.componentType.button",
+            "layout": {
+              "x": 475,
+              "y": 110,
+              "width": 100,
+              "height": 20
+            },
+            "label": "Save",
+            "attr": {
+              "v-on:click": "saveTestcase()",
+              "v-if": "unsaved"
             }
           }
         }
@@ -799,18 +673,18 @@
           "name": "testcase",
           "comment": "",
           "column": {
-            "testcase_id": {
+            "testsuite_id": {
               "name": "",
               "type": "integer",
               "primaryKey": 1,
               "nullable": false,
-              "ddlOption": "AUTOINCREMENT",
+              "ddlOption": "",
               "comment": ""
             },
-            "testsuite_id": {
+            "no": {
               "name": "",
               "type": "integer",
-              "primaryKey": 0,
+              "primaryKey": 2,
               "nullable": false,
               "ddlOption": "",
               "comment": ""
@@ -862,17 +736,9 @@
               "nullable": false,
               "ddlOption": "",
               "comment": "1:success,0:failed, n/a:-1"
-            },
-            "sort_order": {
-              "name": "",
-              "type": "integer",
-              "primaryKey": 0,
-              "nullable": false,
-              "ddlOption": "",
-              "comment": ""
             }
           },
-          "sql": "CREATE TABLE testcase (\n  testcase_id integer,\n  testsuite_id integer,\n  testcase_cd text,\n  testcase_name text,\n  desc_condition text,\n  desc_action text,\n  desc_expected text,\n  result_success integer,\n  sort_order integer\n  ,PRIMARY KEY(testcase_id)\n);"
+          "sql": "CREATE TABLE testcase (\n  testsuite_id integer,\n  no integer,\n  testcase_cd text,\n  testcase_name text,\n  desc_condition text,\n  desc_action text,\n  desc_expected text,\n  result_success integer\n  ,PRIMARY KEY(testsuite_id, no)\n);"
         }
       }
     }

@@ -58,9 +58,11 @@ namespace testair.web.Controllers
             {
                 var dt = _dbutil.Query(tx, $"select max(testcase_id) as sort_order from testcase");
                 tx.Commit();
-                if (dt.Rows[0]["sort_order"] is DBNull) { 
+                if (dt.Rows[0]["sort_order"] is DBNull)
+                {
                     return Content(JsonConvert.SerializeObject(0), "application/json");
-                } else
+                }
+                else
                 {
                     return Content(JsonConvert.SerializeObject((Int64)(dt.Rows[0]["sort_order"]) * 100), "application/json");
                 }
@@ -105,6 +107,39 @@ namespace testair.web.Controllers
                 var result = _dbutil.Update(tx, "testcase", body, key);
                 tx.Commit();
                 return Content(JsonConvert.SerializeObject(result), "application/json");
+            }
+        }
+
+        public class Foo
+        {
+            public string testcase_cd { get; set; }
+
+            public string testcase_name { get; set; }
+            public string desc_action { get; set; }
+            public string desc_condition { get; set; }
+            public string desc_expected { get; set; }
+
+            public string result_success { get; set; }
+        }
+
+        [HttpPut]
+        [Route("[controller]/ByTestsuiteId/{testsuite_id}")]
+        public IActionResult UpdateByTestsuiteId(int testsuite_id, [FromBody] IEnumerable<Dictionary<string, object>> body)
+        {
+            using (var tx = _dbutil.CreateTransaction())
+            {
+                var keyDel = new Dictionary<string, object>();
+                keyDel.Add("testsuite_id", testsuite_id);
+                _dbutil.Delete(tx, "testcase", keyDel);
+
+                foreach (var testcase in body)
+                {
+                    _dbutil.Insert(tx, "testcase", testcase);
+                }
+
+                tx.Commit();
+
+                return Content(JsonConvert.SerializeObject(body.Count()), "application/json");
             }
         }
 
