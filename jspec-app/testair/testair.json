@@ -1,107 +1,170 @@
 {
   "def": {
-    "view": {
-      "componentType": {
+    "version": "0.0.1",
+    "type": {
+      "view": {
+        "spec": {
+          "component": "Object",
+          "name": "String",
+          "required": [
+            "component"
+          ]
+        },
+        "type": "type"
+      },
+      "component": {
         "form": {
-          "$name": "画面",
+          "name": "画面",
           "template": "`\n<div style=\"background-color:#EFEFEF; font-size:11px; font-family:unset; border:solid 1px ${this.baseColor || type.baseColor}; border-radius:5px; box-sizing:border-box; width:100%; height:100%;\">\n  <div style=\"top:0px; height:30px; box-sizing:border-box; background-color:${this.baseColor || type.baseColor}; display:flex; justify-content:start; align-items:center; padding-left:5px; color:#fff;\">\n  ${(this.label)? this.label : ''}\n  </div>\n  <contents>\n  </contents>\n</div>\n`",
-          "baseColor": " #7272c7"
+          "baseColor": " #7272c7",
+          "inherits": "#def.type.component"
         },
         "button": {
-          "$name": "ボタン",
-          "template": "`<button style=\"width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; cursor:pointer;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}>${this.label}</button>`"
+          "name": "ボタン",
+          "template": "`<button style=\"width:100%; height:100%; box-sizing:border-box; background-color:#fff; border:solid 1px #888; border-radius:5px; font-size:11px; font-family:unset; cursor:pointer;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}>${this.label}</button>`",
+          "inherits": "#def.type.component"
         },
         "label": {
-          "$name": "ラベル",
-          "template": "`<span style=\"display:flex; box-sizing:border-box; justify-content:${(this.textAlign)? this.textAlign : 'center'}; align-items:center; width:100%; height:100%; border:solid 1px #CCC; ${(this.style)? this.style : ''}\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}>${(this.label)? this.label : ''}</span>`"
+          "name": "ラベル",
+          "template": "`<span style=\"display:flex; box-sizing:border-box; justify-content:${(this.textAlign)? this.textAlign : 'center'}; align-items:center; width:100%; height:100%; border:solid 1px #CCC; ${(this.style)? this.style : ''}\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}>${(this.label)? this.label : ''}</span>`",
+          "inherits": "#def.type.component"
         },
         "radio": {
-          "$name": "ラジオボタン",
-          "template": "`<input type=\"radio\" style=\"box-sizing:border-box;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''} />`"
+          "name": "ラジオボタン",
+          "template": "`<input type=\"radio\" style=\"box-sizing:border-box;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''} />`",
+          "inherits": "#def.type.component"
         },
         "text": {
           "template": "`<input type=\"text\" style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" spellcheck=\"false\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}/>`",
-          "$name": "テキストボックス"
+          "name": "テキストボックス",
+          "inherits": "#def.type.component"
         },
         "date": {
-          "$name": "日付",
-          "template": "`<input type=\"date\" style=\"width:100%; height:100%; box-sizing:border-box;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}/>`"
+          "name": "日付",
+          "template": "`<input type=\"date\" style=\"width:100%; height:100%; box-sizing:border-box;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}/>`",
+          "inherits": "#def.type.component"
         },
         "container": {
-          "template": "`<div style=\"width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; box-sizing:border-box;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><div style=\"position:relative; box-sizing:border-box;\" ><contents></contents></div></div>`"
+          "template": "`<div style=\"width:100%; height:100%; background-color:#fff; border:solid 1px #888; border-radius:5px; box-sizing:border-box;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><div style=\"position:relative; box-sizing:border-box;\" ><contents></contents></div></div>`",
+          "inherits": "#def.type.component"
         },
         "textarea": {
           "template": "`<textarea style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none;  ${(this.style)? this.style : ''}\" spellcheck=\"false\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}></textarea>`",
-          "$name": "テキストエリア"
+          "name": "テキストエリア",
+          "inherits": "#def.type.component"
         },
         "check": {
           "template": "`<input type=\"checkbox\" style=\"box-sizing:border-box; outline:none;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}/>`",
-          "$name": "チェックボックス"
+          "name": "チェックボックス",
+          "inherits": "#def.type.component"
         },
         "number": {
           "template": "`<input type=\"number\" style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" spellcheck=\"false\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}/>`",
-          "$name": "数値入力"
+          "name": "数値入力",
+          "inherits": "#def.type.component"
         },
         "arrayGroupVertical": {
           "template": "`<template v-for=\"(${(this.value)? this.value : 'value'},${(this.index)? this.index : 'index'}) in ${this.model}\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`",
-          "outerTagPositioning": "relative"
+          "outerTagPositioning": "relative",
+          "inherits": "#def.type.component"
         },
         "arrayGroupHorizontal": {
           "template": "`<template v-for=\"(${(this.value)? this.value : 'value'},${(this.index)? this.index : 'index'}) in ${this.model}\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', left:(index * ${this.layout.width}).toString()+'px'}\"><contents></contents></div></template>`",
-          "outerTagPositioning": "relative"
+          "outerTagPositioning": "relative",
+          "inherits": "#def.type.component"
         },
         "objectGroupVertical": {
           "template": "`<template v-for=\"(${(this.value)? this.value : 'value'},${(this.key)? this.key : 'key'},${(this.index)? this.index : 'index'}) in ${this.model}\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', top:(index * ${this.layout.height}).toString()+'px'}\"><contents></contents></div></template>`",
-          "outerTagPositioning": "relative"
+          "outerTagPositioning": "relative",
+          "inherits": "#def.type.component"
         },
         "objectGroupHorizontal": {
           "template": "`<template v-for=\"(${(this.value)? this.value : 'value'},${(this.key)? this.key : 'key'},${(this.index)? this.index : 'index'}) in ${this.model}\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><div :style=\"{position:'relative', boxSizing:'border-box', marginTop:'0px', marginLeft:'0px', left:(index * ${this.layout.width}).toString()+'px'}\"><contents></contents></div></template>`",
-          "outerTagPositioning": "relative"
+          "outerTagPositioning": "relative",
+          "inherits": "#def.type.component"
         },
         "raw": {
-          "template": "`${(this.html)? this.html : ''}`"
+          "template": "`${(this.html)? this.html : ''}`",
+          "inherits": "#def.type.component"
         },
         "image": {
-          "template": "`<div style=\"width:100%; height:100%;display:flex;align-items:center;justify-content:center;\"><img style=\"max-width:100%; max-height:100%; width:fit-content; height:fit-content; box-sizing:border-box; font-size:11px; font-family:unset; ${(this.style)? this.style : ''}\" ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''} /></div>`"
+          "template": "`<div style=\"width:100%; height:100%;display:flex;align-items:center;justify-content:center;\"><img style=\"max-width:100%; max-height:100%; width:fit-content; height:fit-content; box-sizing:border-box; font-size:11px; font-family:unset; ${(this.style)? this.style : ''}\" ${(this.event)? Object.keys(this.event).map(k => `@${k}=\"${this.event[k]}\"`).join(\" \") : ''} ${(this.bind)? Object.keys(this.bind).map(k => `:${k}=\"${this.bind[k]}\"`).join(\" \") : ''} /></div>`",
+          "inherits": "#def.type.component"
         },
         "dropdown": {
-          "template": "`<select style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" spellcheck=\"false\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><option v-for=\"value in ${this.source}\" v-bind:value=\"value.value\">{{value.text}}</option></select>`"
+          "template": "`<select style=\"width:100%; height:100%; font-family:unset; font-size:11px; border:solid 1px #888; box-sizing:border-box; outline:none; \" spellcheck=\"false\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}><option v-for=\"value in ${this.source}\" v-bind:value=\"value.value\">{{value.text}}</option></select>`",
+          "inherits": "#def.type.component"
         },
         "hyperlink": {
-          "template": "`<a href=\"#\" style=\"display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; border:solid 1px #CCC;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}>${this.label}</a>`"
-        }
-      }
-    },
-    "model": {
-      "fieldType": {
-        "integer": {},
-        "string": {},
-        "double": {}
-      }
-    },
-    "db": {
-      "columnType": {
-        "number": {},
-        "text": {}
+          "template": "`<a href=\"#\" style=\"display:flex; box-sizing:border-box; justify-content:center; align-items:center; width:100%; height:100%; border:solid 1px #CCC;\" ${(this.attr)? Object.keys(this.attr).map(k => `${k}=\"${this.attr[k]}\"`).join(\" \") : ''}>${this.label}</a>`",
+          "inherits": "#def.type.component"
+        },
+        "spec": {
+          "layout": "Object",
+          "required": [
+            "layout"
+          ],
+          "inherits": "#def.type.component"
+        },
+        "type": "type"
       },
-      "objectType": {
-        "table": {},
-        "view": {},
-        "index": {}
+      "database": {
+        "spec": {
+          "name": "String",
+          "table": "Object",
+          "view": "Object",
+          "required": [
+            "name",
+            "table",
+            "connectionString",
+            "dbType"
+          ],
+          "connectionString": "String",
+          "dbType": "String"
+        },
+        "table": {
+          "spec": {
+            "column": "Object",
+            "name": "String",
+            "required": [
+              "column",
+              "name"
+            ],
+            "columns": {},
+            "spec": {}
+          },
+          "type": "type",
+          "column": {
+            "type": "type",
+            "spec": {
+              "name": "String",
+              "datatype": "String",
+              "required": [
+                "name",
+                "datatype"
+              ]
+            }
+          }
+        },
+        "type": "type"
       },
-      "dbType": {
-        "mssql": {},
-        "sqlite": {}
+      "application": {
+        "spec": {
+          "name": "String",
+          "view": "Object",
+          "database": "Object",
+          "function": "value"
+        },
+        "type": "type"
       }
-    },
-    "version": "0.0.1"
+    }
   },
   "testair": {
     "view": {
       "projectCreate": {
         "component": {
           "form": {
-            "type": "#def.view.componentType.form",
+            "type": "#def.type.component.form",
             "layout": {
               "x": 10,
               "y": 35,
@@ -111,7 +174,7 @@
             "label": "Create Project"
           },
           "btnCreate": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 20,
               "y": 135,
@@ -124,7 +187,7 @@
             }
           },
           "btnCancel": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 335,
               "y": 135,
@@ -137,7 +200,7 @@
             }
           },
           "lbProjectCd": {
-            "type": "#def.view.componentType.label",
+            "type": "#def.type.component.label",
             "layout": {
               "x": 20,
               "y": 75,
@@ -147,7 +210,7 @@
             "label": "Code"
           },
           "tbProjectCd": {
-            "type": "#def.view.componentType.text",
+            "type": "#def.type.component.text",
             "layout": {
               "x": 125,
               "y": 75,
@@ -159,7 +222,7 @@
             }
           },
           "lbProjectName": {
-            "type": "#def.view.componentType.label",
+            "type": "#def.type.component.label",
             "layout": {
               "x": 20,
               "y": 100,
@@ -169,7 +232,7 @@
             "label": "Name"
           },
           "tbProjectName": {
-            "type": "#def.view.componentType.text",
+            "type": "#def.type.component.text",
             "layout": {
               "x": 125,
               "y": 100,
@@ -185,7 +248,7 @@
       "projectList": {
         "component": {
           "form": {
-            "type": "#def.view.componentType.form",
+            "type": "#def.type.component.form",
             "layout": {
               "x": 10,
               "y": 35,
@@ -195,7 +258,7 @@
             "label": "Projects"
           },
           "btnClose": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 575,
               "y": 485,
@@ -206,7 +269,7 @@
             "click": "close()"
           },
           "projectId": {
-            "type": "#def.view.componentType.text",
+            "type": "#def.type.component.text",
             "layout": {
               "x": 55,
               "y": 110,
@@ -216,7 +279,7 @@
             "model": "value.project_id"
           },
           "projectName": {
-            "type": "#def.view.componentType.text",
+            "type": "#def.type.component.text",
             "layout": {
               "x": 160,
               "y": 110,
@@ -226,7 +289,7 @@
             "model": "value.project_name"
           },
           "labelProjectId": {
-            "type": "#def.view.componentType.label",
+            "type": "#def.type.component.label",
             "layout": {
               "x": 55,
               "y": 75,
@@ -236,7 +299,7 @@
             "label": "ID"
           },
           "labelProjectName": {
-            "type": "#def.view.componentType.label",
+            "type": "#def.type.component.label",
             "layout": {
               "x": 160,
               "y": 75,
@@ -246,7 +309,7 @@
             "label": "Name"
           },
           "btnCreate": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 20,
               "y": 485,
@@ -257,7 +320,7 @@
             "click": "create()"
           },
           "rbSelect": {
-            "type": "#def.view.componentType.radio",
+            "type": "#def.type.component.radio",
             "layout": {
               "x": 30,
               "y": 110,
@@ -268,7 +331,7 @@
             "value": "value.project_id"
           },
           "btnOpen": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 585,
               "y": 110,
@@ -279,7 +342,7 @@
             "click": "open()"
           },
           "unnamed4": {
-            "type": "#def.view.componentType.arrayGroupVertical",
+            "type": "#def.type.component.arrayGroupVertical",
             "layout": {
               "x": 25,
               "y": 105,
@@ -290,7 +353,7 @@
             "value": "value"
           },
           "plProjects": {
-            "type": "#def.view.componentType.container",
+            "type": "#def.type.component.container",
             "layout": {
               "x": 20,
               "y": 100,
@@ -304,7 +367,7 @@
       "testEdit": {
         "component": {
           "form": {
-            "type": "#def.view.componentType.form",
+            "type": "#def.type.component.form",
             "layout": {
               "x": 10,
               "y": 40,
@@ -313,7 +376,7 @@
             }
           },
           "ddnProject": {
-            "type": "#def.view.componentType.dropdown",
+            "type": "#def.type.component.dropdown",
             "layout": {
               "x": 80,
               "y": 80,
@@ -326,7 +389,7 @@
             }
           },
           "agvTestsuites": {
-            "type": "#def.view.componentType.arrayGroupVertical",
+            "type": "#def.type.component.arrayGroupVertical",
             "layout": {
               "x": 25,
               "y": 140,
@@ -340,7 +403,7 @@
             }
           },
           "rbCurrentTestsuiteId": {
-            "type": "#def.view.componentType.radio",
+            "type": "#def.type.component.radio",
             "layout": {
               "x": 30,
               "y": 145,
@@ -353,7 +416,7 @@
             }
           },
           "contTestsuites": {
-            "type": "#def.view.componentType.container",
+            "type": "#def.type.component.container",
             "layout": {
               "x": 20,
               "y": 135,
@@ -365,7 +428,7 @@
             }
           },
           "tbTestsuitesName": {
-            "type": "#def.view.componentType.text",
+            "type": "#def.type.component.text",
             "layout": {
               "x": 55,
               "y": 145,
@@ -378,7 +441,7 @@
             }
           },
           "tbTestsuiteName": {
-            "type": "#def.view.componentType.text",
+            "type": "#def.type.component.text",
             "layout": {
               "x": 495,
               "y": 80,
@@ -391,7 +454,7 @@
             }
           },
           "tbTestsuiteCd": {
-            "type": "#def.view.componentType.text",
+            "type": "#def.type.component.text",
             "layout": {
               "x": 330,
               "y": 80,
@@ -404,7 +467,7 @@
             }
           },
           "contTestcase": {
-            "type": "#def.view.componentType.container",
+            "type": "#def.type.component.container",
             "layout": {
               "x": 245,
               "y": 135,
@@ -416,7 +479,7 @@
             }
           },
           "btnAddTestcase": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 245,
               "y": 765,
@@ -429,7 +492,7 @@
             }
           },
           "btnDeleteTestcase": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 455,
               "y": 765,
@@ -442,7 +505,7 @@
             }
           },
           "lbProject": {
-            "type": "#def.view.componentType.label",
+            "type": "#def.type.component.label",
             "layout": {
               "x": 20,
               "y": 80,
@@ -452,7 +515,7 @@
             "label": "Project"
           },
           "lbTestsuites": {
-            "type": "#def.view.componentType.label",
+            "type": "#def.type.component.label",
             "layout": {
               "x": 20,
               "y": 110,
@@ -462,7 +525,7 @@
             "label": "TestSuites"
           },
           "lbTestsuiteCd": {
-            "type": "#def.view.componentType.label",
+            "type": "#def.type.component.label",
             "layout": {
               "x": 250,
               "y": 80,
@@ -472,7 +535,7 @@
             "label": "Code"
           },
           "lbTestsuiteName": {
-            "type": "#def.view.componentType.label",
+            "type": "#def.type.component.label",
             "layout": {
               "x": 415,
               "y": 80,
@@ -482,7 +545,7 @@
             "label": "Name"
           },
           "btnAddTestsuite": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 20,
               "y": 765,
@@ -495,7 +558,7 @@
             }
           },
           "btnDeleteTestsuite": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 100,
               "y": 765,
@@ -508,7 +571,7 @@
             }
           },
           "btnAddProject": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 210,
               "y": 80,
@@ -521,7 +584,7 @@
             }
           },
           "btnUp": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 605,
               "y": 765,
@@ -534,7 +597,7 @@
             }
           },
           "btnDown": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 710,
               "y": 765,
@@ -547,7 +610,7 @@
             }
           },
           "btnInsertTestcase": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 350,
               "y": 765,
@@ -560,7 +623,7 @@
             }
           },
           "lbTestcase": {
-            "type": "#def.view.componentType.label",
+            "type": "#def.type.component.label",
             "layout": {
               "x": 245,
               "y": 110,
@@ -570,7 +633,7 @@
             "label": "TestCases"
           },
           "rawTestcases": {
-            "type": "#def.view.componentType.raw",
+            "type": "#def.type.component.raw",
             "layout": {
               "x": 250,
               "y": 140,
@@ -581,7 +644,7 @@
             "html": "<trivial-spread ref=\"spread\" v-on:datachanged=\"eventDatachanged\"></trivial-spread>"
           },
           "btnSave": {
-            "type": "#def.view.componentType.button",
+            "type": "#def.type.component.button",
             "layout": {
               "x": 475,
               "y": 110,
@@ -597,7 +660,7 @@
         }
       }
     },
-    "db": {
+    "database": {
       "table": {
         "project": {
           "name": "project",
@@ -605,30 +668,34 @@
           "column": {
             "project_id": {
               "name": "",
-              "type": "integer",
               "primaryKey": 1,
               "nullable": false,
               "ddlOption": "AUTOINCREMENT",
-              "comment": ""
+              "comment": "",
+              "datatype": "integer",
+              "type": "#def.type.database.table.column"
             },
             "project_cd": {
               "name": "",
-              "type": "text",
               "primaryKey": 0,
               "nullable": false,
               "ddlOption": "",
-              "comment": ""
+              "comment": "",
+              "datatype": "text",
+              "type": "#def.type.database.table.column"
             },
             "project_name": {
               "name": "",
-              "type": "text",
               "primaryKey": 0,
               "nullable": false,
               "ddlOption": "",
-              "comment": ""
+              "comment": "",
+              "datatype": "text",
+              "type": "#def.type.database.table.column"
             }
           },
-          "sql": "CREATE TABLE project (\n  project_id integer,\n  project_cd text,\n  project_name text\n  ,PRIMARY KEY(project_id)\n);"
+          "sql": "CREATE TABLE project (\n  project_id integer,\n  project_cd text,\n  project_name text\n  ,PRIMARY KEY(project_id)\n);",
+          "type": "#def.type.database.table"
         },
         "testsuite": {
           "name": "testsuite",
@@ -637,37 +704,42 @@
           "column": {
             "testsuite_id": {
               "name": "",
-              "type": "integer",
               "primaryKey": 1,
               "nullable": false,
               "ddlOption": "AUTOINCREMENT",
-              "comment": ""
+              "comment": "",
+              "datatype": "integer",
+              "type": "#def.type.database.table.column"
             },
             "project_id": {
               "name": "",
-              "type": "integer",
               "primaryKey": 0,
               "nullable": false,
               "ddlOption": "",
-              "comment": ""
+              "comment": "",
+              "datatype": "integer",
+              "type": "#def.type.database.table.column"
             },
             "testsuite_cd": {
               "name": "",
-              "type": "text",
               "primaryKey": 0,
               "nullable": false,
               "ddlOption": "",
-              "comment": "unique in project"
+              "comment": "unique in project",
+              "datatype": "text",
+              "type": "#def.type.database.table.column"
             },
             "testsuite_name": {
               "name": "",
-              "type": "text",
               "primaryKey": 0,
               "nullable": false,
               "ddlOption": "",
-              "comment": ""
+              "comment": "",
+              "datatype": "text",
+              "type": "#def.type.database.table.column"
             }
-          }
+          },
+          "type": "#def.type.database.table"
         },
         "testcase": {
           "name": "testcase",
@@ -738,9 +810,11 @@
               "comment": "1:success,0:failed, n/a:-1"
             }
           },
-          "sql": "CREATE TABLE testcase (\n  testsuite_id integer,\n  no integer,\n  testcase_cd text,\n  testcase_name text,\n  desc_condition text,\n  desc_action text,\n  desc_expected text,\n  result_success integer\n  ,PRIMARY KEY(testsuite_id, no)\n);"
+          "sql": "CREATE TABLE testcase (\n  testsuite_id integer,\n  no integer,\n  testcase_cd text,\n  testcase_name text,\n  desc_condition text,\n  desc_action text,\n  desc_expected text,\n  result_success integer\n  ,PRIMARY KEY(testsuite_id, no)\n);",
+          "type": "#def.type.database.table"
         }
-      }
+      },
+      "type": "#def.type.database"
     }
   }
 }
