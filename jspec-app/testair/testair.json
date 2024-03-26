@@ -153,7 +153,8 @@
           "name": "String",
           "view": "Object",
           "database": "Object",
-          "function": "value"
+          "function": "Object",
+          "model": "Object"
         },
         "type": "type"
       }
