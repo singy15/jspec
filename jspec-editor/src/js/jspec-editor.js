@@ -221,7 +221,7 @@ var jspecEditor = {
       let cur = this.root;
       for(var i = 0; i < path.length; i++) {
         let p = path[i];
-        console.log(p);
+        //console.log(p);
         cur = cur[p];
         if(cur === undefined || cur == null) {
           return false;
@@ -368,10 +368,10 @@ var jspecEditor = {
       return () => {
         navigator.clipboard.writeText(JSON.stringify(node[key]))
           .then(() => {
-            console.log("Text copied to clipboard...")
+            //console.log("Text copied to clipboard...")
           })
           .catch(err => {
-            console.log('Something went wrong', err);
+            //console.log('Something went wrong', err);
           });
       };
     }

@@ -248,7 +248,7 @@ window.app = Vue.createApp({
 
       this.actions.selected = { key: key, node: node, val: node[key] };
 
-      console.log(root, node, key, path);
+      //console.log(root, node, key, path);
     },
     nodep(value) {
       return value !== null && typeof value === 'object';
@@ -271,10 +271,10 @@ window.app = Vue.createApp({
     copyEntry() {
       navigator.clipboard.writeText(JSON.stringify(this.actions.selected.val))
         .then(() => {
-          console.log("Text copied to clipboard...")
+          //console.log("Text copied to clipboard...")
         })
         .catch(err => {
-          console.log('Something went wrong', err);
+          //console.log('Something went wrong', err);
         });
     }
   },
