@@ -46,7 +46,7 @@ var inplaceEditor = {
     resize() {
       this.width = this.$refs.text.getBoundingClientRect().width;
       if(this.multiline) {
-        this.height = this.editValue.split("\n").length * this.$refs.text.getBoundingClientRect().height + 32;
+        this.height = this.$refs.text.getBoundingClientRect().height + 32;
       }
     },
     toggleMultiline() {
@@ -137,6 +137,10 @@ var inplaceEditor = {
       <span ref="text" 
           :style="Object.assign({
             visibility:'hidden',
+            position:'fixed',
+            top:0,
+            left:0,
+            whiteSpace: 'pre',
             fontFamily:(multiline)? 'monospace' : 'unset'}, style)">
         {{editValue}}</span>
       <input type="text"
@@ -150,7 +154,6 @@ var inplaceEditor = {
               padding:'0px',
               border:'none',
               outline:(focused)? 'solid 1px #CCC' : 'none',
-              marginLeft:(-width).toString()+'px',
               background: backcolor,
               color: forecolor
             }, style)"
@@ -173,7 +176,6 @@ var inplaceEditor = {
             display:'inline-block',
             height:(height).toString()+'px',
             whiteSpace:'nowrap',
-            marginLeft:(-width).toString()+'px',
             outline:'solid 1px #CCC',
             fontFamily:(multiline)? 'monospace' : 'unset',
             background: backcolor,
