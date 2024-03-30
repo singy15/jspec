@@ -24,6 +24,9 @@ var autoresizeEditor = {
     };
   },
   methods: {
+    setFocus() {
+      this.$refs.input.focus();
+    },
     resize() {
       this.width = this.$refs.text.getBoundingClientRect().width;
     },

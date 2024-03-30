@@ -60,12 +60,13 @@ var jspecEditor = {
           this.entryParent[this.entryKey] = newary;
         });
       } else {
+        let index = Object.keys(this.node).indexOf(oldKey);
+
         if(newKey === "") {
           delete this.node[oldKey];
         }
         else {
           let obj = this.node[oldKey];
-          let index = Object.keys(this.node).indexOf(oldKey);
         
           let key = null;
           let getAbsPath = (node,parent,absPath,relPath,parentPath,root) => {
@@ -114,6 +115,10 @@ var jspecEditor = {
               this.root[k] = this.root[k].replace(replacee, replacer);
             }
           }
+
+          this.$nextTick(() => {
+            this.$refs.aedit[index].setFocus();
+          });
         }
       }
     },
@@ -443,7 +448,7 @@ var jspecEditor = {
         <br>
         <span v-for="(v,k) in node" style="white-space:nowrap;">
           <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px ' + colors.forecolor, 'opacity':0.3 }"></span>
-          <autoresize-editor :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated" :on-copy="createOnCopyHandler(node, k)"
+          <autoresize-editor ref="aedit" :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated" :on-copy="createOnCopyHandler(node, k)"
               @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)" @click="(onSelect)? onSelect(root, node, k) : null"
               :forecolor="colors.forecolor" :backcolor="colors.backcolor">
           </autoresize-editor>
