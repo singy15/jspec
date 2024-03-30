@@ -483,45 +483,15 @@ var jspecEditor = {
     }
   },
   computed: {
-    // sorted() {
-    //   var keys = [];
-    //   for(var k in this.node) {
-    //     keys.push({key:k,sortKey:((this.node[k].$seq)? this.node[k].$seq.toString() : "")+"_"+k});
-    //   }
-    //   keys.sort((a,b) => {
-    //     if(a.sortKey > b.sortKey) {
-    //       return 1;
-    //     } else if(a.sortKey === b.sortKey) {
-    //       return 0;
-    //     } else {
-    //       return -1;
-    //     }
-    //   });
-    //   var obj = {};
-    //   for(var i = 0; i < keys.length; i++) {
-    //     let k = keys[i].key;
-    //     obj[k] = this.node[k];
-    //   }
-    //   return obj;
-    // }
     colors() {
       if(this.theme === "dark") {
-        return {
-          forecolor: "#FFF",
-          backcolor: "#333",
-        };
+        return { forecolor: "#FFF", backcolor: "#333", };
       }
       else if(this.theme === "light") {
-        return {
-          forecolor: "#000",
-          backcolor: "#FFF",
-        };
+        return { forecolor: "#000", backcolor: "#FFF", };
       }
       else {
-        return {
-          forecolor: "#CCC",
-          backcolor: "#333",
-        };
+        return { forecolor: "#CCC", backcolor: "#333", };
       }
     }
   },
@@ -542,7 +512,7 @@ var jspecEditor = {
           <autoresize-editor ref="aedit" :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="(newKey,oldKey) => {updated(newKey,oldKey,i)}" :on-copy="createOnCopyHandler(node, k)"
               @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)" @click="(onSelect)? onSelect(root, node, k) : null"
               :forecolor="colors.forecolor" :backcolor="colors.backcolor"
-              v-on:keydown.enter.shift="onAddEnter(i)"
+              v-on:keydown.enter.shift.stop.prevent="onAddEnter(i)"
               v-on:keydown.down.alt.stop.prevent="reorderItem(i,false,'key')"
               v-on:keydown.up.alt.stop.prevent="reorderItem(i,true,'key')"
               v-on:keydown.right.alt.stop.prevent="toggleOpenValue(k)"
@@ -551,7 +521,7 @@ var jspecEditor = {
           <span v-if="showName && v != null && v.$name" style="font-size:0.5rem;">&nbsp;({{v.$name}})</span>
           <span style="vertical-align:top">: </span>
           <jspec-editor ref="jedit" :root="root" :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1" :show-name="showName" 
-            v-on:keydown.enter.shift="onAddEnter(i)" :on-select="onSelect" :theme="theme"
+            v-on:keydown.enter.shift.stop.prevent="onAddEnter(i)" :on-select="onSelect" :theme="theme"
             v-on:keydown.down.alt.stop.prevent="reorderItem(i,false,'value')"
             v-on:keydown.up.alt.stop.prevent="reorderItem(i,true,'value')" 
             ></jspec-editor>
