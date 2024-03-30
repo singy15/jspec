@@ -24,6 +24,9 @@ var inplaceEditor = {
     };
   },
   methods: {
+    setFocus() {
+      this.$refs.input.focus();
+    },
     updateValue() {
       let origValue = this.$refs.input.value;
       this.val = this.$refs.input.value;

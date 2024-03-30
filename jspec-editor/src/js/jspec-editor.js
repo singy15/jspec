@@ -31,7 +31,19 @@ var jspecEditor = {
     msg() {
       console.log(1);
     },
-    reorderItem(index, up) {
+    toggleOpenValue(key) {
+      this.getValueComponentByKey(key).toggleOpen();
+    },
+    getKeyComponentByKey(key) {
+      return this.$refs.aedit.filter(x => x.value === key)[0];
+    },
+    getValueComponentByKey(key) {
+      return this.$refs.jedit.filter(x => x.entryKey === key)[0];
+    },
+    setFocusToValue() {
+      this.$refs.iedit?.setFocus();
+    },
+    reorderItem(index, up, focusTo/* "key" | "value" */) {
       let keys = Object.keys(this.node);
       let dir = (up)? -1 : 1;
 
@@ -60,11 +72,20 @@ var jspecEditor = {
       });
 
       this.$nextTick(() => {
-        this.focusKeyByKey(srcKey);
+        if(focusTo === "key") {
+          this.focusKeyByKey(srcKey);
+        } else if(focusTo === "value") {
+          this.focusValueByKey(srcKey);
+        }
       });
     },
     focusKeyByKey(key) {
-      this.$refs.aedit.filter(x => x.value === key)[0].setFocus();
+      let c = this.getKeyComponentByKey(key);
+      if(c) { c.setFocus(); }
+    },
+    focusValueByKey(key) {
+      let c = this.getValueComponentByKey(key);
+      if(c) { c.setFocusToValue(); }
     },
     insertAfterItemWithPreserveOrderByIndex(key, val, index) {
       let ary = Object.keys(this.node).map(k => { 
@@ -80,21 +101,33 @@ var jspecEditor = {
       });
     },
     onAddEnter(prevIndex) {
-      let newkey = `item${Object.keys(this.node).length + 1}`;
-      let newval = `value${Object.keys(this.node).length + 1}`;
-      this.insertAfterItemWithPreserveOrderByIndex(newkey, newval, prevIndex);
+      let newitem = this.getNewObjectItem();
+      this.insertAfterItemWithPreserveOrderByIndex(
+        newitem.key, newitem.val, prevIndex);
       this.$nextTick(() => {
-        this.focusKeyByKey(newkey);
+        this.focusKeyByKey(newitem.key);
       });
     },
     toggleOpen() {
       this.open = !(this.open);
     },
+    getNewObjectItem() {
+      return { 
+        key: `item${Object.keys(this.node).length + 1}`,
+        val: `value${Object.keys(this.node).length + 1}`,
+      }
+    },
+    getNewArrayItem() {
+      return { 
+        val: `value${this.node.length + 1}`,
+      }
+    },
     addItem() {
       if(Array.isArray(this.node)) {
-        this.node.push("value");
+        this.node.push(this.getNewArrayItem().val);
       } else {
-        this.node["newitem"] = "value";
+        let item = this.getNewObjectItem();
+        this.node[item.key] = item.val;
       }
     },
     updated(newKey, oldKey, index) {
@@ -510,12 +543,18 @@ var jspecEditor = {
               @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)" @click="(onSelect)? onSelect(root, node, k) : null"
               :forecolor="colors.forecolor" :backcolor="colors.backcolor"
               v-on:keydown.enter.shift="onAddEnter(i)"
-              v-on:keydown.down.alt="reorderItem(i,false)"
-              v-on:keydown.up.alt="reorderItem(i,true)" >
+              v-on:keydown.down.alt.stop.prevent="reorderItem(i,false,'key')"
+              v-on:keydown.up.alt.stop.prevent="reorderItem(i,true,'key')"
+              v-on:keydown.right.alt.stop.prevent="toggleOpenValue(k)"
+              >
           </autoresize-editor>
           <span v-if="showName && v != null && v.$name" style="font-size:0.5rem;">&nbsp;({{v.$name}})</span>
           <span style="vertical-align:top">: </span>
-          <jspec-editor :root="root" :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1" :show-name="showName" v-on:keydown.enter.shift="onAddEnter(i)" :on-select="onSelect" :theme="theme"></jspec-editor>
+          <jspec-editor ref="jedit" :root="root" :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1" :show-name="showName" 
+            v-on:keydown.enter.shift="onAddEnter(i)" :on-select="onSelect" :theme="theme"
+            v-on:keydown.down.alt.stop.prevent="reorderItem(i,false,'value')"
+            v-on:keydown.up.alt.stop.prevent="reorderItem(i,true,'value')" 
+            ></jspec-editor>
           <br>
         </span>
         <span v-for="n in (level)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px ' + colors.forecolor, 'opacity':0.3 }"></span>
@@ -536,7 +575,7 @@ var jspecEditor = {
 
       <!-- Value -->
       <span v-if="!((node != null) && typeof(node) === 'object')">
-        <inplace-editor :obj="entryParent" :placeKey="entryKey" :watch-val="entryParent[entryKey]" :style="styleVal(entryKey, node)" :forecolor="colors.forecolor" :backcolor="colors.backcolor"></inplace-editor>
+        <inplace-editor ref="iedit" :obj="entryParent" :placeKey="entryKey" :watch-val="entryParent[entryKey]" :style="styleVal(entryKey, node)" :forecolor="colors.forecolor" :backcolor="colors.backcolor"></inplace-editor>
         <span v-if="isReference(node) && !resolvable(node)" 
             style="color:red; margin-left:1em;">
           !
