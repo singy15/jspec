@@ -28,20 +28,30 @@ var jspecEditor = {
     };
   },
   methods: {
-    msg() {
-      console.log(1);
-    },
     toggleOpenValue(key) {
-      this.getValueComponentByKey(key).toggleOpen();
+      this.getValueComp(key).toggleOpen();
     },
-    getKeyComponentByKey(key) {
+    getKeyComp(key) {
       return this.$refs.aedit.filter(x => x.value === key)[0];
     },
-    getValueComponentByKey(key) {
+    getValueComp(key) {
       return this.$refs.jedit.filter(x => x.entryKey === key)[0];
     },
     setFocusToValue() {
       this.$refs.iedit?.setFocus();
+    },
+    modifyKeyPreserveOrder(oldKey, newKey, obj) {
+      Object.entries(obj).map(e => { 
+        delete obj[e[0]]; 
+        return e;
+      })
+      .forEach((x) => {
+        if(x[0] === oldKey) {
+          obj[newKey] = x[1];
+        } else {
+          obj[x[0]] = x[1];
+        }
+      });
     },
     reorderItem(index, up, focusTo/* "key" | "value" */) {
       let keys = Object.keys(this.node);
@@ -80,11 +90,11 @@ var jspecEditor = {
       });
     },
     focusKeyByKey(key) {
-      let c = this.getKeyComponentByKey(key);
+      let c = this.getKeyComp(key);
       if(c) { c.setFocus(); }
     },
     focusValueByKey(key) {
-      let c = this.getValueComponentByKey(key);
+      let c = this.getValueComp(key);
       if(c) { c.setFocusToValue(); }
     },
     insertAfterItemWithPreserveOrderByIndex(key, val, index) {
@@ -101,7 +111,7 @@ var jspecEditor = {
       });
     },
     onAddEnter(prevIndex) {
-      let newitem = this.getNewObjectItem();
+      let newitem = this.getNewItemFor(this.node);
       this.insertAfterItemWithPreserveOrderByIndex(
         newitem.key, newitem.val, prevIndex);
       this.$nextTick(() => {
@@ -111,27 +121,18 @@ var jspecEditor = {
     toggleOpen() {
       this.open = !(this.open);
     },
-    getNewObjectItem() {
-      return { 
-        key: `item${Object.keys(this.node).length + 1}`,
-        val: `value${Object.keys(this.node).length + 1}`,
-      }
-    },
-    getNewArrayItem() {
-      return { 
-        val: `value${this.node.length + 1}`,
-      }
+    getNewItemFor(target) {
+      if(!this.isObject(target) && !this.isArray(target)) { return; }
+      let seq = (this.isObject(target))? 
+        Object.keys(target).length + 1 : target.length;
+      let key = (this.isObject(target))? `item${seq}` : seq;
+      return { key: key, val: `value${seq}` };
     },
     addItem() {
-      if(Array.isArray(this.node)) {
-        this.node.push(this.getNewArrayItem().val);
-      } else {
-        let item = this.getNewObjectItem();
-        this.node[item.key] = item.val;
-      }
+      let newitem = this.getNewItemFor(this.node);
+      this.node[newitem.key] = newitem.val;
     },
     updated(newKey, oldKey, index) {
-      console.log(index);
       if(Array.isArray(this.node)) {
         let tmp = this.node.splice(oldKey, 1)[0];
         let newary = this.node;
@@ -170,17 +171,8 @@ var jspecEditor = {
           this.traverse(this.root, this.root, "", getAbsPath);
           let keyFrom = key;
 
-          //// Update key
-          // this.node[newKey] = this.node[oldKey];
-          // delete this.node[oldKey];
-          let ary = Object.keys(this.node).map(k => { 
-            let r = [k,this.node[k]]; 
-            delete this.node[k]; 
-            return r;
-          });
-          ary.forEach((x,i) => {
-            this.node[((index === i)? newKey: x[0])] = x[1];
-          });
+          // Update key
+          this.modifyKeyPreserveOrder(oldKey, newKey, this.node);
 
           this.traverse(this.root, this.root, "", getAbsPath);
           let keyTo = key;
@@ -244,7 +236,10 @@ var jspecEditor = {
       return (null != val) && (typeof(val) === 'string') && (/^#\w+/.test(val));
     },
     isObject(val) {
-      return (null != val) && (typeof(val) === 'object');
+      return (null != val) && (typeof(val) === 'object') && !Array.isArray(val);
+    },
+    isArray(val) {
+      return (null != val) && Array.isArray(val);
     },
     valueType(val) {
       if(this.isNull(val)) {
