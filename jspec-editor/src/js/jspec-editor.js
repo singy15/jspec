@@ -28,6 +28,41 @@ var jspecEditor = {
     };
   },
   methods: {
+    msg() {
+      console.log(1);
+    },
+    reorderItem(index, up) {
+      let keys = Object.keys(this.node);
+      let dir = (up)? -1 : 1;
+
+      if((index + dir) < 0 || (index + dir) === keys.length) { return; }
+
+      let destIndex = index + dir;
+      let destKey = keys[destIndex];
+      let destVal = this.node[destKey];
+      let srcIndex = index;
+      let srcKey = keys[srcIndex];
+      let srcVal = this.node[srcKey];
+
+      let ary = Object.keys(this.node).map(k => { 
+        let r = [k,this.node[k]]; 
+        delete this.node[k]; 
+        return r;
+      });
+      ary.forEach((x,i) => {
+        if(i === destIndex) {
+          this.node[srcKey] = srcVal;
+        } else if(i === srcIndex) {
+          this.node[destKey] = destVal;
+        } else {
+          this.node[x[0]] = x[1];
+        }
+      });
+
+      this.$nextTick(() => {
+        this.focusKeyByKey(srcKey);
+      });
+    },
     focusKeyByKey(key) {
       this.$refs.aedit.filter(x => x.value === key)[0].setFocus();
     },
@@ -474,7 +509,9 @@ var jspecEditor = {
           <autoresize-editor ref="aedit" :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="(newKey,oldKey) => {updated(newKey,oldKey,i)}" :on-copy="createOnCopyHandler(node, k)"
               @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)" @click="(onSelect)? onSelect(root, node, k) : null"
               :forecolor="colors.forecolor" :backcolor="colors.backcolor"
-              v-on:keydown.enter.shift="onAddEnter(i)">
+              v-on:keydown.enter.shift="onAddEnter(i)"
+              v-on:keydown.down.alt="reorderItem(i,false)"
+              v-on:keydown.up.alt="reorderItem(i,true)" >
           </autoresize-editor>
           <span v-if="showName && v != null && v.$name" style="font-size:0.5rem;">&nbsp;({{v.$name}})</span>
           <span style="vertical-align:top">: </span>
