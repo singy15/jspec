@@ -38,7 +38,8 @@ var jspecEditor = {
         this.node["newitem"] = "value";
       }
     },
-    updated(newKey, oldKey) {
+    updated(newKey, oldKey, index) {
+      console.log(index);
       if(Array.isArray(this.node)) {
         let tmp = this.node.splice(oldKey, 1)[0];
         let newary = this.node;
@@ -60,8 +61,6 @@ var jspecEditor = {
           this.entryParent[this.entryKey] = newary;
         });
       } else {
-        let index = Object.keys(this.node).indexOf(oldKey);
-
         if(newKey === "") {
           delete this.node[oldKey];
         }
@@ -117,7 +116,7 @@ var jspecEditor = {
           }
 
           this.$nextTick(() => {
-            this.$refs.aedit[index].setFocus();
+            this.$refs.aedit.filter((x) => x.value === newKey)[0].setFocus();
           });
         }
       }
@@ -446,9 +445,9 @@ var jspecEditor = {
         <span style="margin-left:10px"></span>
         <span @click.stop="addItem()" style="cursor:pointer;">+</span>
         <br>
-        <span v-for="(v,k) in node" style="white-space:nowrap;">
+        <span v-for="(v,k,i) in node" style="white-space:nowrap;">
           <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px ' + colors.forecolor, 'opacity':0.3 }"></span>
-          <autoresize-editor ref="aedit" :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated" :on-copy="createOnCopyHandler(node, k)"
+          <autoresize-editor ref="aedit" :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="(newKey,oldKey) => {updated(newKey,oldKey,i)}" :on-copy="createOnCopyHandler(node, k)"
               @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)" @click="(onSelect)? onSelect(root, node, k) : null"
               :forecolor="colors.forecolor" :backcolor="colors.backcolor">
           </autoresize-editor>
