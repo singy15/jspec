@@ -65,6 +65,7 @@ var jspecEditor = {
         }
         else {
           let obj = this.node[oldKey];
+          let index = Object.keys(this.node).indexOf(oldKey);
         
           let key = null;
           let getAbsPath = (node,parent,absPath,relPath,parentPath,root) => {
@@ -77,8 +78,17 @@ var jspecEditor = {
           this.traverse(this.root, this.root, "", getAbsPath);
           let keyFrom = key;
 
-          this.node[newKey] = this.node[oldKey];
-          delete this.node[oldKey];
+          //// Update key
+          // this.node[newKey] = this.node[oldKey];
+          // delete this.node[oldKey];
+          let ary = Object.keys(this.node).map(k => { 
+            let r = [k,this.node[k]]; 
+            delete this.node[k]; 
+            return r;
+          });
+          ary.forEach((x,i) => {
+            this.node[((index === i)? newKey: x[0])] = x[1];
+          });
 
           this.traverse(this.root, this.root, "", getAbsPath);
           let keyTo = key;
