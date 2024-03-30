@@ -28,6 +28,30 @@ var jspecEditor = {
     };
   },
   methods: {
+    focusKeyByKey(key) {
+      this.$refs.aedit.filter(x => x.value === key)[0].setFocus();
+    },
+    insertAfterItemWithPreserveOrderByIndex(key, val, index) {
+      let ary = Object.keys(this.node).map(k => { 
+        let r = [k,this.node[k]]; 
+        delete this.node[k]; 
+        return r;
+      });
+      ary.forEach((x,i) => {
+        this.node[x[0]] = x[1];
+        if(i === index) {
+          this.node[key] = val;
+        }
+      });
+    },
+    onAddEnter(prevIndex) {
+      let newkey = `item${Object.keys(this.node).length + 1}`;
+      let newval = `value${Object.keys(this.node).length + 1}`;
+      this.insertAfterItemWithPreserveOrderByIndex(newkey, newval, prevIndex);
+      this.$nextTick(() => {
+        this.focusKeyByKey(newkey);
+      });
+    },
     toggleOpen() {
       this.open = !(this.open);
     },
@@ -449,11 +473,12 @@ var jspecEditor = {
           <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px ' + colors.forecolor, 'opacity':0.3 }"></span>
           <autoresize-editor ref="aedit" :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="(newKey,oldKey) => {updated(newKey,oldKey,i)}" :on-copy="createOnCopyHandler(node, k)"
               @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)" @click="(onSelect)? onSelect(root, node, k) : null"
-              :forecolor="colors.forecolor" :backcolor="colors.backcolor">
+              :forecolor="colors.forecolor" :backcolor="colors.backcolor"
+              v-on:keydown.enter.shift="onAddEnter(i)">
           </autoresize-editor>
           <span v-if="showName && v != null && v.$name" style="font-size:0.5rem;">&nbsp;({{v.$name}})</span>
           <span style="vertical-align:top">: </span>
-          <jspec-editor :root="root" :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1" :show-name="showName" :on-select="onSelect" :theme="theme"></jspec-editor>
+          <jspec-editor :root="root" :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1" :show-name="showName" v-on:keydown.enter.shift="onAddEnter(i)" :on-select="onSelect" :theme="theme"></jspec-editor>
           <br>
         </span>
         <span v-for="n in (level)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px ' + colors.forecolor, 'opacity':0.3 }"></span>
