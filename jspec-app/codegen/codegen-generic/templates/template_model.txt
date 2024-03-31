@@ -1,0 +1,11 @@
+/*
+  template for model (csharp).
+*/
+
+public class ${$key().substring(0,1).toUpperCase() + $key().substring(1)} {
+${Object.keys(this)
+.map(x =>  
+`  public ${this[x].domain.primitive.cmap.cs} ${x} { get; set; }`)
+.join("\n")}
+}
+
