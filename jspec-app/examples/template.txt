@@ -1,0 +1,28 @@
+/*
+  template for database.
+  input: #def.type.database.table
+*/
+
+-- create table.
+CREATE TABLE ${name} (
+${Object.keys(column).map(x => 
+`  ${x} ${column[x].domain.primitive.cmap.postgres} NOT NULL`)
+.join(",\n")},
+  PRIMARY KEY(${Object.keys(column).filter(x => column[x].primaryKey).map(x => x)})
+);
+
+-- select all.
+SELECT * FROM ${name};
+
+-- select by primary key.
+SELECT * FROM ${name} WHERE ${Object.keys(column).filter(x => column[x].primaryKey).map(x => x + " = ?").join(" AND ")};
+
+-- insert.
+INSERT INTO ${name} ( ${Object.keys(column).map(x => x)} ) VALUES ( ${Object.keys(column).map(x => "/*"+x+"*/?").join(", ")} );
+
+-- update by primary key.
+UPDATE ${name} SET ${Object.keys(column).map(x => x + " = ?").join(", ")} WHERE ${Object.keys(column).filter(x => column[x].primaryKey).map(x => x + " = ?").join(" AND ")};
+
+-- delete by primary key.
+DELETE FROM ${name} WHERE ${Object.keys(column).filter(x => column[x].primaryKey).map(x => x + " = ?").join(" AND ")};
+
