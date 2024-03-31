@@ -5,6 +5,7 @@ var autoresizeEditor = {
     updated: Function,
     style: Object,
     onCopy: Function,
+    onPlaincopy: Function,
     forecolor: {
       type: String,
       default: "#CCC"

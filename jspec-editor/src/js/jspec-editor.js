@@ -349,6 +349,20 @@ var jspecEditor = {
         }
       }
     },
+    visit(root, node, path, op) {
+      // op : (node,parent,absPath,relPath,parentPath,root) => { (node,parent,absPath,relPath,parentPath,root) => ... | falsy }
+      for(var key in node) {
+        var child = node[key];
+        let parentPath = path;
+        let absPath = ((path === "")? key : path + "." + key);
+        let relPath = key;
+        let nextop = op(child, node, absPath, relPath, parentPath, root);
+        if(!nextop) { return; }
+        if(this.nodep(child)) {
+          this.visit(root, child, absPath, nextop);
+        }
+      }
+    },
     orderKey(dir, key) {
       // dir < 0 : up
       let keys = [];
@@ -465,9 +479,33 @@ var jspecEditor = {
         delete parentObjFrom[keyFrom];
       }
     },
-    createOnCopyHandler(node, key) {
+    createOnCopyHandler(node, key, plain = false) {
       return () => {
-        navigator.clipboard.writeText(JSON.stringify(node[key]))
+        let clone = (obj) => JSON.parse(JSON.stringify(obj));
+        let ref = (node,adr) => { 
+          return adr.split(".").reduce((m,x) => m[x], node);
+        };
+        let rec = (child,node,abs,rel,par,root) => {
+          // console.log(abs);
+          Object.keys(node).forEach(x => { 
+            if(node[x] != null && typeof(node[x]) === "string" 
+                && node[x].indexOf("#") >= 0) { 
+              // console.log(JSON.parse(JSON.stringify(node)));
+              // console.log("resolving", node[x]);
+              node[x] = clone(ref(this.root,node[x].substring(1)));
+              // console.log(JSON.parse(JSON.stringify(node)));
+            }
+          });
+          return rec;
+        };
+        let n = clone(node[key]);
+
+        if(plain) {
+          this.visit(n,n,"",rec);
+        }
+
+        // navigator.clipboard.writeText(JSON.stringify(node[key], null, "  "))
+        navigator.clipboard.writeText(JSON.stringify(n, null, "  "))
           .then(() => {
             //console.log("Text copied to clipboard...")
           })
@@ -504,7 +542,9 @@ var jspecEditor = {
         <br>
         <span v-for="(v,k,i) in node" style="white-space:nowrap;">
           <span v-for="n in (level+1)" :style="{ 'margin-left':'5px', 'margin-right':(10).toString()+'px', 'borderLeft':'solid 1px ' + colors.forecolor, 'opacity':0.3 }"></span>
-          <autoresize-editor ref="aedit" :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="(newKey,oldKey) => {updated(newKey,oldKey,i)}" :on-copy="createOnCopyHandler(node, k)"
+          <autoresize-editor ref="aedit" :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="(newKey,oldKey) => {updated(newKey,oldKey,i)}" 
+              :on-copy="createOnCopyHandler(node, k)" 
+              :on-plaincopy="createOnCopyHandler(node, k, true)"
               @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)" @click="(onSelect)? onSelect(root, node, k) : null"
               :forecolor="colors.forecolor" :backcolor="colors.backcolor"
               v-on:keydown.enter.shift.stop.prevent="onAddEnter(i)"

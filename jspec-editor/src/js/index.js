@@ -268,15 +268,49 @@ window.app = Vue.createApp({
         }
       }
     },
-    copyEntry() {
-      navigator.clipboard.writeText(JSON.stringify(this.actions.selected.val))
+    visit(root, node, path, op) {
+      // op : (node,parent,absPath,relPath,parentPath,root) => { (node,parent,absPath,relPath,parentPath,root) => ... | falsy }
+      for(var key in node) {
+        var child = node[key];
+        let parentPath = path;
+        let absPath = ((path === "")? key : path + "." + key);
+        let relPath = key;
+        let nextop = op(child, node, absPath, relPath, parentPath, root);
+        if(!nextop) { return; }
+        if(this.nodep(child)) {
+          this.visit(root, child, absPath, nextop);
+        }
+      }
+    },
+    plaincopyEntry() {
+      let clone = (obj) => JSON.parse(JSON.stringify(obj));
+      let ref = (node,adr) => { 
+        return adr.split(".").reduce((m,x) => m[x], node);
+      };
+      let rec = (child,node,abs,rel,par,root) => {
+        // console.log(abs);
+        Object.keys(node).forEach(x => { 
+          if(node[x] != null && typeof(node[x]) === "string" 
+              && node[x].indexOf("#") >= 0) { 
+            // console.log(JSON.parse(JSON.stringify(node)));
+            // console.log("resolving", node[x]);
+            node[x] = clone(ref(this.root,node[x].substring(1)));
+            // console.log(JSON.parse(JSON.stringify(node)));
+          }
+        });
+        return rec;
+      };
+      let n = clone(this.actions.selected.val);
+      this.visit(n,n,"",rec);
+
+      navigator.clipboard.writeText(JSON.stringify(n, null, "  "))
         .then(() => {
           //console.log("Text copied to clipboard...")
         })
         .catch(err => {
           //console.log('Something went wrong', err);
         });
-    }
+    },
   },
   mounted() {
   }
