@@ -277,6 +277,7 @@ window.app = Vue.createApp({
         let relPath = key;
         let nextop = op(child, node, absPath, relPath, parentPath, root);
         if(!nextop) { return; }
+        child = node[key];
         if(this.nodep(child)) {
           this.visit(root, child, absPath, nextop);
         }
