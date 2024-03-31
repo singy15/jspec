@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="app">
+${html}
+    </div>
+    <script src="~/lib/vue.global.js"></script>
+    <script src="~/js/${viewName}.js"></script>
+  </body>
+</html>
+
+---
+
+{
+  "html":"<span>foo</span>",
+  "viewName": "sampleview1"
+}
+

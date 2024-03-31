@@ -1,0 +1,10 @@
+[Route("[controller]/${viewName}")]
+public IActionResult ${viewName}()
+{
+    return View("/Views/${viewName}.cshtml");
+}
+
+---
+
+{"viewName":"someview1"}
+

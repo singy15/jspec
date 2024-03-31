@@ -1,0 +1,76 @@
+[HttpGet]
+[Route("[controller]")]
+public IActionResult GetAll()
+{
+    using (var tx = _dbutil.CreateTransaction())
+    {
+        var dt = _dbutil.Query(tx, "select * from ${tableName};");
+        tx.Commit();
+        return Content(JsonConvert.SerializeObject(dt), "application/json");
+    }
+}
+
+[HttpGet]
+[Route("[controller]${primaryKey.map(x=>"/"+"{"+x.name+"}").join("")}")]
+public IActionResult FindByPrimaryKey(${ primaryKey.map(x => x.type + " " + x.name).join(",") })
+{
+    using (var tx = _dbutil.CreateTransaction())
+    {
+        var dt = _dbutil.Query(tx, $"select * from ${tableName} where ${ primaryKey.map(x => x.name + "=" + "'{" + x.name + ".ToString()}'").join(" and ")}");
+        tx.Commit();
+        return Content(JsonConvert.SerializeObject(dt), "application/json");
+    }
+}
+
+[HttpPost]
+[Route("[controller]")]
+public IActionResult Insert([FromBody] Dictionary<string, object> body)
+{
+    using (var tx = _dbutil.CreateTransaction())
+    {
+        var result = _dbutil.Insert(tx, "${tableName}", body);
+        tx.Commit();
+        return Content(JsonConvert.SerializeObject(result), "application/json");
+    }
+}
+
+[HttpPut]
+[Route("[controller]${primaryKey.map(x=>"/"+"{"+x.name+"}").join("")}")]
+public IActionResult Update(${ primaryKey.map(x => x.type + " " + x.name).join(",") }, [FromBody] Dictionary<string, object> body)
+{
+    using (var tx = _dbutil.CreateTransaction())
+    {
+        var key = new Dictionary<string, object>();
+${ primaryKey.map(x=>"        key.Add(\""+x.name+"\"," + x.name + ");").join("\n")}
+
+        var result = _dbutil.Update(tx, "${tableName}", body , key);
+        tx.Commit();
+        return Content(JsonConvert.SerializeObject(result), "application/json");
+    }
+}
+
+[HttpDelete]
+[Route("[controller]${primaryKey.map(x=>"/"+"{"+x.name+"}").join("")}")]
+public IActionResult Delete(${ primaryKey.map(x => x.type + " " + x.name).join(",") })
+{
+    using (var tx = _dbutil.CreateTransaction())
+    {
+        var key = new Dictionary<string, object>();
+${ primaryKey.map(x=>"        key.Add(\""+x.name+"\"," + x.name + ");").join("\n")}
+
+        var result = _dbutil.Delete(tx, "${tableName}", key);
+        tx.Commit();
+        return Content(JsonConvert.SerializeObject(result), "application/json");
+    }
+}
+
+---
+
+{
+  "tableName":"supplier",
+  "primaryKey":[
+    {"name":"company_cd","type":"string"},
+    {"name":"supplier_cd","type":"string"}
+  ]
+}
+

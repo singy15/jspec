@@ -1,0 +1,17 @@
+const { createApp } = Vue;
+let app = createApp({
+  data() {
+    return ${JSON.stringify(model)};
+  },
+  computed: {},
+  methods: {}
+}).mount('#app');
+
+---
+
+{
+  "model":{ 
+    "foo" : "1234" 
+  }
+}
+
