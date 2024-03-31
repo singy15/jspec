@@ -11,15 +11,15 @@
               "width": 1360,
               "height": 625
             },
-            "label": "codegen - SqlCreateTable"
+            "label": "codegen - Generic"
           },
           "taSource": {
             "type": "#def.view.componentType.textarea",
             "layout": {
               "x": 20,
-              "y": 100,
+              "y": 125,
               "width": 440,
-              "height": 550
+              "height": 525
             },
             "style": "white-space:nowrap",
             "attr": {
@@ -80,6 +80,18 @@
             "style": "white-space:nowrap",
             "attr": {
               "v-model": "code"
+            }
+          },
+          "tbKey": {
+            "type": "#def.view.componentType.text",
+            "layout": {
+              "x": 20,
+              "y": 100,
+              "width": 440,
+              "height": 20
+            },
+            "attr": {
+              "v-model": "key"
             }
           }
         }
