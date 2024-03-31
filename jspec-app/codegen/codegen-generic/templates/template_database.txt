@@ -26,3 +26,82 @@ UPDATE ${name} SET ${Object.keys(column).map(x => x + " = ?").join(", ")} WHERE 
 -- delete by primary key.
 DELETE FROM ${name} WHERE ${Object.keys(column).filter(x => column[x].primaryKey).map(x => x + " = ?").join(" AND ")};
 
+---
+
+{
+  "type": {
+    "spec": {
+      "column": "Object",
+      "name": "String",
+      "required": [
+        "column",
+        "name"
+      ]
+    },
+    "type": "type",
+    "column": {
+      "type": "type",
+      "spec": {
+        "name": "String",
+        "datatype": "String",
+        "required": [
+          "name",
+          "datatype"
+        ]
+      }
+    }
+  },
+  "name": "actual",
+  "sql": "-- create table.\nCREATE TABLE actual (\n  personnel_id bigint NOT NULL,\n  personnel_name text NOT NULL,\n  ejac_count int NOT NULL,\n  PRIMARY KEY(personnel_id)\n);",
+  "column": {
+    "personnel_id": {
+      "type": {
+        "type": "type",
+        "spec": {
+          "name": "String",
+          "datatype": "String",
+          "required": [
+            "name",
+            "datatype"
+          ]
+        }
+      },
+      "domain": {
+        "type": "domain",
+        "primitive": {
+          "type": "type",
+          "cmap": {
+            "cs": "long",
+            "postgres": "bigint"
+          }
+        }
+      },
+      "ddlOption": "AUTOINCREMENT",
+      "primaryKey": 1
+    },
+    "personnel_name": {
+      "type": {
+        "type": "type",
+        "spec": {
+          "name": "String",
+          "datatype": "String",
+          "required": [
+            "name",
+            "datatype"
+          ]
+        }
+      },
+      "domain": {
+        "type": "domain",
+        "primitive": {
+          "type": "type",
+          "cmap": {
+            "cs": "string",
+            "postgres": "text"
+          }
+        }
+      }
+    }
+  }
+}
+

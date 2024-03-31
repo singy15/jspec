@@ -9,3 +9,32 @@ ${Object.keys(this)
 .join("\n")}
 }
 
+---
+
+{
+  "personnelId": {
+    "domain": {
+      "type": "domain",
+      "primitive": {
+        "type": "type",
+        "cmap": {
+          "cs": "long",
+          "postgres": "bigint"
+        }
+      }
+    }
+  },
+  "personnelName": {
+    "domain": {
+      "type": "domain",
+      "primitive": {
+        "type": "type",
+        "cmap": {
+          "cs": "string",
+          "postgres": "text"
+        }
+      }
+    }
+  }
+}
+
