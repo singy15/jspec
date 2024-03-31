@@ -157,10 +157,41 @@
           "model": "Object"
         },
         "type": "type"
+      },
+      "primitive": {
+        "integer": {
+          "type": "type",
+          "cmap": {
+            "cs": "int",
+            "postgres": "int"
+          }
+        },
+        "long": {
+          "type": "type",
+          "cmap": {
+            "cs": "long",
+            "postgres": "bigint"
+          }
+        },
+        "text": {
+          "type": "type",
+          "cmap": {
+            "cs": "string",
+            "postgres": "text"
+          }
+        },
+        "real": {
+          "type": "type",
+          "cmap": {
+            "cs": "double",
+            "postgres": "numeric"
+          }
+        }
       }
     }
   },
   "testair": {
+    "type": "#def.type.application",
     "view": {
       "projectCreate": {
         "component": {
@@ -817,6 +848,32 @@
       },
       "type": "#def.type.database"
     },
-    "type": "#def.type.application"
+    "domain": {
+      "projectId": {
+        "type": "domain",
+        "primitive": "#def.type.primitive.long"
+      },
+      "shortText": {
+        "type": "domain",
+        "primitive": "#def.type.primitive.text"
+      },
+      "longText": {
+        "type": "domain",
+        "primitive": "#def.type.primitive.text"
+      }
+    },
+    "model": {
+      "project": {
+        "projectId": {
+          "domain": "#testair.domain.projectId"
+        },
+        "subject": {
+          "domain": "#testair.domain.shortText"
+        },
+        "projectCd": {
+          "domain": "#testair.domain.shortText"
+        }
+      }
+    }
   }
 }
