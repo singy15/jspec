@@ -228,32 +228,58 @@ var jspecViewDesigner = {
       this.editing.editing = false;
     },
     generateCode() {
-      let codes = Object.keys(this.view.component)
-        .map(k => this.view.component[k])
-        .filter(c => { return !(c.undocumented); })
-        .map(c => { console.log(c); return c; })
-        .map(c => `<div style=" position: absolute; width: ${c.layout.width.toString()}px; height: ${c.layout.height.toString()}px; left: ${c.layout.x.toString()}px; top: ${c.layout.y.toString()}px; z-index: ${this.zindex(c.layout.x, c.layout.y)}; box-sizing:border-box;">${this.evalTemplate(c)}</div>`);
-      console.log(codes);
-      this.createDOM();
-      alert("The code copied to clipboard!");
+      let code = this.createDOM(this.view);
+
+      console.log(code);
+   
+      navigator.clipboard.writeText(code)
+        .then(() => {
+          console.log("Text copied to clipboard...")
+        })
+        .catch(err => {
+          console.log('Something went wrong', err);
+        });
     },
-    createDOM() {
+    createDOM(view) {
+      let zindex = (x, y) => {
+        return y * 100000 + x;
+      };
+
+      let evalTemplate = (component) => {
+        let type = this.resolve(component.type);
+        let resolved = Object.assign({}, component);
+        resolved.type = type;
+        return (new Function(...Object.keys(resolved), 
+          "return " + type.template))
+          .call(resolved, ...Object.values(resolved));
+      };
+
       let includeGeometrically = (a, b) => {
         // a include b?
-        let expand = 1;
+        let ex = 1;
+        let al = a.layout;
+        let bl = b.layout;
         return (a != b)
-          && ((a.layout.x - expand) <= b.layout.x)
-          && ((a.layout.y - expand) <= b.layout.y)
-          && ((b.layout.x + b.layout.width) <= (a.layout.x + a.layout.width + expand))
-          && ((b.layout.y + b.layout.height) <= (a.layout.y + a.layout.height + expand));
+          && ((al.x - ex) <= bl.x)
+          && ((al.y - ex) <= bl.y)
+          && ((bl.x + bl.width) <= (al.x + al.width + ex))
+          && ((bl.y + bl.height) <= (al.y + al.height + ex));
       };
 
       let dp = new DOMParser();
 
-      let cs = Object.keys(this.view.component)
-        .map(k => this.view.component[k])
+      let cs = Object.keys(view.component)
+        .map(k => view.component[k])
         .map(c => { 
-            let parsedDom = dp.parseFromString(`<div style=" position: absolute; width: ${c.layout.width.toString()}px; height: ${c.layout.height.toString()}px; left: ${c.layout.x.toString()}px; top: ${c.layout.y.toString()}px; z-index: ${this.zindex(c.layout.x, c.layout.y)}; box-sizing:border-box;">${this.evalTemplate(c)}</div>`, "text/html");
+            let cl = c.layout;
+            let parsedDom = dp.parseFromString(
+              `<div style=" position: absolute;`
+              + ` width: ${cl.width}px; height: ${cl.height}px;`
+              + ` left: ${cl.x}px; top: ${cl.y}px;`
+              + ` z-index: ${zindex(cl.x, cl.y)};`
+              + ` box-sizing:border-box;">`
+              + `${evalTemplate(c)}</div>`, "text/html");
+
             let dom = null;
             if(parsedDom.querySelector("head").children.length > 0) {
               dom = parsedDom.querySelector("head").children[0];
@@ -261,15 +287,14 @@ var jspecViewDesigner = {
               dom = parsedDom.querySelector("body").children[0];
             }
 
-            return { 
-              component: c, 
-              dom: dom
-            }});
+            return { component: c, dom: dom };
+        });
 
       let prcs = cs.map(c => {
           c.parentComponent = cs.reduce((m,cc) => {
-            return ((includeGeometrically(cc.component, c.component)) && (m.zindex < this.zindex(cc.component.layout.x, cc.component.layout.y)))? 
-                { zindex: this.zindex(cc.component.layout.x, cc.component.layout.y), parent: cc } : m;
+            return ((includeGeometrically(cc.component, c.component)) 
+              && (m.zindex < zindex(cc.component.layout.x, cc.component.layout.y)))? 
+                { zindex: zindex(cc.component.layout.x, cc.component.layout.y), parent: cc } : m;
           }, { zindex: 0, parent: null }).parent;
 
           if(c.parentComponent) {
@@ -294,29 +319,6 @@ var jspecViewDesigner = {
 
           return c;
         });
-
-      // cs.map(c => {
-      //   if(c.parentComponent) { 
-      //     let innerTag = c.parentComponent.dom.children[0];
-      //     let rootTag = null;
-
-      //     if(innerTag.tagName === "TEMPLATE") {
-      //       rootTag = innerTag.content;
-      //     } else {
-      //       rootTag = innerTag;
-      //     }
-
-      //     let contentTag = rootTag.querySelector("contents");
-      //     // if(!contentTag) {
-      //     //   if(rootTag.querySelector("template")
-      //     //   contentTag = rootTag.querySelector("template").content.querySelector("contents");
-      //     // }
-
-      //     if(contentTag) {
-      //       contentTag.parentElement.replaceWith(...contentTag.children);
-      //     }
-      //   }
-      // });
       
       let form = prcs[0].dom;
       let formComp = prcs[0].component;
@@ -340,16 +342,7 @@ var jspecViewDesigner = {
 
       let code = (new XMLSerializer()).serializeToString(prcs[0].dom);
 
-      console.log(code);
-   
-      navigator.clipboard.writeText(code)
-        .then(() => {
-          console.log("Text copied to clipboard...")
-        })
-        .catch(err => {
-          console.log('Something went wrong', err);
-        });
-
+      return code;
     },
     onSelect(root, node, key) {
       this.select(node[key], key);
