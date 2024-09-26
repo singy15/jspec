@@ -1,0 +1,39 @@
+* {
+  font-size:11px;
+  font-family:unset;
+}
+
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+.container {
+  padding:5px;
+  z-index:9999;
+  background-color:#555;
+  border-bottom: solid 1px #ccc;
+  margin-bottom:10px;
+}
+
+.container * {
+  margin-left: 5px;
+}
+
+.title {
+  font-size: 1.3rem;
+  font-family: serif;
+  color: #CCC;
+}
+
+.button {
+  background-color: none;
+  text-align: center;
+  display: inline-block;
+  color:#555;
+  border:solid 1px #555;
+  outline:none;
+  min-width:100px;
+  cursor:pointer;
+}
+
