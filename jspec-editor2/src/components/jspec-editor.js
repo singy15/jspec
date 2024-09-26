@@ -427,7 +427,7 @@ let JspecEditor = {
           <autoresize-editor :key="k" :value="k" :style="styleKey(k,v)" v-on:updated="updated" :on-copy="createOnCopyHandler(node, k)"
               @dragstart="dragstart($event,node,v,k)" @dragover.prevent @dragenter.prevent @drop="drop($event,node,v,k)" @click="(onSelect)? onSelect(root, node, k) : null">
           </autoresize-editor>
-          <span v-if="showName && v != null && v.$name" style="font-size:0.5rem;">&nbsp;({{v.$name}})</span>
+          <span v-if="showName && v != null && v.$name" style="font-size:0.5em;">&nbsp;({{v.$name}})</span>
           <span style="vertical-align:top">: </span>
           <jspec-editor :root="root" :key="k" :node="v" :entryParent="node" :entryKey="k" :level="level+1" :show-name="showName" :on-select="onSelect"></jspec-editor>
           <br>
@@ -442,7 +442,7 @@ let JspecEditor = {
         <span @click="toggleOpen()" style="cursor:pointer">
           <span v-if="!Array.isArray(node)">{</span>
           <span v-if="Array.isArray(node)">[</span>
-          <span style="font-size:0.5rem">...</span>
+          <span style="font-size:0.5em">...</span>
           <span v-if="!Array.isArray(node)">}</span>
           <span v-if="Array.isArray(node)">]</span>
         </span>

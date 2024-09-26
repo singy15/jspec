@@ -135,7 +135,7 @@ var InplaceEditor = {
           v-if="!multiline"
           :style="Object.assign({
               width:(width).toString()+'px',
-              fontSize:'1.0rem',
+              fontSize:'1.0em',
               fontFamily:'unset',
               boxSizing:'border-box',
               margin:'0px',

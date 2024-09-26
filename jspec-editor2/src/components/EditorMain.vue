@@ -2,6 +2,21 @@
 import jspecEditor from './jspec-editor.js';
 import jspecViewDesigner from './jspec-view-designer.js';
 
+let storageBaseKey = "jspec-editor";
+
+function getStorage(key, defaultValue) {
+  let val = localStorage.getItem(`${storageBaseKey}/${key}`);
+  if(val === "undefined" || val === "null" || val == null || val === undefined) {
+    return defaultValue;
+  } else {
+    return JSON.parse(val);
+  }
+}
+
+function setStorage(key, obj) {
+  localStorage.setItem(`${storageBaseKey}/${key}`, JSON.stringify(obj));
+}
+
 let globalFSHandle;
 
 function writeLog() {}
@@ -189,6 +204,10 @@ export default {
       },
       actions: {
         selected: null
+      },
+      config: {
+        show: false,
+        globalFontSize: getStorage("config.globalFontSize", 12) //px
       }
     };
   },
@@ -277,6 +296,14 @@ export default {
         .catch(err => {
           console.log('Something went wrong', err);
         });
+    },
+    showConfig() {
+      this.config.show = true;
+    },
+    changeFontSize() {
+      // let html = document.querySelector("#editor-container");
+      // html.style.fontSize = `${this.config.globalFontSize}px`;
+      setStorage("config.globalFontSize", this.config.globalFontSize);
     }
   },
   mounted() {
@@ -295,8 +322,9 @@ export default {
         <button class="button" @click="copyEntry()">COPY</button>
         <button class="button" @click="toggleLogicalName()">SHOW/HIDE NAME</button>
         <button class="button" @click="showViewDeisgner()">VIEW DESIGNER</button>
+        <button class="button" @click="showConfig()">CONFIG</button>
       </div>
-      <div>
+      <div :style="`padding-left:1em; font-size:${config.globalFontSize}px;`" id="editor-container">
         <jspec-editor :root="root" :node="root" :entryParent="root" :entryKey="null" :level="0" 
             :open-state="true" :show-name="showLogicalName" :on-select="onSelect"></jspec-editor>
       </div>
@@ -316,46 +344,23 @@ export default {
       </div>
 
 
+      <template v-if="config.show">
+        <div style="position:fixed;
+            top:calc(50vh - 100px); left:calc(50vw - 150px); z-index:9999; background-color:#FFF;
+            text-align:center; border:solid 1px #888; border-radius:10px;
+            padding:10px; min-width:300px; min-height:200px;">
+          <span>CONFIGURATION</span>
+          <br/>
+          <br/>
+          <label>FontSize: <input v-model="config.globalFontSize" @change="changeFontSize()"/></label>
+          <br/>
+          <br/>
+          <br/>
+          <button class="button" @click="config.show = false">CLOSE</button>
+        </div>
+      </template>
 
 </template>
 
 <style scoped>
-* {
-  font-size:11px;
-  font-family:unset;
-}
-
-body {
-  padding: 0px;
-  margin: 0px;
-}
-
-.container {
-  padding:5px;
-  z-index:9999;
-  background-color:#555;
-  border-bottom: solid 1px #ccc;
-  margin-bottom:10px;
-}
-
-.container * {
-  margin-left: 5px;
-}
-
-.title {
-  font-size: 1.3rem;
-  font-family: serif;
-  color: #CCC;
-}
-
-.button {
-  background-color: none;
-  text-align: center;
-  display: inline-block;
-  color:#555;
-  border:solid 1px #555;
-  outline:none;
-  min-width:100px;
-  cursor:pointer;
-}
 </style>

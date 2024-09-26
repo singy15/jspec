@@ -1,5 +1,8 @@
+html {
+  font-size:12px;
+}
+
 * {
-  font-size:11px;
   font-family:unset;
 }
 
@@ -21,7 +24,7 @@ body {
 }
 
 .title {
-  font-size: 1.3rem;
+  font-size: 1.3em;
   font-family: serif;
   color: #CCC;
 }
