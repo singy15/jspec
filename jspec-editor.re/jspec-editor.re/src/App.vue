@@ -27,23 +27,24 @@ onMounted(() => {
   window.data = data;
 })
 
-function openFile() {
-  // fsUtil.openFile().then(result => {
-  //   console.log(result.text);
-  //   let parsed = JSON.parse(result.text);
-  //   console.log(parsed);
-  //   data["root"] = parsed;
-  // });
-  data.root.foo = "qwer";
+async function openFile() {
+  let result = await fsUtil.openFile();
+  console.log(result.text);
+  let parsed = JSON.parse(result.text);
+  console.log(parsed);
+  data.root = parsed;
 }
 </script>
 
 <template>
   <div class="container flex-row">
+    <span class="mr1 title">JSON EDITOR</span>
     <button class="button mr1" @click="openFile()">OPEN</button>
     <button class="button mr1">SAVE</button>
   </div>
-  <JspecEditor :object="data.root" :parent-obj="data" :parent-key="'root'"/>
+  <JspecEditor :object="data.root" :parent-obj="data" 
+    :parent-key="'root'" :root-obj="data.root"
+    :enable-ref="true"/>
 </template>
 
 <style scoped>
@@ -55,11 +56,16 @@ function openFile() {
     flex-direction: row;
   }
 
+  .title {
+    font-size: 1.0em;
+  }
+
   .button {
     border: solid 1px #ccc;
     color: #eee;
     background-color: #333;
     cursor: pointer;
+    font-size: 0.9em;
   }
 
   .mr1 {

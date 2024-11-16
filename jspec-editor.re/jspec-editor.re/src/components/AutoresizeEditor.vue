@@ -31,6 +31,9 @@ const refInput = ref(null);
 
 function stringify(val, preserveQuote = true) {
   let type = valToValType(val);
+  if(val === undefined) {
+    return "undefined";
+  }
   if(type === "string") {
     let s = JSON.stringify(val);
     if(!preserveQuote) {
@@ -86,7 +89,11 @@ function resize() {
 function update() {
   let v = null;
   try {
-    v = JSON.parse(data.valStr);
+    if(data.valStr === "undefined") {
+      v = undefined;
+    } else {
+      v = JSON.parse(data.valStr);
+    }
   } catch(e) {
     v = data.valStr;
   }
@@ -219,6 +226,6 @@ onMounted(() => {
   }
 
   .value-undefined {
-    color: #b4b;
+    color: #f4b;
   }
 </style>
