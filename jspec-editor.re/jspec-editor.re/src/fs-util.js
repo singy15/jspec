@@ -31,7 +31,7 @@ async function saveFile(contents, handle = null) {
     return handle;
   } catch (ex) {
     const msg = "failed to save";
-    console.error(msg, ex);
+    //console.error(msg, ex);
     return false;
   }
 }
@@ -51,7 +51,7 @@ async function openFile() {
     globalFSHandle = fileHandle;
     result.handle = fileHandle;
   } catch (ex) {
-    console.error("failed to fetch file", ex);
+    //console.error("failed to fetch file", ex);
     return false;
   }
 
@@ -61,7 +61,7 @@ async function openFile() {
     result.text = text;
     return result;
   } catch (ex) {
-    console.error("failed to get content", ex);
+    //console.error("failed to get content", ex);
     return false;
   }
 }
@@ -154,8 +154,10 @@ async function saveOverwrite(content) {
   if (fsHandle) {
     globalFSHandle = fsHandle;
     writeLog("saved");
+    return fsHandle;
   } else {
     writeLog("failed to save");
+    return false;
   }
 }
 
@@ -164,5 +166,5 @@ writeLog(`support for nfs: ${(nativeFSSupported) ? "yes" : "no"}`);
 
 export default {
   openFile: openFile,
-  overwrite: saveOverwrite,
+  saveFile: saveOverwrite,
 };
