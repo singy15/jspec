@@ -22,7 +22,7 @@ const data = reactive({
 
 const refJspecEditor = ref(null);
 
-function createFoldStates(val, initialState = false) {
+function createFoldStates(val, initialState = true) {
   let fold = {};
   Object.keys(val).forEach(k => {
     fold[k] = initialState;
@@ -89,10 +89,6 @@ function arrayOrObject(val) {
 function keyUpdated(key, val, before) {
   // emits("keychanged", before, key, val);
 
-  if(props.level === 0) {
-    return;
-  }
-
   if(val === "") {
     delete data.object[before];
     return;
@@ -107,6 +103,8 @@ function keyUpdated(key, val, before) {
     }
   });
 
+  data.fold[val] = data.fold[before];
+  delete data.fold[before];
   data.object = newobj;
   props.parentObj[props.parentKey] = newobj;
 
@@ -135,12 +133,12 @@ function addKey(target) {
 <template>
   <div class="container flex-col">
     <div v-if="level === 0">{
-      <span class="ml05 clickable" 
-        @click.stop="addKey(object)">+</span>
+      <span class="ml1 clickable" 
+        @click.stop="addKey(data.object)">+</span>
     </div>
       
 
-    <template v-for="(key,i) in Object.keys(object)" :key="key">
+    <template v-for="(key,i) in Object.keys(data.object)" :key="key">
 
       <div class="container flex-row ml1">
         <div>
@@ -149,28 +147,28 @@ function addKey(target) {
             @updated="keyUpdated"/>
         </div>
         <div class="mr05">:</div>
-        <div v-if="isScalar(object[key])">
-          <AutoresizeEditor :value="object[key]" 
+        <div v-if="isScalar(data.object[key])">
+          <AutoresizeEditor :value="data.object[key]" 
             :value-key="key"
             @updated="valueUpdated"/>
         </div>
-        <div v-if="!isScalar(object[key])" class="clickable" 
+        <div v-if="!isScalar(data.object[key])" class="clickable" 
           @click="toggleFold(key, i)">
-            <span>{{ parenSymbol(object[key])[0] }}</span>
-            <span v-if="!data.fold[key]" class="ml05 clickable"
-              @click.stop="addKey(object[key])">+</span>
-            <span v-if="data.fold[key]">...{{ parenSymbol(object[key])[1] }}</span>
+            <span>{{ parenSymbol(data.object[key])[0] }}</span>
+            <span v-if="!data.fold[key]" class="ml1 clickable"
+              @click.stop="addKey(data.object[key])">+</span>
+            <span v-if="data.fold[key]">...{{ parenSymbol(data.object[key])[1] }}</span>
         </div>
       </div>
 
-      <div v-if="!isScalar(object[key]) && !data.fold[key]" class="ml1">
+      <div v-if="!isScalar(data.object[key]) && !data.fold[key]" class="ml1">
         <JspecEditor ref="refJspecEditor" 
-          :object="object[key]" :level="level + 1" :key="key"
-          :parent-key="key" :parent-obj="object"/>
+          :object="data.object[key]" :level="level + 1" :key="key"
+          :parent-key="key" :parent-obj="data.object"/>
       </div>
 
-      <div v-if="!isScalar(object[key]) && !data.fold[key]" 
-        class="container flex-row ml1">{{ parenSymbol(object[key])[1] }}</div>
+      <div v-if="!isScalar(data.object[key]) && !data.fold[key]" 
+        class="container flex-row ml1">{{ parenSymbol(data.object[key])[1] }}</div>
     </template>
 
     <div v-if="level === 0">}</div>
