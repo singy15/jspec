@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted, reactive, nextTick } from 'vue'
 
 const emit = defineEmits(['updated']);
 
@@ -11,12 +11,16 @@ const props = defineProps({
     type: Object,
     default: {},
   },
-  onCopy: Function
+  onCopy: Function,
+  showQuote: {
+    type: Boolean,
+    default: true
+  }
 });
 
 const data = reactive({
   val: props.value,
-  valStr: nullToString(props.value),
+  valStr: stringify(props.value, props.showQuote),
   valType: valToValType(props.value),
   width: 10,
   before: props.value
@@ -24,6 +28,20 @@ const data = reactive({
 
 const refText = ref(null);
 const refInput = ref(null);
+
+function stringify(val, preserveQuote = true) {
+  let type = valToValType(val);
+  if(type === "string") {
+    let s = JSON.stringify(val);
+    if(!preserveQuote) {
+      s = s.substring(1);
+      s = s.substring(0, s.length - 1);
+    }
+    return s;
+  } else {
+    return JSON.stringify(val);
+  }
+}
 
 function valToValType(val) {
   if(val === undefined) {
@@ -60,22 +78,33 @@ function nullToString(val) {
 }
 
 function resize() {
-  data.width = refText.value.getBoundingClientRect().width;
+  if(refText.value) {
+    data.width = refText.value.getBoundingClientRect().width;
+  }
 }
 
 function update() {
-  var v = null;
+  let v = null;
   try {
     v = JSON.parse(data.valStr);
   } catch(e) {
     v = data.valStr;
   }
-  data.val = v;
-  data.valType = valToValType(v);
-  data.valStr = nullToString(v);
 
-  emit('updated', props.valueKey, data.val, data.before);
-  data.before = data.val;
+  let bef = data.val;
+
+  data.val = v;
+  data.valStr = stringify(v, props.showQuote);
+  data.valType = valToValType(v);
+
+  if(data.valType != "object") {
+    nextTick(() => {
+      resize();
+    });
+  }
+
+  emit('updated', props.valueKey, v, bef);
+  data.before = bef;
 }
 
 function focus() {
@@ -108,7 +137,7 @@ onMounted(() => {
 
 <template>
   <span style="display:inline-block; vertical-align:top;">
-    <span ref="refText" 
+    <span ref="refText" class="span"
       :style="Object.assign({visibility:'hidden'}, style)" >{{data.valStr}}</span>
     <input type="text"
         :class="['input', classByType(data.val)]"
@@ -152,6 +181,15 @@ onMounted(() => {
   .input {
     background-color: #333;
     color: #eee;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+    font-size: 1.0em;
+    font-family: unset;
+  }
+
+  .span {
     margin: 0;
     padding: 0;
     box-sizing: border-box;

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import uuid4 from "../uuid4.js";
 import AutoresizeEditor from "./AutoresizeEditor.vue";
 
@@ -128,6 +128,10 @@ function addKey(target) {
   }
 }
 
+watch(props.object, () => {
+  data.object = props.object;
+});
+
 </script>
 
 <template>
@@ -136,7 +140,6 @@ function addKey(target) {
       <span class="ml1 clickable" 
         @click.stop="addKey(data.object)">+</span>
     </div>
-      
 
     <template v-for="(key,i) in Object.keys(data.object)" :key="key">
 
@@ -144,7 +147,8 @@ function addKey(target) {
         <div>
           <AutoresizeEditor :value="key" 
             :value-key="key"
-            @updated="keyUpdated"/>
+            @updated="keyUpdated"
+            :show-quote="false"/>
         </div>
         <div class="mr05">:</div>
         <div v-if="isScalar(data.object[key])">
