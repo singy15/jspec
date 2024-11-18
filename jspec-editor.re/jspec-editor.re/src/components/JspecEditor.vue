@@ -210,6 +210,14 @@ function refStyle(val) {
   }
   return style;
 }
+
+function copyKey(key) {
+  navigator.clipboard.writeText(key);
+}
+
+function copyValue(object, key) {
+  navigator.clipboard.writeText(JSON.stringify(object[key], null, "  "));
+}
 </script>
 
 <template>
@@ -224,7 +232,9 @@ function refStyle(val) {
       <div class="container flex-row ml1">
         <div>
           <AutoresizeEditor :value="key" :value-key="key" @updated="keyUpdated" :show-quote="false"
-            :style="{ color:`#9CDCFE` }" />
+            :style="{ color:`#9CDCFE` }" 
+            @keydown.ctrl.c.stop.prevent="copyKey(key)"
+            @keydown.ctrl.shift.c.stop.prevent="copyValue(object, key)"/>
         </div>
         <div class="mr05">:</div>
         <div v-if="isScalar(object[key])">

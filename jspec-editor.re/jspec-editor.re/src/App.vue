@@ -58,7 +58,19 @@ const data = reactive({
           "@type": "#example.types.book",
           title: "book3",
           author: "john doe"
-        }
+        },
+        books: [
+          {
+            "@type": "#example.types.book",
+            title: "book1",
+            price: 1000, 
+          },
+          {
+            "@type": "#example.types.book",
+            title: "book2",
+            price: "2000"
+          }
+        ]
       }
     }
   },
