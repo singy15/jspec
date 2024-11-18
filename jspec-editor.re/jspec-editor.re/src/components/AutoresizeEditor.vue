@@ -211,6 +211,7 @@ watch(() => props.value, () => {
     border: none;
     font-size: 1.0em;
     font-family: unset;
+    white-space: nowrap;
   }
 
   .input:focus {
