@@ -26,19 +26,22 @@ const data = reactive({
       referenceError: "#example.doesNotExist",
       types: {
         book: {
-          type: "object",
-          required: [
-            "title", "price"
-          ],
-          properties: {
-            title: {
-              type: "string"
-            },
-            author: {
-              type: "string"
-            },
-            price: {
-              type: "number"
+          name: "book",
+          schema: {
+            type: "object",
+            required: [
+              "title", "price"
+            ],
+            properties: {
+              title: {
+                type: "string"
+              },
+              author: {
+                type: "string"
+              },
+              price: {
+                type: "number"
+              }
             }
           }
         }
@@ -124,7 +127,7 @@ function validateAll(cur, root, path, errors = []) {
     let v = cur[k];
 
     if(k === "@type") {
-      let err = validate(cur, resolve(root, cur[k]));
+      let err = validate(cur, resolve(root, cur[k])?.schema);
       //if(err.length > 0) {
         errors.push({ path: path.join("."), error: err });
       //}
