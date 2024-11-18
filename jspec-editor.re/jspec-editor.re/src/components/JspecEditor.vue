@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch } from 'vue'
+  import { ref, reactive, watch, nextTick } from 'vue'
 import uuid4 from "../uuid4.js";
 import AutoresizeEditor from "./AutoresizeEditor.vue";
 
@@ -94,30 +94,68 @@ function arrayOrObject(val) {
 function keyUpdated(key, val, before) {
   // emits("keychanged", before, key, val);
 
-  if(val === "") {
-    delete props.object[before];
-    return;
-  }
+  let objectType = arrayOrObject(props.object);
+  if(objectType === "object" || objectType === "array") {
+    let newobj = (arrayOrObject(props.object) === "array")? [] : {};
 
-  let newobj = (arrayOrObject(props.object) === "array")? [] : {};
-  Object.keys(props.object).forEach(k => {
-    if(k === before && val !== "") {
-      newobj[val] = props.object[before];
+    if(objectType === "array") {
+      let ival = parseInt(val, 10);
+      let ibefore = parseInt(before, 10);
+
+      props.object.forEach(v => newobj.push(v));
+      if(val === "") {
+        newobj[ibefore] = undefined
+      } else {
+        let v = props.object[ibefore];
+        
+        newobj.splice(ival, 0, v);
+
+        if(ival < ibefore) {
+          newobj[ibefore + 1] = undefined;
+        } else {
+          newobj[ibefore] = undefined;
+        }
+      }
+
+      newobj = newobj.filter(x => x !== undefined);
     } else {
-      newobj[k] = props.object[k];
-    }
-  });
 
-  data.fold[val] = data.fold[before];
-  delete data.fold[before];
-  //data.object = newobj;
-  props.parentObj[props.parentKey] = newobj;
+      if(val === "") {
+        delete props.object[before];
+        return;
+      }
+
+      Object.keys(props.object).forEach(k => {
+        if(k === before && val !== "") {
+          newobj[val] = props.object[before];
+        } else {
+          newobj[k] = props.object[k];
+        }
+      });
+    }
+
+    data.fold[val] = data.fold[before];
+    delete data.fold[before];
+    //data.object = newobj;
+    props.parentObj[props.parentKey] = null;
+    nextTick(() => {
+      props.parentObj[props.parentKey] = newobj;
+    });
+  } else {
+    throw new Error("unsupported type");
+  }
 }
 
 function addKey(target) {
   if(arrayOrObject(target) === "array") {
-    target[Math.max(...Object.keys(target)
-      .map(k => parseInt(k,10))) + 1] = "value";
+    let idx;
+    if(target.length > 0) {
+      idx = Math.max(...Object.keys(target)
+        .map(k => parseInt(k,10))) + 1;
+    } else {
+      idx = 0;
+    }
+    target[idx] = `value${idx}`;
   } else {
     let baseKey = "key";
     let i = 0;
@@ -129,9 +167,9 @@ function addKey(target) {
   }
 }
 
-watch(props.object, () => {
-  forceRedraw();
-}, {deep: true});
+// watch(props.object, () => {
+  // forceRedraw();
+// }, {deep: false});
 
 const redraw = ref(0);
 
@@ -177,7 +215,7 @@ function refStyle(val) {
 <template>
   <div class="container flex-col" :key="redraw">
     <div v-if="level === 0">{
-      <span class="ml1 clickable" 
+      <span class="ml1 clickable"
         @click.stop="addKey(object)">+</span>
     </div>
 
@@ -185,42 +223,33 @@ function refStyle(val) {
 
       <div class="container flex-row ml1">
         <div>
-          <AutoresizeEditor :value="key" 
-            :value-key="key"
-            @updated="keyUpdated"
-            :show-quote="false"
-            :style="{ color:`#9CDCFE` }"/>
+          <AutoresizeEditor :value="key" :value-key="key" @updated="keyUpdated" :show-quote="false"
+            :style="{ color:`#9CDCFE` }" />
         </div>
         <div class="mr05">:</div>
         <div v-if="isScalar(object[key])">
-          <AutoresizeEditor :value="object[key]" 
-            :value-key="key"
-            @updated="valueUpdated"
-            :style="refStyle(object[key])"
-            :show-quote="!(enableRef && isRef(object[key]))"/>
+          <AutoresizeEditor :value="object[key]" :value-key="key" @updated="valueUpdated"
+            :style="refStyle(object[key])" :show-quote="!(enableRef && isRef(object[key]))" />
           <span v-if="enableRef && isRef(object[key]) && !canResolve(object[key])"
             class="ml05 link-error">
             !
           </span>
         </div>
-        <div v-if="!isScalar(object[key])" class="clickable" 
-          @click="toggleFold(key, i)">
-            <span>{{ parenSymbol(object[key])[0] }}</span>
-            <span v-if="!data.fold[key]" class="ml1 clickable"
+        <div v-if="!isScalar(object[key])" class="clickable" @click="toggleFold(key, i)">
+          <span>{{ parenSymbol(object[key])[0] }}</span>
+          <span v-if="!data.fold[key]" class="ml1 clickable"
               @click.stop="addKey(object[key])">+</span>
-            <span v-if="data.fold[key]">...{{ parenSymbol(object[key])[1] }}</span>
+          <span v-if="data.fold[key]">...{{ parenSymbol(object[key])[1] }}</span>
         </div>
       </div>
 
       <div v-if="!isScalar(object[key]) && !data.fold[key]" class="ml1">
-        <JspecEditor ref="refJspecEditor" 
-          :object="object[key]" :level="level + 1" :key="key"
-          :parent-key="key" :parent-obj="object" :root-obj="rootObj" 
-          :enable-ref="enableRef"/>
+        <JspecEditor ref="refJspecEditor" :object="object[key]" :level="level + 1" :key="key" :parent-key="key"
+          :parent-obj="object" :root-obj="rootObj" :enable-ref="enableRef" />
       </div>
 
-      <div v-if="!isScalar(object[key]) && !data.fold[key]" 
-        class="container flex-row ml1">{{ parenSymbol(object[key])[1] }}</div>
+      <div v-if="!isScalar(object[key]) && !data.fold[key]" class="container flex-row ml1">{{
+        parenSymbol(object[key])[1] }}</div>
     </template>
 
     <div v-if="level === 0">}</div>

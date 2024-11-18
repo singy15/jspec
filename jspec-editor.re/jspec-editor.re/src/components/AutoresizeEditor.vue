@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive, nextTick } from 'vue'
+import { ref, onMounted, reactive, nextTick, watch } from 'vue'
 
 const emit = defineEmits(['updated']);
 
@@ -140,6 +140,14 @@ function classByType(val) {
 onMounted(() => {
   resize();
 });
+
+watch(() => props.value, () => {
+  data.before = data.val;
+  data.val = props.value;
+  data.valStr = stringify(props.value, props.showQuote);
+  data.valType = valToValType(props.value);
+  nextTick(() => { resize(); });
+})
 </script>
 
 <template>
