@@ -12,7 +12,9 @@ const jspec = (obj) => {
 
   const resolve = (val, path) => {
     let paths = path;
-    if (!isArray(path)) paths = path.split(".");
+    if (!isArray(path)) {
+      paths = (path.startsWith("#") ? path.substring(1) : path).split(".");
+    }
     if (paths.length === 0) return val;
     if (isObject(val)) {
       return resolve(val[paths[0]], paths.slice(1));
@@ -62,13 +64,13 @@ const jspec = (obj) => {
       },
       ownKeys(target) {
         let keys = {};
+        for (let key in target) {
+          keys[key] = true;
+        }
         if (linker != null) {
           for (let key in linker) {
             keys[key] = true;
           }
-        }
-        for (let key in target) {
-          keys[key] = true;
         }
         return Object.keys(keys);
       },
@@ -97,7 +99,7 @@ const jspecObj = {
     prop4: 444,
   },
   link1: {
-    $link: "simple",
+    $link: "#simple",
     prop4: 4444,
   },
 };
@@ -115,7 +117,7 @@ console.log("test link5", spec.link1.prop2.x === 999);
 console.log("test link6", spec.link1.prop4 === 4444, spec.link1.prop4);
 spec.link1.prop4 = 44444;
 console.log("test link7", spec.link1.prop4 === 44444, spec.link1.prop4);
-console.log("test link8", spec.link1.$link === "simple", spec.link1.$link);
+console.log("test link8", spec.link1.$link === "#simple", spec.link1.$link);
 console.log(
   "test link9",
   Object.keys(spec.link1).length === 4,
