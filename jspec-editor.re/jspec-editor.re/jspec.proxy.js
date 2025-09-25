@@ -10,26 +10,43 @@ const jspec = (obj) => {
     return Array.isArray(val);
   };
 
-  const resolve = (val, path) => {
+  const resolve = (val, path, root, onVisitLinker = null) => {
     let paths = path;
     if (!isArray(path)) {
       paths = (path.startsWith("#") ? path.substring(1) : path).split(".");
     }
-    if (paths.length === 0) return val;
+    if (paths.length === 0) {
+      if (val?.$link) {
+        if (onVisitLinker) onVisitLinker(val);
+        return resolve(root, val.$link, root, onVisitLinker);
+      } else {
+        return val;
+      }
+    }
     if (isObject(val)) {
-      return resolve(val[paths[0]], paths.slice(1));
+      return resolve(val[paths[0]], paths.slice(1), root, onVisitLinker);
     } else if (isArray(val)) {
-      return resolve(val[parseInt(paths[0], 10)], paths.slice(1));
+      return resolve(
+        val[parseInt(paths[0], 10)],
+        paths.slice(1),
+        root,
+        onVisitLinker,
+      );
     }
     return val;
   };
 
-  const createHandler = (root, linker = null) => {
+  const createHandler = (root, linker = []) => {
     return {
       get(target, prop, receiver) {
         let ret = undefined;
 
-        ret = linker?.[prop];
+        //ret = linker?.[prop];
+        linker.forEach((lnk) => {
+          if (ret === undefined && lnk?.[prop]) {
+            ret = lnk?.[prop];
+          }
+        });
 
         if (ret === undefined) {
           if (isObject(target)) {
@@ -39,10 +56,13 @@ const jspec = (obj) => {
           }
         }
 
-        let resolved = null;
+        let resolved = [];
         if (isObject(ret) && ret.$link) {
-          resolved = ret;
-          ret = resolve(root, ret.$link);
+          resolved.unshift(ret);
+          ret = resolve(root, ret.$link, root, (link) => {
+            //console.log("link", link);
+            resolved.unshift(link);
+          });
         }
 
         if (isObject(ret) || isArray(ret))
@@ -51,8 +71,17 @@ const jspec = (obj) => {
         return ret;
       },
       set(target, prop, value) {
-        if (linker != null && prop in linker) {
-          linker[prop] = value;
+        // if (linker != null && prop in linker) {
+        //   linker[prop] = value;
+        // }
+
+        if (linker.length > 0) {
+          for (let lnk of linker) {
+            if (prop in lnk) {
+              lnk[prop] = value;
+              break;
+            }
+          }
         } else {
           if (isObject(target)) {
             target[prop] = value;
@@ -67,19 +96,40 @@ const jspec = (obj) => {
         for (let key in target) {
           keys[key] = true;
         }
-        if (linker != null) {
-          for (let key in linker) {
-            keys[key] = true;
-          }
+        // if (linker != null) {
+        //   for (let key in linker) {
+        //     keys[key] = true;
+        //   }
+        // }
+        if (linker.length > 0) {
+          linker.forEach((lnk) => {
+            for (let key in lnk) {
+              keys[key] = true;
+            }
+          });
         }
         return Object.keys(keys);
       },
       getOwnPropertyDescriptor(target, prop) {
         if (prop === "$link") {
-          return { configurable: true, enumerable: false, value: linker[prop] };
+          // return { configurable: true, enumerable: false, value: linker[prop] };
+          return {
+            configurable: true,
+            enumerable: false,
+            value: linker[0][prop],
+          };
         }
-        if (linker?.[prop] !== undefined) {
-          return { configurable: true, enumerable: true, value: linker[prop] };
+        // if (linker?.[prop] !== undefined) {
+        //   return { configurable: true, enumerable: true, value: linker[prop] };
+        // }
+        for (let lnk of linker) {
+          if (lnk?.[prop] !== undefined) {
+            return {
+              configurable: true,
+              enumerable: true,
+              value: lnk[prop],
+            };
+          }
         }
         return { configurable: true, enumerable: true, value: target[prop] };
       },
@@ -102,6 +152,10 @@ const jspecObj = {
     $link: "#simple",
     prop4: 4444,
   },
+  link2: {
+    $link: "#link1",
+    prop4: 44444,
+  },
 };
 
 let spec = jspec(jspecObj);
@@ -123,3 +177,5 @@ console.log(
   Object.keys(spec.link1).length === 4,
   Object.keys(spec.link1),
 );
+console.log("test link10", spec.link2.prop1 === 111, spec.link2.prop1);
+console.log("test link11", spec.link2.prop4 === 44444, spec.link2.prop4);
