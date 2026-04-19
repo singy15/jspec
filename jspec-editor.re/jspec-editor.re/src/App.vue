@@ -1,14 +1,12 @@
 <script setup>
-import { ref, reactive, onMounted, watch, nextTick } from 'vue'
-import JspecEditor from './components/JspecEditor.vue';
+import { ref, reactive, onMounted, watch, nextTick } from "vue";
+import JspecEditor from "./components/JspecEditor.vue";
 import fsUtil from "./fs-util.js";
 import { Draft2019 } from "json-schema-library";
 
 const data = reactive({
   root: {
-    help: [
-      "This is a simple JSON editor."
-    ],
+    help: ["This is a simple JSON editor."],
     example: {
       string: "abc",
       number: 1234,
@@ -19,9 +17,7 @@ const data = reactive({
         key1: "value1",
         key2: "value2",
       },
-      array: [
-        "val1", 1234, false
-      ],
+      array: ["val1", 1234, false],
       reference: "#example.nestedObject",
       referenceError: "#example.doesNotExist",
       types: {
@@ -29,53 +25,51 @@ const data = reactive({
           name: "book",
           schema: {
             type: "object",
-            required: [
-              "title", "price"
-            ],
+            required: ["title", "price"],
             properties: {
               title: {
-                type: "string"
+                type: "string",
               },
               author: {
-                type: "string"
+                type: "string",
               },
               price: {
-                type: "number"
-              }
-            }
-          }
-        }
+                type: "number",
+              },
+            },
+          },
+        },
       },
       data: {
         book1: {
           "@type": "#example.types.book",
           title: "book1",
-          price: 1000, 
+          price: 1000,
         },
         book2: {
           "@type": "#example.types.book",
           title: "book2",
-          price: "2000"
+          price: "2000",
         },
         book3: {
           "@type": "#example.types.book",
           title: "book3",
-          author: "john doe"
+          author: "john doe",
         },
         books: [
           {
             "@type": "#example.types.book",
             title: "book1",
-            price: 1000, 
+            price: 1000,
           },
           {
             "@type": "#example.types.book",
             title: "book2",
-            price: "2000"
-          }
-        ]
-      }
-    }
+            price: "2000",
+          },
+        ],
+      },
+    },
   },
 });
 
@@ -83,11 +77,11 @@ const modified = ref(false);
 
 onMounted(() => {
   window.data = data;
-})
+});
 
 async function openFile() {
   let result = await fsUtil.openFile();
-  if(!result) return;
+  if (!result) return;
   let parsed = JSON.parse(result.text);
   data.root = parsed;
 
@@ -98,13 +92,17 @@ async function openFile() {
 
 async function saveFile() {
   let result = await fsUtil.saveFile(JSON.stringify(data.root, null, "  "));
-  if(!result) return;
+  if (!result) return;
   commit();
 }
 
-watch(data, () => {
-  taint();
-}, { deep: true });
+watch(
+  data,
+  () => {
+    taint();
+  },
+  { deep: true },
+);
 
 function commit() {
   modified.value = false;
@@ -115,25 +113,30 @@ function taint() {
 }
 
 function resolve(root, path) {
-  return path.substring(1).split(".").reduce((m,x) => m?.[x], root);
+  return path
+    .substring(1)
+    .split(".")
+    .reduce((m, x) => m?.[x], root);
 }
 
 function validate(value, schema) {
-  return (new Draft2019(schema)).validate(value);
+  return new Draft2019(schema).validate(value);
 }
 
 function validateAll(cur, root, path, errors = []) {
-  Object.keys(cur).forEach(k => {
+  Object.keys(cur).forEach((k) => {
     let v = cur[k];
 
-    if(k === "@type") {
-      let err = validate(cur, resolve(root, cur[k])?.schema);
+    if (k === "$type") {
+      let err = resolve(root, cur[k])?.schema
+        ? validate(cur, resolve(root, cur[k])?.schema)
+        : [{ message: "no schema found" }];
       //if(err.length > 0) {
-        errors.push({ path: path.join("."), error: err });
+      errors.push({ path: path.join("."), error: err });
       //}
     }
 
-    if(v != null && v !== undefined && typeof(v) === "object") {
+    if (v != null && v !== undefined && typeof v === "object") {
       validateAll(v, root, [...path, k], errors);
     }
   });
@@ -142,14 +145,19 @@ function validateAll(cur, root, path, errors = []) {
 }
 
 function reportError(errors) {
-  console.log(errors);
-  let failures = errors.filter(e => e.error.length > 0);
+  let failures = errors.filter((e) => e.error.length > 0);
   let report = [`validate ${errors.length} objects`];
   report.push("---");
-  if(failures.length > 0) {
-    report.push(failures.map(e => {
-      return [`PATH: ${e.path}`, ...e.error.map(x => x.message)].join("\n")
-    }).join("\n"));
+  if (failures.length > 0) {
+    report.push(
+      failures
+        .map((e) => {
+          return [`PATH: ${e.path}`, ...e.error.map((x) => x.message)].join(
+            "\n",
+          );
+        })
+        .join("\n"),
+    );
   } else {
     report.push(`no error found.`);
   }
@@ -162,45 +170,55 @@ function reportError(errors) {
     <div class="container flex-row header" style="padding: 5px 0;">
       <span class="mr1 title">JSON EDITOR</span>
       <button class="button mr1" @click="openFile()">OPEN</button>
-      <button class="button mr1" @click="saveFile()">{{ (modified)? "! " : "" }}SAVE</button>
-      <button class="button mr1" 
-        @click="reportError(validateAll(data.root, data.root, []))">VALIDATE</button>
+      <button class="button mr1" @click="saveFile()">
+        {{ modified ? "! " : "" }}SAVE
+      </button>
+      <button
+        class="button mr1"
+        @click="reportError(validateAll(data.root, data.root, []))"
+      >
+        VALIDATE
+      </button>
     </div>
-    <JspecEditor :object="data.root" :parent-obj="data" 
-      :parent-key="'root'" :root-obj="data.root"
+    <JspecEditor
+      :object="data.root"
+      :parent-obj="data"
+      :parent-key="'root'"
+      :root-obj="data.root"
       :enable-ref="true"
-      :path="''"/>
+      :path="''"
+    />
   </div>
 </template>
 
 <style scoped>
-  .container {
-    display: flex;
-  }
+.container {
+  display: flex;
+}
 
-  .flex-row {
-    flex-direction: row;
-  }
+.flex-row {
+  flex-direction: row;
+}
 
-  .title {
-    font-size: 1.0em;
-  }
+.title {
+  font-size: 1.0em;
+}
 
-  .button {
-    border: solid 1px #ccc;
-    color: #eee;
-    background-color: #333;
-    cursor: pointer;
-    font-size: 0.9em;
-  }
+.button {
+  border: solid 1px #ccc;
+  color: #eee;
+  background-color: #333;
+  cursor: pointer;
+  font-size: 0.9em;
+}
 
-  .mr1 {
-    margin-right: 1em;
-  }
+.mr1 {
+  margin-right: 1em;
+}
 
-  .header {
-    position: sticky;
-    top: 0;
-    background-color: #333;
-  }
+.header {
+  position: sticky;
+  top: 0;
+  background-color: #333;
+}
 </style>
