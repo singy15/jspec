@@ -15,7 +15,8 @@ const props = defineProps({
   showQuote: {
     type: Boolean,
     default: true
-  }
+  },
+  id: String
 });
 
 const data = reactive({
@@ -168,7 +169,8 @@ watch(() => props.value, () => {
         @focus="focus()"
         @blur="focused = false"
         @copy="(onCopy)? onCopy() : null"
-        spellcheck="false"/>
+        spellcheck="false"
+        :id="id"/>
   </span>
 </template>
 

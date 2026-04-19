@@ -168,7 +168,8 @@ function reportError(errors) {
     </div>
     <JspecEditor :object="data.root" :parent-obj="data" 
       :parent-key="'root'" :root-obj="data.root"
-      :enable-ref="true"/>
+      :enable-ref="true"
+      :path="''"/>
   </div>
 </template>
 
