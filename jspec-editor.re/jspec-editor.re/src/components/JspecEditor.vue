@@ -139,6 +139,9 @@ function keyUpdated(key, val, before) {
     props.parentObj[props.parentKey] = null;
     nextTick(() => {
       props.parentObj[props.parentKey] = newobj;
+      nextTick(() => {
+        focusToValue(val);
+      });
     });
   } else {
     throw new Error("unsupported type");
@@ -261,6 +264,13 @@ function move(object, key, index, direction) {
     document.getElementById(focusObj).select();
   });
 }
+
+function focusToValue(key) {
+  nextTick(() => {
+    const el = document.getElementById(`v.${props.path}.${key}`);
+    if (el) el.select();
+  });
+}
 </script>
 
 <template>
@@ -284,6 +294,7 @@ function move(object, key, index, direction) {
             @keydown.ctrl.shift.c.stop.prevent="copyValue(object, key)"
             @keydown.alt.up.stop.prevent="move(object, key, i, -1)"
             @keydown.alt.down.stop.prevent="move(object, key, i, 1)"
+            @keydown.enter.stop="focusToValue(key)"
             :id="`${props.path}.${key}`"
           />
         </div>
@@ -295,6 +306,7 @@ function move(object, key, index, direction) {
             @updated="valueUpdated"
             :style="refStyle(object[key])"
             :show-quote="!(enableRef && isRef(object[key]))"
+            :id="`v.${props.path}.${key}`"
           />
           <span
             v-if="enableRef && isRef(object[key]) && !canResolve(object[key])"
