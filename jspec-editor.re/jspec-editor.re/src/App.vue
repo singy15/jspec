@@ -4,6 +4,13 @@ import JspecEditor from "./components/JspecEditor.vue";
 import fsUtil from "./fs-util.js";
 import { Draft2019 } from "json-schema-library";
 
+const showConfig = ref(false);
+const enableValidation = ref(true);
+const validationSchemaKey = ref("$type");
+const enableReference = ref(true);
+const referencePrefix = ref("#");
+const showCloseParen = ref(false);
+
 const data = reactive({
   root: {
     help: ["This is a simple JSON editor."],
@@ -127,7 +134,7 @@ function validateAll(cur, root, path, errors = []) {
   Object.keys(cur).forEach((k) => {
     let v = cur[k];
 
-    if (k === "$type") {
+    if (k === validationSchemaKey.value) {
       let err = resolve(root, cur[k])?.schema
         ? validate(cur, resolve(root, cur[k])?.schema)
         : [{ message: "no schema found" }];
@@ -179,19 +186,99 @@ function reportError(errors) {
       >
         VALIDATE
       </button>
+      <button class="button mr1" @click="showConfig = true">CONFIG</button>
     </div>
     <JspecEditor
       :object="data.root"
       :parent-obj="data"
       :parent-key="'root'"
       :root-obj="data.root"
-      :enable-ref="true"
+      :enable-ref="enableReference"
       :path="''"
+      :show-close-paren="showCloseParen"
     />
+  </div>
+
+  <div v-if="showConfig" class="config-screen-container">
+    <div class="config-container">
+      <span>Configuration</span>
+      <br />
+      <label>
+        <input type="checkbox" v-model="enableValidation" />
+        Use Validation
+      </label>
+      <br />
+      <label
+        >Schema Key:&nbsp;
+        <input v-model="validationSchemaKey" />
+      </label>
+      <br />
+      <label>
+        <input type="checkbox" v-model="enableReference" />
+        Use Reference
+      </label>
+      <br />
+      <label
+        >Reference Prefix:&nbsp;
+        <input v-model="referencePrefix" />
+      </label>
+      <br />
+      <label>
+        <input type="checkbox" v-model="showCloseParen" />
+        Show close paren
+      </label>
+      <br />
+      <!--
+      <label>
+        <input type="checkbox" v-model="minify" @change="changeMinify" />
+        Use Minify
+      </label>
+      <br />
+      -->
+      <span class="clickable button1" @click="showConfig = false">Close</span>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.clickable {
+  cursor: pointer;
+}
+
+.button1 {
+  display: inline-block;
+  min-width: 3em;
+  background-color: #444;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 0.9em;
+  padding: 3px;
+}
+
+.config-screen-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.config-container {
+  background-color: #333;
+  border: solid 1px #555;
+  z-index: 99999;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+
 .container {
   display: flex;
 }

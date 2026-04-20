@@ -19,6 +19,10 @@ const props = defineProps({
     default: false,
   },
   path: String,
+  showCloseParen: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const data = reactive({
@@ -344,11 +348,12 @@ function focusToValue(key) {
           :root-obj="rootObj"
           :enable-ref="enableRef"
           :path="`${props.path}.${key}`"
+          :show-close-paren="showCloseParen"
         />
       </div>
 
       <div
-        v-if="!isScalar(object[key]) && !data.fold[key]"
+        v-if="showCloseParen && !isScalar(object[key]) && !data.fold[key]"
         class="container flex-row ml1"
       >
         {{ parenSymbol(object[key])[1] }}
