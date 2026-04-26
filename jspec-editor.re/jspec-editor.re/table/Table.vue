@@ -4,8 +4,10 @@ const reactive = Vue.reactive;
 const defineProps = Vue.defineProps;
 const onMounted = Vue.onMounted;
 const useTemplateRef = Vue.useTemplateRef;
+const defineEmits = Vue.defineEmits;
 
 const props = defineProps(["model", "define"]);
+const emits = defineEmits(["on-input", "on-change"]);
 
 function syncScroll(event, opts) {
   let idsTo = opts.targets;
@@ -20,20 +22,35 @@ function syncScroll(event, opts) {
   }
 }
 
-const def = reactive({
-  rowHeight: 24,
-  columns: [
-    { name: "id", width: 80, left: 0 },
-    { name: "text", width: 200, left: 80 },
-  ],
-});
+function createDef(userDef) {
+  let rowHeight = userDef.rowHeight ?? 24;
+  let def = Object.assign(
+    {
+      fontSize: 14,
+      borderColor: `#aaa`,
+      rowHeight: rowHeight,
+      rowHeaderWidth: 48,
+      scrollLeft: 0,
+      scrollTop: 0,
+      rows: props.model.rows.map((r, i) => {
+        return { height: rowHeight, top: rowHeight * i };
+      }),
+    },
+    userDef,
+  );
+  return def;
+}
+
+const def = reactive(recalcGeometry(createDef(props.define)));
+
+const borderWidth = 1;
 
 function recalcGeometry(def) {
-  let left = 0;
+  let left = def.rowHeaderWidth + borderWidth;
   let totalWidth = 0;
   def.columns.forEach((col, j) => {
     col.left = left;
-    left += col.width + 1;
+    left += col.width + borderWidth;
 
     if (j === def.columns.length - 1) {
       col.last = true;
@@ -42,30 +59,98 @@ function recalcGeometry(def) {
     totalWidth += col.width;
   });
   def.totalWidth = totalWidth;
+
+  let top = 0 + def.rowHeight;
+  def.rows.forEach((row) => {
+    row.top = top;
+    top += row.height;
+  });
+  return def;
 }
 
 const genDrag = ref(null);
 function* drag(event, columnindex) {
+  table.value.classList.add("resizing");
   let ix = event.x;
   let endEvent = yield;
   let dx = endEvent.x - ix;
   def.columns[columnindex].width += dx;
+  if (def.columns[columnindex].width < 10) {
+    def.columns[columnindex].width = 10;
+  }
   recalcGeometry(def);
+  table.value.classList.remove("resizing");
+  return;
+}
+
+const genDragv = ref(null);
+function* dragv(event, rowIndex) {
+  table.value.classList.add("resizing");
+  let iy = event.y;
+  let endEvent = yield;
+  let dy = endEvent.y - iy;
+  def.rows[rowIndex].height += dy;
+  if (def.rows[rowIndex].height < 10) {
+    def.rows[rowIndex].height = 10;
+  }
+  recalcGeometry(def);
+  table.value.classList.remove("resizing");
   return;
 }
 
 const table = useTemplateRef("table");
 
+const modelView = reactive({
+  rows: [],
+});
+
 const visibleRange = ref([0, 0]);
 function recalcVisibleRange() {
+  // const tableHeight = table.value.getBoundingClientRect().height;
+  // const scrollTop = table.value.scrollTop;
+  // const visibleRowCount = Math.floor(tableHeight / def.rowHeight);
+  // const margin = visibleRowCount;
+  // const startIndex = Math.max(
+  //   0,
+  //   Math.floor(scrollTop / def.rowHeight) - margin,
+  // );
+  // const endIndex = Math.min(
+  //   startIndex + visibleRowCount + margin,
+  //   props.model.rows.length - 1,
+  // );
+  // visibleRange.value = [startIndex, endIndex];
+
+  // const rows = props.model.rows.slice(startIndex, endIndex).map((r, i) => {
+  //   return { rowIndex: startIndex + i, data: r };
+  // });
+  // modelView.rows = rows;
+
+  let startIndex = null;
+  let endIndex = null;
   const tableHeight = table.value.getBoundingClientRect().height;
-  const scrollTop = table.value.scrollTop;
-  const visibleRowCount = Math.floor(tableHeight / def.rowHeight);
-  const startIndex = Math.floor(scrollTop / def.rowHeight);
-  visibleRange.value = [
-    startIndex, //- visibleRowCount,
-    startIndex + visibleRowCount, //+ visibleRowCount,
-  ];
+  const margin = tableHeight;
+  const scrollTop = table.value.scrollTop - margin;
+  const tableBottom = scrollTop + tableHeight + margin *2;
+  let totalHeight = 0;
+  for (let i = 0; i < props.model.rows.length; i++) {
+    let row = def.rows[i];
+    if (startIndex == null && scrollTop <= row.top + row.height) {
+      startIndex = i;
+    }
+    if (endIndex == null && tableBottom < row.top) {
+      endIndex = i;
+    }
+    totalHeight += row.height;
+  }
+  if (startIndex == null) startIndex = 0;
+  if (endIndex == null) endIndex = props.model.rows.length - 1;
+  def.totalHeight = totalHeight;
+
+  visibleRange.value = [startIndex, endIndex];
+  const rows = props.model.rows.slice(startIndex, endIndex).map((r, i) => {
+    return { rowIndex: startIndex + i, data: r };
+  });
+  modelView.rows = rows;
 }
 
 let timerRecalcVisibleRange = null;
@@ -73,28 +158,42 @@ function delayedRecalcVisibleRange() {
   if (timerRecalcVisibleRange) {
     clearTimeout(timerRecalcVisibleRange);
   }
+
+  const timeoutLength = 200;
   timerRecalcVisibleRange = setTimeout(() => {
     recalcVisibleRange();
     timerRecalcVisibleRange = null;
-  }, 200);
+  }, timeoutLength);
 }
 
 function isRowInVisibleRange(rowIndex) {
   return visibleRange.value[0] <= rowIndex && rowIndex <= visibleRange.value[1];
 }
 
-function sink(event) {
-  // console.log(event);
+function sink(event) {}
+
+function onScroll(event) {
+  def.scrollLeft = table.value.scrollLeft;
+  def.scrollTop = table.value.scrollTop;
+  delayedRecalcVisibleRange();
 }
 
 onMounted(() => {
   recalcGeometry(def);
   recalcVisibleRange();
 });
+
+function onChange(row, valueProp) {
+  emits("on-change", { row, valueProp });
+}
+
+function onInput(row, valueProp) {
+  emits("on-input", { row, valueProp });
+}
 </script>
 
 <template>
-  <div class="table" ref="table" @scroll="delayedRecalcVisibleRange()">
+  <div class="table" ref="table" @scroll="onScroll($event)">
     <!-- screen -->
     <div
       class="screen"
@@ -102,9 +201,26 @@ onMounted(() => {
         left: `0px`,
         top: `0px`,
         width: `${def.totalWidth + def.columns.length}px`,
-        height: `${def.rowHeight * (model.rows.length + 1)}px`,
+        height: `${def.rowHeight + def.totalHeight}px`,
       }"
     ></div>
+
+    <!-- left top header -->
+    <div
+      class="cell bl bt br bb"
+      :style="{
+        position: `absolute`,
+        top: `${def.scrollTop}px`,
+        left: `${def.scrollLeft}px`,
+        zIndex: 900,
+        width: `${def.rowHeaderWidth}px`,
+        height: `${def.rowHeight}px`,
+      }"
+    >
+      <div class="cell-contents">
+        <span>&nbsp;</span>
+      </div>
+    </div>
 
     <!-- column header -->
     <template v-for="(col, j) in def.columns">
@@ -112,14 +228,19 @@ onMounted(() => {
         class="cell bl bt bb"
         :class="{ br: col.last }"
         :style="{
-          position: `sticky`,
-          top: `0px`,
+          position: `absolute`,
+          top: `${def.scrollTop}px`,
+          left: `${col.left}px`,
           zIndex: 100,
           width: `${col.width}px`,
-          left: `${col.left}px`,
+          height: `${def.rowHeight}px`,
+          userSelect: `none`,
         }"
       >
-        <span>{{ col.name }}</span>
+        <div class="cell-contents">
+          <span>{{ col.title }}</span>
+        </div>
+
         <div
           class="resizer"
           draggable="true"
@@ -134,20 +255,61 @@ onMounted(() => {
     </template>
 
     <!-- data -->
-    <template v-for="(row, i) in model.rows">
+    <template v-for="(row, i) in modelView.rows">
+      <!-- row header -->
+      <div
+        class="cell bl bt br bb"
+        :style="{
+          position: `absolute`,
+          top: `${def.rows[row.rowIndex].top}px`,
+          left: `${def.scrollLeft}px`,
+          width: `${def.rowHeaderWidth}px`,
+          height: `${def.rows[row.rowIndex].height}px`,
+          zIndex: 500,
+          textAlign: `center`,
+        }"
+      >
+        <div class="cell-contents">
+          <span>{{ row.rowIndex + 1 }}</span>
+
+          <div
+            class="resizer-v"
+            draggable="true"
+            @dragstart="
+              genDragv = dragv($event, row.rowIndex);
+              genDragv.next($event, row.rowIndex);
+            "
+            @drag="sink($event)"
+            @dragend="genDragv.next($event)"
+          ></div>
+        </div>
+      </div>
+
       <template v-for="col in def.columns">
         <div
-          v-if="isRowInVisibleRange(i)"
+          v-if="isRowInVisibleRange(row.rowIndex)"
           class="cell bl bt"
-          :class="{ br: col.last, bb: i === model.rows.length - 1 }"
+          :class="{ br: col.last, bb: i === modelView.rows.length - 1 }"
           :style="{
             position: `absolute`,
             width: `${col.width}px`,
+            height: `${def.rows[row.rowIndex].height}px`,
             left: `${col.left}px`,
-            top: `${(i + 1) * def.rowHeight}px`,
+            top: `${def.rows[row.rowIndex].top}px`,
           }"
         >
-          <span>{{ row[col.name] }}</span>
+          <div class="cell-contents">
+            <textarea
+              spellcheck="false"
+              class="cell-editor-text"
+              v-model="row.data[col.valueProp]"
+              @change="onChange(row, col.valueProp)"
+              @input="onInput(row, col.valueProp)"
+              :style="{
+                textAlign: col.textAlign ?? `left`,
+              }"
+            ></textarea>
+          </div>
         </div>
       </template>
     </template>
@@ -160,6 +322,7 @@ onMounted(() => {
   line-height: 1.5;
   font-weight: 400;
   color: #333;
+  font-size: v-bind(`${def.fontSize}px`);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -167,10 +330,26 @@ onMounted(() => {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.bl { border-left: solid 1px #333; }
-.br { border-right: solid 1px #333; }
-.bt { border-top: solid 1px #333; }
-.bb { border-bottom: solid 1px #333; }
+.bl {
+  border-left: solid 1px #333;
+  border-color: v-bind(def.borderColor);
+}
+.br {
+  border-right: solid 1px #333;
+   border-color: v-bind(def.borderColor);
+}
+.bt {
+  border-top: solid 1px #333;
+   border-color: v-bind(def.borderColor);
+}
+.bb {
+  border-bottom: solid 1px #333;
+  border-color: v-bind(def.borderColor);
+}
+
+.table.resizing {
+  pointer-events: none;
+}
 
 .table {
   position: relative;
@@ -181,15 +360,57 @@ onMounted(() => {
   & .cell {
     display: inline-block;
     background-color: #fff;
+    overflow: hidden;
+
+    & .cell-contents {
+      display: block;
+      box-sizing: border-box;
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      & * {
+        position: relative;
+      }
+
+      & .cell-editor-text {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        outline: none;
+        border: none;
+        resize: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
 
     & .resizer {
       position: absolute;
       top: 0px;
       bottom: 0px;
       right: 0px;
-      width: 3px;
-      /* background-color: red; */
-      cursor: pointer;
+      width: 5px;
+      cursor: ew-resize;
+      pointer-events: auto !important;
+    }
+
+    & .resizer:hover {
+      background-color: gray;
+    }
+
+    & .resizer-v {
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+      height: 5px;
+      cursor: ns-resize;
+      pointer-events: auto !important;
+    }
+
+    & .resizer-v:hover {
+      background-color: gray;
     }
   }
 
