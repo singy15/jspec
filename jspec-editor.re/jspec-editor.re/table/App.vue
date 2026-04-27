@@ -40,7 +40,7 @@ function onChange(data) {
 }
 
 function onInput(data) {
-  console.log(data);
+  // console.log(data);
 }
 </script>
 

@@ -35,6 +35,8 @@ function createDef(userDef) {
       rows: props.model.rows.map((r, i) => {
         return { height: rowHeight, top: rowHeight * i };
       }),
+      selectedCell: [-1, -1],
+      hoverCell: [-1, -1],
     },
     userDef,
   );
@@ -130,7 +132,7 @@ function recalcVisibleRange() {
   const tableHeight = table.value.getBoundingClientRect().height;
   const margin = tableHeight;
   const scrollTop = table.value.scrollTop - margin;
-  const tableBottom = scrollTop + tableHeight + margin *2;
+  const tableBottom = scrollTop + tableHeight + margin * 2;
   let totalHeight = 0;
   for (let i = 0; i < props.model.rows.length; i++) {
     let row = def.rows[i];
@@ -189,6 +191,17 @@ function onChange(row, valueProp) {
 
 function onInput(row, valueProp) {
   emits("on-input", { row, valueProp });
+}
+
+function showEditor(irow, icol) {
+  return (
+    (def.selectedCell[0] === irow && def.selectedCell[1] === icol) ||
+    (def.hoverCell[0] === irow && def.hoverCell[1] === icol)
+  );
+}
+
+function msg(val) {
+  console.log(val);
 }
 </script>
 
@@ -285,9 +298,11 @@ function onInput(row, valueProp) {
         </div>
       </div>
 
-      <template v-for="col in def.columns">
+      <template v-for="(col, j) in def.columns">
         <div
           v-if="isRowInVisibleRange(row.rowIndex)"
+          @click="def.selectedCell = [row.rowIndex, j]"
+          @mouseenter="def.hoverCell = [row.rowIndex, j]"
           class="cell bl bt"
           :class="{ br: col.last, bb: i === modelView.rows.length - 1 }"
           :style="{
@@ -299,16 +314,31 @@ function onInput(row, valueProp) {
           }"
         >
           <div class="cell-contents">
-            <textarea
-              spellcheck="false"
-              class="cell-editor-text"
-              v-model="row.data[col.valueProp]"
-              @change="onChange(row, col.valueProp)"
-              @input="onInput(row, col.valueProp)"
-              :style="{
-                textAlign: col.textAlign ?? `left`,
-              }"
-            ></textarea>
+            <template v-if="!showEditor(row.rowIndex, j)">
+              <span style="position:absolute;top:0px;left:0px;">{{
+                row.data[col.valueProp]
+              }}</span>
+            </template>
+
+            <template v-if="showEditor(row.rowIndex, j)">
+              <textarea
+                style="position:absolute;top:0px;left:0px;"
+                spellcheck="false"
+                class="cell-editor-text"
+                v-model="row.data[col.valueProp]"
+                @change="onChange(row, col.valueProp)"
+                @input="onInput(row, col.valueProp)"
+                :style="{
+                  textAlign: col.textAlign ?? `left`,
+                }"
+              ></textarea>
+            </template>
+
+            <!-- <select
+              class="cell-editor-select"
+            >
+              <option>aaa</option>
+            </select> -->
           </div>
         </div>
       </template>
@@ -382,6 +412,15 @@ function onInput(row, valueProp) {
         resize: none;
         margin: 0;
         padding: 0;
+      }
+
+      & .cell-editor-select {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        border: none;
+        outline: none;
+        appearance: none;
       }
     }
 
