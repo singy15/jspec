@@ -321,8 +321,15 @@ function msg(val) {
             </template>
 
             <template v-if="showEditor(row.rowIndex, j)">
+              <select
+                class="cell-editor-select"
+                style="position:absolute;top:0px;left:0px;vertical-align:top;text-align:left;"
+              >
+                <option>{{ row.data[col.valueProp] }}</option>
+              </select>
+
               <textarea
-                style="position:absolute;top:0px;left:0px;"
+                style="position:absolute;top:0px;left:0px;right:16px;"
                 spellcheck="false"
                 class="cell-editor-text"
                 v-model="row.data[col.valueProp]"
@@ -330,15 +337,10 @@ function msg(val) {
                 @input="onInput(row, col.valueProp)"
                 :style="{
                   textAlign: col.textAlign ?? `left`,
+                  width: `calc(100% - 16px)`,
                 }"
               ></textarea>
             </template>
-
-            <!-- <select
-              class="cell-editor-select"
-            >
-              <option>aaa</option>
-            </select> -->
           </div>
         </div>
       </template>
@@ -405,7 +407,7 @@ function msg(val) {
 
       & .cell-editor-text {
         box-sizing: border-box;
-        width: 100%;
+        /* width: 100%; */
         height: 100%;
         outline: none;
         border: none;
@@ -421,6 +423,19 @@ function msg(val) {
         border: none;
         outline: none;
         appearance: none;
+      }
+
+      & .cell-editor-select::before {
+        content: 'aaa';
+        color: red;
+        display: inline-block;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 16px;
+        height: 16px;
+        background-color: red;
+        z-index: 99999;
       }
     }
 

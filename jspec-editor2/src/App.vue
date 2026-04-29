@@ -1,9 +1,9 @@
 <script setup>
-import EditorMain from './components/EditorMain.vue'
+import JspecEditor from './components/JspecEditor.vue';
 </script>
 
 <template>
-  <EditorMain />
+  <JspecEditor/>
 </template>
 
 <style scoped>
